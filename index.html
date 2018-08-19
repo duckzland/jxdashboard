@@ -1,0 +1,21 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="UTF-8"> 
+        <title>JXOS Dashboard</title>
+        <link href="dist/style.css" rel="stylesheet" type="text/css" />
+    </head> 
+    <body>  
+        <div id="jxos-dashboard"></div>
+        <script>
+            // Populate any global variable here before webpack compilation!
+            window.development = process.env.JX_ENV === 'development';
+            window.jxdashboard = {
+                host: !window.development ? '127.0.0.1' : '192.168.0.103',
+                port: 8129
+            };
+            window.nodeNetObject = require('net');
+            require('./dist/build.js');
+        </script>
+    </body> 
+</html>

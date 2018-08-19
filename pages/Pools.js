@@ -1,0 +1,279 @@
+import React         from 'react';
+import ScrollArea    from 'react-scrollbar';
+import ConfigPanel   from '../base/ConfigPanel';
+import Config        from '../modules/Config';
+import PoolNavigator from '../components/PoolNavigator';
+import PoolCoins     from '../components/PoolCoins';
+
+import { get, unset, isEmpty, forEach, isEqual, merge, omit } from 'lodash';
+import { Text, Form } from 'informed';
+
+export default class PagePools extends ConfigPanel {
+
+    state = {
+        activePool: '',
+        data: {}
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.state.data = omit(Config.storage, 'local');
+
+        // Point to first pool
+        if (isEmpty(this.state.activePool) && this.state.data.pools) {
+            const pools = Object.keys(this.state.data.pools);
+            if (pools.length && pools[0]) {
+                this.state.activePool = pools[0];
+            }
+        }
+
+        this.convertProps();
+
+        if (isEmpty(this.state.data.local[this.state.activePool])) {
+            this.state.data.local[this.state.activePool] = [{
+                coin    : '',
+                protocol: '',
+                url     : '',
+                port    : '',
+                password: ''
+            }];
+        }
+
+    }
+
+    changePool = (newPool) => {
+        if (newPool !== this.state.activePool) {
+            this.state.activePool = newPool;
+            this.convertProps();
+            if (isEmpty(this.state.data.local[this.state.activePool])) {
+                this.state.data.local[this.state.activePool] = [{
+                    coin    : '',
+                    protocol: '',
+                    url     : '',
+                    port    : '',
+                    password: ''
+                }];
+            }
+            this.formApi.setValues(this.state.data);
+            this.setState(this.state);
+        }
+    };
+
+    addPool = (newPool) => {
+        if (!isEmpty(newPool) && isEmpty(this.state.data.pools[newPool])) {
+            this.state.data.pools[newPool] = {
+                format: {
+                    name    : newPool,
+                    wallet  : '',
+                    address : ''
+                }
+            };
+            this.state.data.local[newPool] = [];
+
+            let newPoolObject = {};
+            newPoolObject[newPool] = {
+                format: {
+                    name    : newPool,
+                    wallet  : '',
+                    address : ''
+                }
+            };
+            merge(newPoolObject, this.state.data.pools);
+            this.state.data.pools = newPoolObject;
+            this.state.data.local[newPool] = [
+                {
+                    coin    : '',
+                    protocol: '',
+                    url     : '',
+                    port    : '',
+                    password: ''
+                }
+            ];
+            this.formApi.setValues(this.state.data);
+            this.state.activePool = newPool;
+            this.setState(this.state);
+        }
+    };
+
+    removePool = () => {
+        const activePool = this.state.activePool;
+        unset(this.state.data.local, activePool);
+        unset(this.state.data.pools, activePool);
+        this.formApi.setValues(this.state.data);
+        this.state.activePool = this.state.data.pools.length === 0 ? false : Object.keys(this.state.data.pools)[0];
+        this.convertProps();
+        this.setState(this.state);
+    };
+
+    addCoin = () => {
+        const activePool = this.state.activePool;
+
+        if (!this.state.data.local[activePool]) {
+            this.state.data.local[activePool] = [];
+        }
+
+        this.state.data.local[activePool].push({
+            coin    : '',
+            protocol: '',
+            url     : '',
+            port    : '',
+            password: ''
+        });
+        this.formApi.setValues(this.state.data);
+        this.setState(this.state);
+    };
+
+    removeCoin = (index) => {
+        const activePool = this.state.activePool;
+        const removedCoin = this.state.data.local[activePool][index];
+        if (!isEmpty(removedCoin.coin)) {
+            unset(this.state.data.pools, activePool + '.' + removedCoin.coin);
+        }
+        this.state.data.local[activePool].splice(index, 1);
+        this.formApi.setValues(this.state.data);
+        this.state.data.local[activePool].length === 0
+            ? this.addCoin()
+            : this.setState(this.state);
+    };
+
+    handleChange = () => {
+        this.state.data = merge(this.state.data, this.formApi.getState().values);
+        this.convertLocal();
+        this.setState(this.state);
+    };
+
+    handleSave = () => {
+        const config = new Config();
+        config.blacklist.push('config');
+        config.save();
+        config.reload();
+    };
+
+    convertProps = () => {
+        const pools = this.state.data.pools;
+        const activePool = this.state.activePool;
+
+        this.state.data.local = {};
+
+        forEach(pools, (data, pool) => {
+
+            if (activePool !== pool) {
+                return;
+            }
+
+            this.state.data.local[pool] = [];
+            forEach(data, (coinData, coin) => {
+                if (coin !== 'format' && coin !== 'code') {
+                    this.state.data.local[pool].push({
+                        coin     : coin,
+                        protocol : get(coinData, 'protocol', ''),
+                        url      : get(coinData, 'url', ''),
+                        port     : get(coinData, 'port', ''),
+                        password : get(coinData, 'password', '')
+                    });
+                }
+            });
+        });
+    };
+
+    convertLocal = () => {
+        const poolCoins = this.state.data.local;
+        const activePool = this.state.activePool;
+
+        if (!this.state.data.pools) {
+            this.state.data.pools = {};
+        }
+
+        forEach(poolCoins, (coins, pool) => {
+
+            if (activePool !== pool) {
+                return;
+            }
+
+            forEach(coins, (coin) => {
+                if (!coin || !coin.coin) {
+                    return;
+                }
+                if (!this.state.data.pools[pool]) {
+                    this.state.data.pools[pool] = {};
+                }
+                this.state.data.pools[pool][coin.coin] = {
+                    protocol : get(coin, 'protocol', ''),
+                    url      : get(coin, 'url',      ''),
+                    port     : get(coin, 'port',     ''),
+                    password : get(coin, 'password', '')
+                };
+            });
+        });
+
+    };
+
+    render() {
+
+        const sidebarProps = {
+            key: 'sidebar-element',
+            speed: 0.8,
+            className: 'side-panels panel',
+            contentClassName: 'content',
+            horizontal: false,
+            vertical: true
+        };
+
+        const contentProps = {
+            key: 'content-element',
+            speed: 0.8,
+            className: 'main-panels panel',
+            contentClassName: 'content',
+            horizontal: false,
+            vertical: true
+        };
+
+        const { activePool, data } = this.state;
+        const fieldName     = 'pools.' + activePool;
+        const activeData    = get(data, 'local.' + activePool);
+        const format        = get(data, 'pools.' + activePool + '.format',    { name: '', wallet: '', address: ''});
+        const { name, wallet, address } = format;
+
+        return (
+            <div className="panels">
+                <ScrollArea { ...sidebarProps }>
+                    <PoolNavigator data={ data } active={ activePool } onRegister={ this.addPool } onChange={ this.changePool } />
+                </ScrollArea>
+                <ScrollArea { ...contentProps }>
+                    <div className="inner-content">
+                        <Form id="configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
+                            <h1 className="form-title">Pool: { activePool }</h1>
+                            <div className="form-group">
+                                <label className="form-label">Pool Name</label>
+                                <Text key={ fieldName + '.format.name' } field={ fieldName + '.format.name' } type="text" initialValue={ name }/>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label">Wallet Format</label>
+                                <Text key={ fieldName + '.format.wallet' } field={ fieldName + '.format.wallet' } type="text" initialValue={ wallet }/>
+                                <div className="form-description">
+                                    { 'Example format : {wallet}.{worker}/{email}' }
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label">Address Format</label>
+                                <Text key={ fieldName + '.format.address' } field={ fieldName + '.format.address' } type="text" initialValue={ address }/>
+                                <div className="form-description">
+                                    { 'Example format : {protocol}://{url}:{port}' }
+                                </div>
+                            </div>
+                            <h1 className="form-title">Coin Settings</h1>
+                            { activeData && activePool && <PoolCoins data={ activeData } active={ activePool } onRegister={ this.addCoin } onRemove={ this.removeCoin } /> }
+                            <button type="submit" className="form-button" onClick={ this.handleSave }>
+                                Save
+                            </button>
+                            <button type="submit" className="form-button" onClick={ this.removePool }>
+                                Remove
+                            </button>
+                        </Form>
+                    </div>
+                </ScrollArea>
+            </div>
+        )
+    }
+}
