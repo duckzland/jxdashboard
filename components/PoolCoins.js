@@ -1,6 +1,7 @@
 import React                from 'react';
 import Component            from '../base/Component';
 import CoinSelector         from '../components/CoinSelector';
+import Config               from '../modules/Config';
 import { forEach }          from 'lodash';
 import { Text, Scope }      from 'informed';
 
@@ -26,8 +27,22 @@ export default class PoolCoins extends Component {
         }
     };
 
-    render() {
+    isActive = (coin) => {
+        let active = false;
+        if (Config.storage.config.machine.cpu_miner.coin === coin) {
+            active = true;
+        }
+        if (!active && Config.storage.config.machine.gpu_miner.coin === coin) {
+            active = true;
+        }
+        if (!active && Config.storage.config.machine.gpu_miner.second_coin === coin) {
+            active = true;
+        }
+        return active;
+    };
 
+    render() {
+        const { isActive } = this;
         const { onRegister, onRemove } = this.props;
         const { data, active } = this.state;
 
@@ -57,8 +72,9 @@ export default class PoolCoins extends Component {
                             <Text key={ active + '-' + index + '-password' } type="text" field={ 'password' } initialValue={ coin.password }/>
                         </div>
                         <div className="items">
-                            { showLabel && <label className="form-label">Action</label> }
-                            <button type="submit" className="form-button" onClick={ () => onRemove(index) }>X</button>
+                            { showLabel            && <label className="form-label">Action</label> }
+                            { !isActive(coin.coin) && <button type="submit" className="form-button" onClick={ () => onRemove(index) }>X</button> }
+                            { isActive(coin.coin)  && <button type="submit" className="form-button" disabled>O</button> }
                         </div>
                     </Scope>
                 </div>

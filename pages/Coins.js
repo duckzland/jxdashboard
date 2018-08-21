@@ -81,7 +81,7 @@ export default class PageCoins extends ConfigPanel {
         config.blacklist.push('config.watchdog');
         config.blacklist.push('config.systemd');
         config.blacklist.push('pools');
-        config.save();
+        config.save(this.savingStart, this.savingComplete);
         config.reload();
     };
 
@@ -101,9 +101,23 @@ export default class PageCoins extends ConfigPanel {
             : this.setState(this.state);
     };
 
-    render() {
+    isActive = (coin) => {
+        let active = false;
+        if (Config.storage.config.machine.cpu_miner.coin === coin) {
+            active = true;
+        }
+        if (!active && Config.storage.config.machine.gpu_miner.coin === coin) {
+            active = true;
+        }
+        if (!active && Config.storage.config.machine.gpu_miner.second_coin === coin) {
+            active = true;
+        }
+        return active;
+    };
 
-        const { data } = this.state;
+    render() {
+        const { isActive } =  this;
+        const { data }     = this.state;
 
         const contentProps = {
             key: 'content-element',
@@ -116,9 +130,10 @@ export default class PageCoins extends ConfigPanel {
 
         const Rows = this.state.data.local.map((entry, key) => {
             const rowProps = {
-                key     : 'coin-row-' + key,
-                index   : key,
-                onRemove: () => this.remove(key)
+                key       : 'coin-row-' + key,
+                index     : key,
+                removable : !isActive(entry.ticker),
+                onRemove  : () => this.remove(key)
             };
             return (<CoinRow { ...rowProps }/>)
         });
@@ -130,9 +145,14 @@ export default class PageCoins extends ConfigPanel {
                         <Form id="coin-configuration" className="form-instance wallet-form" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
                             <h1 className="form-title">Registered Coins</h1>
                             { Rows }
-                            <button type="submit" className="form-button" onClick={ this.handleSave }>
-                                Save
-                            </button>
+                            { this.isSaving
+                                ? <button type="submit" className="form-button" disabled>
+                                    Saving in progress...
+                                </button>
+                                : <button type="submit" className="form-button" onClick={ this.handleSave }>
+                                    Save
+                                </button>
+                            }
                             <button type="submit" className="form-button" onClick={ this.add }>
                                 Add New
                             </button>

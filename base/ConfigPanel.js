@@ -4,6 +4,8 @@ import Config       from '../modules/Config';
 
 export default class ConfigPanel extends React.Component {
 
+    isSaving = false;
+
     constructor(props) {
         super(props);
         this.formApi = false;
@@ -21,7 +23,17 @@ export default class ConfigPanel extends React.Component {
 
     handleSave = () => {
         const config = new Config();
-        config.save();
+        config.save(this.savingStart, this.savingComplete);
         config.reload();
     };
+
+    savingStart = () => {
+        this.isSaving = true;
+        this.forceUpdate();
+    };
+
+    savingComplete = () => {
+        this.isSaving = false;
+        this.forceUpdate();
+    }
 }

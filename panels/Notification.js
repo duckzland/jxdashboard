@@ -19,7 +19,7 @@ export default class PanelNotification extends ConfigPanel {
         config.blacklist.push('config.watchdog');
         config.blacklist.push('config.systemd');
         config.blacklist.push('pools');
-        config.save();
+        config.save(this.savingStart, this.savingComplete);
         config.reload();
     };
 
@@ -65,9 +65,14 @@ export default class PanelNotification extends ConfigPanel {
                         </div>
                     }
 
-                    <button type="submit" className="form-button" onClick={ this.handleSave }>
-                        Save
-                    </button>
+                    { this.isSaving
+                        ? <button type="submit" className="form-button" disabled>
+                            Saving in progress...
+                        </button>
+                        : <button type="submit" className="form-button" onClick={ this.handleSave }>
+                            Save
+                        </button>
+                    }
                 </Form>
             </div>
         )

@@ -41,7 +41,6 @@ export default class PoolSelector extends Component {
         const { active, data } = this.state;
 
         const pools = get(data, 'pools', {});
-
         const PoolSelector = [];
         forEach(pools, (info, pool) => {
             const menuItemProps = {

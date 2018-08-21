@@ -7,7 +7,7 @@ export default class CoinRow extends Component {
 
     render() {
 
-        const { onRemove, index } = this.props;
+        const { onRemove, removable, index } = this.props;
         const showLabel = (index === 0);
 
         return (
@@ -31,8 +31,9 @@ export default class CoinRow extends Component {
                             <AlgoSelector key={ 'local-' + index + '-algo' } field={ 'algo' } hasEmpty={ true }/>
                         </div>
                         <div className="items">
-                            { showLabel && <label className="form-label">Action</label> }
-                            <button key={ 'local-' + index + '-remove' } type="submit" className="form-button" onClick={ onRemove }>X</button>
+                            { showLabel  && <label className="form-label">Action</label> }
+                            { removable  && <button key={ 'local-' + index + '-remove' } type="submit" className="form-button" onClick={ onRemove }>X</button> }
+                            { !removable && <button key={ 'local-' + index + '-remove' } type="submit" className="form-button" disabled>O</button> }
                         </div>
                     </div>
                 </Scope>

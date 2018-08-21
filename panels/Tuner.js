@@ -37,7 +37,7 @@ export default class PanelTuner extends ConfigPanel {
         config.blacklist.push('config.watchdog');
         config.blacklist.push('config.systemd');
         config.blacklist.push('pools');
-        config.save();
+        config.save(this.savingStart, this.savingComplete);
         config.reload();
     };
 
@@ -166,9 +166,14 @@ export default class PanelTuner extends ConfigPanel {
                         </div>
                     }
 
-                    <button type="submit" className="form-button" onClick={ this.handleSave }>
-                        Save
-                    </button>
+                    { this.isSaving
+                        ? <button type="submit" className="form-button" disabled>
+                            Saving in progress...
+                        </button>
+                        : <button type="submit" className="form-button" onClick={ this.handleSave }>
+                            Save
+                        </button>
+                    }
 
                     { ( get(data, 'local.name.gpu', 'global') !== 'global' || get(data, 'local.name.coin', 'global') !== 'global' )
                         && <button type="submit" className="form-button" onClick={ this.removeOverride }>

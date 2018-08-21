@@ -19,7 +19,7 @@ export default class Config {
         this.insert(config);
     };
 
-    load() {
+    load(onLoad = false, onComplete = false, onError = false) {
         const network = new Network(this.host, this.port, 'config:load:json',
 
             (network, buffers) => {
@@ -27,27 +27,35 @@ export default class Config {
                 try {
                     payload = JSON.parse(buffers.slice(-1).pop());
                 }
-                catch(err) { }
+                catch(err) {
+                    onError && onError();
+                    onComplete && onComplete();
+                }
 
                 if (payload) {
                     this.insert(payload);
+                    onComplete && onComplete();
                 }
             },
 
             () => {
                 setTimeout(function() {
+                    onLoad && onLoad();
                     network.send();
                 }, 1000);
             });
 
+        onLoad && onLoad();
         network.send();
     }
 
 
-    save() {
+    save(onLoad = false, onComplete = false) {
         const payload = {};
-        const network = new Network(this.host, this.port, 'config:save:json', function() {}, function() {});
+        const network = new Network(this.host, this.port, 'config:save:json', onComplete, onComplete);
         merge(payload, omit(Config.storage, this.blacklist));
+        onLoad && onLoad();
+        console.log(JSON.stringify(payload));
         network.send(JSON.stringify(payload));
     }
 

@@ -21,7 +21,7 @@ export default class PagePools extends ConfigPanel {
         this.state.data = omit(Config.storage, 'local');
 
         // Point to first pool
-        if (isEmpty(this.state.activePool) && this.state.data.pools) {
+        if (isEmpty(this.state.activePool) && !isEmpty(this.state.data.pools)) {
             const pools = Object.keys(this.state.data.pools);
             if (pools.length && pools[0]) {
                 this.state.activePool = pools[0];
@@ -30,7 +30,7 @@ export default class PagePools extends ConfigPanel {
 
         this.convertProps();
 
-        if (isEmpty(this.state.data.local[this.state.activePool])) {
+        if (isEmpty(this.state.data.local[this.state.activePool]) && !isEmpty(this.state.activePool)) {
             this.state.data.local[this.state.activePool] = [{
                 coin    : '',
                 protocol: '',
@@ -43,10 +43,10 @@ export default class PagePools extends ConfigPanel {
     }
 
     changePool = (newPool) => {
-        if (newPool !== this.state.activePool) {
+        if (!isEmpty(newPool) && newPool !== this.state.activePool) {
             this.state.activePool = newPool;
             this.convertProps();
-            if (isEmpty(this.state.data.local[this.state.activePool])) {
+            if (isEmpty(this.state.data.local[this.state.activePool]) && !isEmpty(this.state.activePool)) {
                 this.state.data.local[this.state.activePool] = [{
                     coin    : '',
                     protocol: '',
@@ -100,8 +100,9 @@ export default class PagePools extends ConfigPanel {
         const activePool = this.state.activePool;
         unset(this.state.data.local, activePool);
         unset(this.state.data.pools, activePool);
+        unset(this.state.data.pools, false);
         this.formApi.setValues(this.state.data);
-        this.state.activePool = this.state.data.pools.length === 0 ? false : Object.keys(this.state.data.pools)[0];
+        this.state.activePool = isEmpty(this.state.data.pools) ? false : Object.keys(this.state.data.pools)[0];
         this.convertProps();
         this.setState(this.state);
     };
@@ -146,8 +147,22 @@ export default class PagePools extends ConfigPanel {
     handleSave = () => {
         const config = new Config();
         config.blacklist.push('config');
-        config.save();
+        config.save(this.savingStart, this.savingComplete);
         config.reload();
+    };
+
+    isActive = () => {
+        let active = false;
+        if (Config.storage.config.machine.cpu_miner.pool === this.state.activePool) {
+            active = true;
+        }
+        if (!active && Config.storage.config.machine.gpu_miner.pool === this.state.activePool) {
+            active = true;
+        }
+        if (!active && Config.storage.config.machine.gpu_miner.second_pool === this.state.activePool) {
+            active = true;
+        }
+        return active;
     };
 
     convertProps = () => {
@@ -155,26 +170,27 @@ export default class PagePools extends ConfigPanel {
         const activePool = this.state.activePool;
 
         this.state.data.local = {};
+        !isEmpty(activePool)
+            && !isEmpty(pools)
+            && forEach(pools, (data, pool) => {
 
-        forEach(pools, (data, pool) => {
-
-            if (activePool !== pool) {
-                return;
-            }
-
-            this.state.data.local[pool] = [];
-            forEach(data, (coinData, coin) => {
-                if (coin !== 'format' && coin !== 'code') {
-                    this.state.data.local[pool].push({
-                        coin     : coin,
-                        protocol : get(coinData, 'protocol', ''),
-                        url      : get(coinData, 'url', ''),
-                        port     : get(coinData, 'port', ''),
-                        password : get(coinData, 'password', '')
-                    });
+                if (activePool !== pool) {
+                    return;
                 }
+
+                this.state.data.local[pool] = [];
+                forEach(data, (coinData, coin) => {
+                    if (coin !== 'format' && coin !== 'code') {
+                        this.state.data.local[pool].push({
+                            coin     : coin,
+                            protocol : get(coinData, 'protocol', ''),
+                            url      : get(coinData, 'url', ''),
+                            port     : get(coinData, 'port', ''),
+                            password : get(coinData, 'password', '')
+                        });
+                    }
+                });
             });
-        });
     };
 
     convertLocal = () => {
@@ -185,7 +201,7 @@ export default class PagePools extends ConfigPanel {
             this.state.data.pools = {};
         }
 
-        forEach(poolCoins, (coins, pool) => {
+        !isEmpty(activePool) && forEach(poolCoins, (coins, pool) => {
 
             if (activePool !== pool) {
                 return;
@@ -229,6 +245,7 @@ export default class PagePools extends ConfigPanel {
             vertical: true
         };
 
+        const { isActive } = this;
         const { activePool, data } = this.state;
         const fieldName     = 'pools.' + activePool;
         const activeData    = get(data, 'local.' + activePool);
@@ -243,33 +260,66 @@ export default class PagePools extends ConfigPanel {
                 <ScrollArea { ...contentProps }>
                     <div className="inner-content">
                         <Form id="configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
-                            <h1 className="form-title">Pool: { activePool }</h1>
-                            <div className="form-group">
-                                <label className="form-label">Pool Name</label>
-                                <Text key={ fieldName + '.format.name' } field={ fieldName + '.format.name' } type="text" initialValue={ name }/>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Wallet Format</label>
-                                <Text key={ fieldName + '.format.wallet' } field={ fieldName + '.format.wallet' } type="text" initialValue={ wallet }/>
-                                <div className="form-description">
-                                    { 'Example format : {wallet}.{worker}/{email}' }
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Address Format</label>
-                                <Text key={ fieldName + '.format.address' } field={ fieldName + '.format.address' } type="text" initialValue={ address }/>
-                                <div className="form-description">
-                                    { 'Example format : {protocol}://{url}:{port}' }
-                                </div>
-                            </div>
-                            <h1 className="form-title">Coin Settings</h1>
-                            { activeData && activePool && <PoolCoins data={ activeData } active={ activePool } onRegister={ this.addCoin } onRemove={ this.removeCoin } /> }
-                            <button type="submit" className="form-button" onClick={ this.handleSave }>
-                                Save
-                            </button>
-                            <button type="submit" className="form-button" onClick={ this.removePool }>
-                                Remove
-                            </button>
+                            { !isEmpty(activePool)
+                                ? <div className="form-content">
+                                    <h1 className="form-title">Pool: { activePool }</h1>
+
+                                    <div className="form-group">
+                                        <label className="form-label">Pool Name</label>
+                                        <Text key={ fieldName + '.format.name' }
+                                              field={ fieldName + '.format.name' }
+                                              type="text" initialValue={ name }/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Wallet Format</label>
+                                        <Text key={ fieldName + '.format.wallet' }
+                                              field={ fieldName + '.format.wallet' }
+                                              type="text" initialValue={ wallet }/>
+
+                                        <div className="form-description">
+                                            { 'Example format : {wallet}.{worker}/{email}' }
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Address Format</label>
+                                        <Text key={ fieldName + '.format.address' }
+                                              field={ fieldName + '.format.address' }
+                                              type="text"
+                                              initialValue={ address }/>
+
+                                        <div className="form-description">
+                                            { 'Example format : {protocol}://{url}:{port}' }
+                                        </div>
+                                    </div>
+                                    <h1 className="form-title">Coin Settings</h1>
+                                    { activeData
+                                        && activePool
+                                        && <PoolCoins data={ activeData }
+                                                      active={ activePool }
+                                                      onRegister={ this.addCoin }
+                                                      onRemove={ this.removeCoin }/> }
+                                  </div>
+                                : <div className="form-content">
+                                    <h1 className="form-title">No Pool Defined, please add one or more pool</h1>
+                                    <Text key={ 'pools' } field={ 'pools' } type="hidden"/>
+                                  </div>
+                            }
+
+                            { this.isSaving
+                                ? <button type="submit" className="form-button" disabled>
+                                    Saving in progress...
+                                </button>
+                                : <button type="submit" className="form-button" onClick={ this.handleSave }>
+                                    Save
+                                </button>
+                            }
+                            { !isEmpty(activePool)
+                                && !isActive()
+                                && <button type="submit" className="form-button" onClick={ this.removePool }>
+                                    Remove
+                                </button>
+                            }
+
                         </Form>
                     </div>
                 </ScrollArea>

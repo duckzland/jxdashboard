@@ -63,6 +63,7 @@ export default class Network {
         if (this.socket) {
             this.socket.destroy();
             this.socket = false;
+            this.onClose();
         }
     };
 
@@ -101,7 +102,6 @@ export default class Network {
             });
 
             this.socket.on('data', (data) => {
-
                 this.receive(data);
                 this.onData(this, this.buffers);
             });
