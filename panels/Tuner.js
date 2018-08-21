@@ -5,7 +5,7 @@ import CoinSelector from '../components/CoinSelector';
 import GpuSelector  from '../components/GpuSelector';
 import Config       from '../modules/Config';
 import ConfigPanel  from '../base/ConfigPanel';
-import { get, merge, unset, isEmpty, forEach, omit, defer } from 'lodash';
+import { get, merge, unset, isEmpty, forEach, omit, defer, uniqBy } from 'lodash';
 import { Form, Text, Checkbox, Select, Option } from 'informed';
 
 
@@ -49,8 +49,9 @@ export default class PanelTuner extends ConfigPanel {
         unset(this, 'state.data.' + tuneName.replace('%s', 'memory'));
         unset(this, 'state.data.' + tuneName.replace('%s', 'power'));
 
-        this.state.data.local.name.gpu  = 'global';
-        this.state.data.local.name.coin = 'global';
+        this.state.data.local.name.gpu      = 'global';
+        this.state.data.local.name.coin     = 'global';
+        this.state.data.local.name.override = 'global';
 
         this.formApi.setValues(this.state.data);
     };
@@ -74,10 +75,98 @@ export default class PanelTuner extends ConfigPanel {
         this.state.fansName = fan;
         this.state.tuneName = tune;
     };
+
+    generateOverrideSelector = () => {
+        const tuner = get(this.state, 'data.config.tuner', {});
+        const fans  = get(this.state, 'data.config.fans', {});
+        let overrides = [];
+        forEach(tuner, (data, k) => {
+            if (k.indexOf('|') !== -1) {
+                overrides.push({
+                    value: k.replace('core|', '').replace('memory|', '').replace('power|', ''),
+                    text: k.replace('core', 'gpu').replace('memory', 'gpu').replace('power', 'gpu').replace(/\|/g, ' - ')
+                });
+            }
+        });
+
+        forEach(fans, (data, k) => {
+            if (k.indexOf('gpu|') !== -1) {
+                overrides.push({
+                    value: k.replace('gpu|', ''),
+                    text: k.replace(/\|/g, ' - ')
+                });
+            }
+        });
+
+        return uniqBy(overrides, 'value');
+    };
+
+    handleOverrideChange = (e) => {
+
+        const overrides = this.generateOverrideSelector();
+
+        if (e.target.value === 'global') {
+            this.state.data.local.name.gpu       = 'global';
+            this.state.data.local.name.coin      = 'global';
+            this.state.data.local.name.overrides = 'global';
+        }
+        else {
+            switch (e.target.name) {
+                case 'local.name.coin':
+                    let x = e.target.value;
+                    if (!isEmpty(this.state.data.local.name.gpu) && this.state.data.local.name.gpu !== 'global') {
+                        x = this.state.data.local.name.gpu + '|' + x;
+                    }
+                    forEach(overrides, (override) => {
+                        if (override.value === x) {
+                            this.state.data.local.name.overrides = x;
+                            return false;
+                        }
+                    });
+                    break;
+                case 'local.name.gpu':
+                    let y = e.target.value;
+                    if (!isEmpty(this.state.data.local.name.coin) && this.state.data.local.name.coin !== 'global') {
+                        y = y + '|' + this.state.data.local.name.coin;
+                    }
+                    forEach(overrides, (override) => {
+                        if (override.value === y) {
+                            this.state.data.local.name.overrides = y;
+                            return false;
+                        }
+                    });
+
+                    break;
+                case 'local.name.overrides':
+                    let n = e.target.value.split('|');
+
+                    if (n[0]) {
+                        if (!isNaN(parseFloat(n[0])) && isFinite(n[0])) {
+                            this.state.data.local.name.gpu = n[0];
+                            this.state.data.local.name.coin = 'global';
+                        }
+                        else {
+                            this.state.data.local.name.gpu = 'global';
+                            this.state.data.local.name.coin = n[0]
+                        }
+                    }
+
+                    if (n[1]) {
+                        this.state.data.local.name.coin = n[1];
+                    }
+
+                    break;
+            }
+        }
+
+        this.formApi.setValues(this.state.data);
+
+    };
 	
 	render() {
 
         const { data, fansName, tuneName } = this.state;
+        const overrides = this.generateOverrideSelector();
 
         return (
             <div className="inner-content">
@@ -149,6 +238,7 @@ export default class PanelTuner extends ConfigPanel {
                                             <GpuSelector key="local.name.gpu"
                                                          field="local.name.gpu"
                                                          hasGlobal={ true }
+                                                         onChange={ this.handleOverrideChange }
                                                          initialValue={ get(data, 'local.name.gpu') }/>
                                         </div>
                                         <div className="items">
@@ -156,8 +246,25 @@ export default class PanelTuner extends ConfigPanel {
                                             <CoinSelector key="local.name.coin"
                                                           field="local.name.coin"
                                                           hasGlobal={ true }
+                                                          onChange={ this.handleOverrideChange }
                                                           initialValue={ get(data, 'local.name.coin') }/>
                                         </div>
+                                        { !isEmpty(overrides)
+                                            && <div className="items">
+                                                <label className="form-label">Stored Overrides</label>
+                                                <Select id="tuner_overides"
+                                                        field="local.name.overrides"
+                                                        onChange={ this.handleOverrideChange }
+                                                        initialValue={ get(data, 'local.name.overrides') }>
+                                                    <Option value="global">Select Override</Option>
+
+                                                    { overrides.map((override, key) => {
+                                                        return (<Option key={ 'gpu-override-' + key } value={ override.value }>{ override.text }</Option>);
+                                                    }) }
+
+                                                </Select>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                                 { !isEmpty(fansName) && <FanSettings name={ fansName } data={ data } formApi={ this.formApi } curve={ get(data, fansName + '.curve_enable', false) } checkbox={ true } /> }

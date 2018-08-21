@@ -362,14 +362,23 @@ body {
     }
 
     &.gpu {
+      .rt-td {
+        font-size: 10px;
+      }
+
       .rt-td,
       .rt-th {
-        width: 16% !important;
+        width: 12.8% !important;
       }
 
       .rt-th:nth-child(1),
       .rt-td:nth-child(1) {
-        width: 20%;
+        width: 20% !important;
+      }
+
+      .rt-th:last-child,
+      .rt-td:last-child {
+        width: 16% !important;
       }
     }
 

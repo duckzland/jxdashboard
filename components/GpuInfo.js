@@ -52,6 +52,14 @@ export default class GpuInfo extends React.Component {
                 suffix = '%';
             }
 
+            if (key.indexOf('gpu:core:') !== -1) {
+                x = key.replace('gpu:core:', '').split(':');
+                label = x[0];
+                index = x[1];
+                y = 'core';
+                suffix = '%';
+            }
+
             if (key.indexOf('gpu:watt:') !== -1) {
                 x = key.replace('gpu:watt:', '').split(':');
                 label = x[0];
@@ -105,10 +113,11 @@ export default class GpuInfo extends React.Component {
         const tableProps = {
             columns: [
                 {Header: 'GPU', accessor: 'label'},
-                {Header: 'Fan', accessor: 'fan'},
-                {Header: 'Power', accessor: 'power'},
-                {Header: 'Memory', accessor: 'memory'},
                 {Header: 'Temp', accessor: 'temperature'},
+                {Header: 'Fan', accessor: 'fan'},
+                {Header: 'Core', accessor: 'memory'},
+                {Header: 'Mem', accessor: 'memory'},
+                {Header: 'Pwr', accessor: 'power'},
                 {Header: 'Watt', accessor: 'watt'}
             ],
             data: data,
