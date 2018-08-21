@@ -52,7 +52,7 @@ export default class FanSettings extends Component {
         const { convertCurve, setCurve } = this;
         const { name, curve, checkbox, data } = this.state;
         const curve_enable  = get(data, name + '.curve_enable', false);
-        const curve_value   = get(data, name + '.curve', '');
+        const curve_value   = get(data, name + '.curve', '0|0, 10|10, 30|30, 50|50, 60|60, 80|80, 100|100');
         const enable        = get(data, name + '.enable', false);
         const target        = get(data, name + '.target', '');
         const min           = get(data, name + '.min', '');

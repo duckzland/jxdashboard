@@ -55,7 +55,6 @@ export default class Config {
         const network = new Network(this.host, this.port, 'config:save:json', onComplete, onComplete);
         merge(payload, omit(Config.storage, this.blacklist));
         onLoad && onLoad();
-        console.log(payload);
         network.send(JSON.stringify(payload));
     }
 

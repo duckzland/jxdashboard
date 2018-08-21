@@ -79,13 +79,15 @@ export default class Network {
             this.socket.connect(this.port, this.host, () => {
                 this.socket.write(this.packer.pack(String(this.action.length)) + this.action);
                 if (payload) {
-                    const chunked = payload.match(/[\s\S]{1,10000}/g);
+                    const chunked = payload.match(/[\s\S]{1,1024}/g);
+                    let payloadLength = payload.length;
+                    let packerText = this.packer.pack(String(payloadLength));
 
                     for (let i=0; i < chunked.length; i++) {
                         let payloadText = chunked[i];
                         if (i == 0) {
                             // Packer has bug for certain length integer!
-                            payloadText = this.packer.pack(String(payload.length)) + chunked[i];
+                            payloadText = packerText + chunked[i];
                         }
 
                         setTimeout(() => {

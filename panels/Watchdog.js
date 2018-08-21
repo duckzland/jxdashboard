@@ -18,7 +18,6 @@ export default class PanelWatchdog extends ConfigPanel {
         config.blacklist.push('config.slack');
         config.blacklist.push('pools');
         config.save(this.savingStart, this.savingComplete);
-        config.reload();
     };
 
     render() {

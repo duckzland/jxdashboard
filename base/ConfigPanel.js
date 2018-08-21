@@ -33,7 +33,9 @@ export default class ConfigPanel extends React.Component {
     };
 
     savingComplete = () => {
+        const config = new Config();
         this.isSaving = false;
         this.forceUpdate();
+        config.reload();
     }
 }

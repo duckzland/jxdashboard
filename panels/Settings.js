@@ -23,7 +23,6 @@ export default class PanelSettings extends ConfigPanel {
         config.blacklist.push('config.systemd');
         config.blacklist.push('pools');
         config.save(this.savingStart, this.savingComplete);
-        config.reload();
     };
 
 	render() {

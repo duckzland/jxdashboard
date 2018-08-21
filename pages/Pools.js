@@ -148,7 +148,6 @@ export default class PagePools extends ConfigPanel {
         const config = new Config();
         config.blacklist.push('config');
         config.save(this.savingStart, this.savingComplete);
-        config.reload();
     };
 
     isActive = () => {
