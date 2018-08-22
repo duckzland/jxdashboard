@@ -1,6 +1,7 @@
+build
 build/bin
 tmp
 node_modules
 dist
 npm-debug.log
-
+.idea
