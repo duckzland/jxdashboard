@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: './index.js',
+    entry: './app/index.js',
     output: {
         path: path.resolve(__dirname, ''),
         filename: 'dist/build.js'},
@@ -30,7 +30,8 @@ module.exports = {
                 test: /.js?$/,
                 loader: 'babel-loader',
                 exclude: [
-                    path.resolve(__dirname, 'dist'),
+					path.resolve(__dirname, 'scripts'),
+				    path.resolve(__dirname, 'docs'),
                     path.resolve(__dirname, 'build'),
                     path.resolve(__dirname, 'node_modules')
                 ],
@@ -49,8 +50,9 @@ module.exports = {
     },
     watchOptions: {
         ignored: [
+		    path.resolve(__dirname, 'scripts'),
             path.resolve(__dirname, 'build'),
-            path.resolve(__dirname, 'docs/assets'),
+            path.resolve(__dirname, 'docs'),
             path.resolve(__dirname, 'node_modules')
         ]
     },

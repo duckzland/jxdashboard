@@ -102,15 +102,17 @@ export default class PageCoins extends ConfigPanel {
 
     isActive = (coin) => {
         let active = false;
-        if (Config.storage.config.machine.cpu_miner.coin === coin) {
-            active = true;
-        }
-        if (!active && Config.storage.config.machine.gpu_miner.coin === coin) {
-            active = true;
-        }
-        if (!active && Config.storage.config.machine.gpu_miner.second_coin === coin) {
-            active = true;
-        }
+        if (Config.storage.config) {
+			if (Config.storage.config.machine.cpu_miner.coin === coin) {
+				active = true;
+			}
+			if (!active && Config.storage.config.machine.gpu_miner.coin === coin) {
+				active = true;
+			}
+			if (!active && Config.storage.config.machine.gpu_miner.second_coin === coin) {
+				active = true;
+			}
+		}
         return active;
     };
 
