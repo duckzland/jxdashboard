@@ -5,8 +5,7 @@ export JX_DEV="production"
 
 echo "[+] Repacking Javascript"
 echo ""
-webpack
-
+webpack -p
 echo ""
 echo "[+] Cleaning old binaries"
 echo ""

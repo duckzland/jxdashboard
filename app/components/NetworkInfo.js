@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { get, isEqual } from 'lodash';
-import prettyBytes from 'pretty-bytes';
+import prettyBytes from 'pretty-byte';
 
 export default class NetworkInfo extends React.Component {
     state = {};

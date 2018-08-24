@@ -2,6 +2,6 @@
 
 export JX_DEV="production"
 
-webpack && ./node_modules/.bin/electron .
+webpack -p && ./node_modules/.bin/electron .
 
 

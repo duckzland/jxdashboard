@@ -62,12 +62,14 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
-
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.AggressiveMergingPlugin(),
         new ExtractTextPlugin({
             filename: 'dist/style.css',
             allChunks: true
         })
     ],
-    devtool: 'cheap-module-source-map'
+    devtool: 'source-map'
 };
 
