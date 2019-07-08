@@ -62,6 +62,7 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
+        new webpack.optimize.ModuleConcatenationPlugin(),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.AggressiveMergingPlugin(),

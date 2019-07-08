@@ -1,10 +1,19 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron');
 
+process.env.JX_ENV = 'development';
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let development = process.env.JX_ENV === 'development';
+
+if (development) {
+    require('electron-reload')(__dirname, {
+        // Note that the path to electron may vary according to the main file
+        electron: require(`${__dirname}/node_modules/electron`)
+    });
+}
 
 function createWindow() {
 

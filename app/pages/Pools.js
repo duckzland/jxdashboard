@@ -251,6 +251,7 @@ export default class PagePools extends ConfigPanel {
         const format        = get(data, 'pools.' + activePool + '.format',    { name: '', wallet: '', address: ''});
         const { name, wallet, address } = format;
 
+        console.log(format);
         return (
             <div className="panels">
                 <ScrollArea { ...sidebarProps }>

@@ -38,9 +38,11 @@ export default class CoinSelector extends Component {
         if ('onlyHasCpu' in props) {
             this.state.onlyHasCpu = props.onlyHasCpu;
         }
+
         if ('onlyHasNvidia' in props) {
             this.state.onlyHasNvidia = props.onlyHasNvidia;
         }
+
         if ('onlyHasAmd' in props) {
             this.state.onlyHasAmd = props.onlyHasAmd;
         }

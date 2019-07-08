@@ -92,6 +92,18 @@ export default class PanelWatchdog extends ConfigPanel {
                             </div>
                         </div>
                     </div>
+                    <div className="form-group">
+                        <div className="pretty p-default">
+                            <Checkbox id="hard_reboot"
+                                      field="config.machine.settings.hard_reboot"
+                                      initialValue={ get(data, 'config.machine.settings.hard_reboot') }/>
+                            <div className="state p-success-o">
+                                <label className="form-checkbox">
+                                    Use hard reboot by calling Linux magic command
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
                     { /* Watchdog */ }
                     <h1 className="form-title">Miner Watchdog</h1>
@@ -121,6 +133,22 @@ export default class PanelWatchdog extends ConfigPanel {
                             <div className="form-group">
                                 <label className="form-label">Maximum soft restarting retries</label>
                                 <Text id="watchdog_retry"
+                                      field="config.watchdog.settings.maximum_retry"
+                                      type="number"
+                                      min="0"
+                                      initialValue={ get(data, 'config.watchdog.settings.maximum_retry') }/>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label">Delay in seconds before rebooting</label>
+                                <Text id="reboot_delay"
+                                      field="config.watchdog.settings.reboot_delay"
+                                      type="number"
+                                      min="0"
+                                      initialValue={ get(data, 'config.watchdog.settings.reboot_delay') }/>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label">Maximum retry for soft reboot before going to full reboot</label>
+                                <Text id="maximum_retry"
                                       field="config.watchdog.settings.maximum_retry"
                                       type="number"
                                       min="0"

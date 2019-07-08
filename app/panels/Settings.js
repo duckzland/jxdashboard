@@ -134,7 +134,18 @@ export default class PanelSettings extends ConfigPanel {
                                     </div>
                                 </div>
                             }
-
+                            <div className="form-group">
+                                <div className="pretty p-default">
+                                    <Checkbox id="gpu_miner_enable"
+                                              field="config.machine.settings.gpu_strict_poser_mode"
+                                              initialValue={ get(data, 'config.machine.settings.gpu_strict_power_mode') }/>
+                                    <div className="state p-success-o">
+                                        <label className="form-checkbox">
+                                            Use strict power mode for reporting GPU power usage
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     }
 
