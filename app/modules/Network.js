@@ -68,7 +68,7 @@ export default class Network {
     };
 
     send = (payload = false) => {
-
+        console.log(payload);
         if (!this.socket) {
             this.socket = new window.nodeNetObject.Socket({
                 writable: true,
