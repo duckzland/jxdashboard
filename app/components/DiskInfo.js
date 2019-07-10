@@ -44,15 +44,18 @@ export default class DiskInfo extends React.Component {
 
     render() {
         const { total, available, used } = this.state;
+        const visible = total || available || used;
         return (
-            <div className="inner-content disk">
-                <h3 className="title">Disk</h3>
-                <div className="disk-info">
-                    { total     && <div className="total"><span className="label">Total</span> { total }</div>             }
-                    { available && <div className="available"><span className="label">Available</span> { available }</div> }
-                    { used      && <div className="used"><span className="label">Used</span> { used }</div>                }
+            visible
+                ? <div className="inner-content disk">
+                    <h3 className="title">Disk</h3>
+                    <div className="disk-info">
+                        { total     && <div className="total"><span className="label">Total</span> { total }</div>             }
+                        { available && <div className="available"><span className="label">Available</span> { available }</div> }
+                        { used      && <div className="used"><span className="label">Used</span> { used }</div>                }
+                    </div>
                 </div>
-            </div>
+                : null
         )
     }
 

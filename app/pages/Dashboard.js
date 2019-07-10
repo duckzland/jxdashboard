@@ -12,10 +12,11 @@ import DiskInfo     from '../components/DiskInfo';
 import FanInfo      from '../components/FanInfo';
 import CpuInfo      from '../components/CpuInfo';
 import GpuInfo      from '../components/GpuInfo';
+import Config       from '../modules/Config';
 
 export default class PageDashboard extends React.Component {
 
-    state   = { payload: '', connected: false };
+    state   = { payload: '', connected: false, data: Config.storage };
     port    = window.jxdashboard.port;
     host    = window.jxdashboard.host;
     monitor = false;
@@ -71,12 +72,30 @@ export default class PageDashboard extends React.Component {
         });
     };
 
+    extractHashRate = () => {
+        const { payload, data } = this.state;
+        return get(data, 'config.machine.gpu_miner.enable', false)
+            ? get(payload, 'miner:hashrate:gpu:0', false)
+            : get(data, 'config.machine.cpu_miner.enable', false) ? get(payload, 'miner:hashrate:cpu', false) : false;
+    };
+
+    extractPowerRate = () => {
+        const { payload, data } = this.state;
+        return get(payload, 'gpu:total_watt', false);
+    };
+
+    extractTempRate = () => {
+        const { payload, data } = this.state;
+        return get(payload, 'temperature:highest',  false);
+    };
+
     render() {
-        const { connection }         = this;
-        const { payload, connected } = this.state;
-        const hashRate               = get(payload, 'miner:hashrate:gpu:0', '');
-        const tempRate               = get(payload, 'temperature:highest',  '');
-        const powerRate              = get(payload, 'gpu:total_watt',       '');
+        const { connection, extractHashRate, extractPowerRate, extractTempRate } = this;
+
+        const { connected } = this.state;
+        const hashRate      = extractHashRate();
+        const tempRate      = extractTempRate();
+        const powerRate     = extractPowerRate();
 
         const sidebarProps = {
             key: 'sidebar-element',
@@ -123,9 +142,9 @@ export default class PageDashboard extends React.Component {
                         <InfoBar { ...this.state } />
                     </div>
                     <div className="inner-content graph">
-                        <Graph title="Hash Rate"   labelX="" labelY="" payload={ String(hashRate ).replace(/[^0-9.]/g, "") } connected={ connected }/>
-                        <Graph title="Temperature" labelX="" labelY="" payload={ String(tempRate ).replace(/[^0-9.]/g, "") } connected={ connected }/>
-                        <Graph title="Power Usage" labelX="" labelY="" payload={ String(powerRate).replace(/[^0-9.]/g, "") } connected={ connected }/>
+                        { hashRate  !== false && <Graph title="Hash Rate"   labelX="" labelY="" payload={ String(hashRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
+                        { tempRate  !== false && <Graph title="Temperature" labelX="" labelY="" payload={ String(tempRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
+                        { powerRate !== false && <Graph title="Power Usage" labelX="" labelY="" payload={ String(powerRate).replace(/[^0-9.]/g, "") } connected={ connected }/> }
                     </div>
                     <div className="inner-content tabs">
                         <TabLogs { ...this.state }/>

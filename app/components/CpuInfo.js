@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { isEmpty, isEqual, forEach } from 'lodash';
-import ReactTable from 'react-table';
+import React, { Component }               from 'react';
+import { isEmpty, isEqual, forEach, get } from 'lodash';
+import ReactTable                         from 'react-table';
 
 export default class CpuInfo extends React.Component {
     state = {
-        data: {}
+        data: {},
+        headers: {},
     };
 
     locked = false;
@@ -20,7 +21,6 @@ export default class CpuInfo extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const nextPayload = this.processPayload(nextProps.payload);
-
         if (!isEqual(nextPayload, this.state.data)) {
             this.locked = false;
             this.setState({ data: nextPayload });
@@ -37,6 +37,7 @@ export default class CpuInfo extends React.Component {
 
     processPayload(payload) {
         let data = [];
+        this.state.headers = {};
         forEach(payload, (value, key) => {
             let index = false,
                 label = false,
@@ -46,12 +47,14 @@ export default class CpuInfo extends React.Component {
                 index = key.replace('cpu:temp:label:', '');
                 label = 'label';
                 suffix = '';
+                this.state.headers['label'] = true;
             }
 
             if (key.indexOf('cpu:temp:current') !== -1) {
                 index = key.replace('cpu:temp:current:', '');
                 label = 'temp';
                 suffix = ' C';
+                this.state.headers['temp'] = true;
             }
 
             if (key.indexOf('cpu:freq:current') !== -1) {
@@ -59,12 +62,14 @@ export default class CpuInfo extends React.Component {
                 label = 'freq';
                 suffix = ' GHz';
                 value = (parseInt(value) / 1000).toFixed(2);
+                this.state.headers['freq'] = true;
             }
 
             if (key.indexOf('cpu:usage') !== -1) {
                 index = key.replace('cpu:usage:', '');
                 label = 'usage';
                 suffix = ' %';
+                this.state.headers['usage'] = true;
             }
 
             if (index && !data[index]) {
@@ -80,14 +85,16 @@ export default class CpuInfo extends React.Component {
     }
 
     render() {
-        const { data } = this.state;
+        const { data, headers } = this.state;
+        const columns = [];
+
+        get(headers, 'label', false) && columns.push({Header: 'CPU',   accessor: 'label'});
+        get(headers, 'freq',  false) && columns.push({Header: 'Speed', accessor: 'freq' });
+        get(headers, 'usage', false) && columns.push({Header: 'Load',  accessor: 'usage'});
+        get(headers, 'temp',  false) && columns.push({Header: 'Temp',  accessor: 'temp' });
+
         const tableProps = {
-            columns: [
-                {Header: 'CPU', accessor: 'label'},
-                {Header: 'Speed', accessor: 'freq'},
-                {Header: 'Load', accessor: 'usage'},
-                {Header: 'Temp', accessor: 'temp'}
-            ],
+            columns: columns,
             data: data,
             minRows: 0,
             loading: false,
@@ -102,12 +109,13 @@ export default class CpuInfo extends React.Component {
             loadingText: ''
         };
 
-
         return (
-            <div className="inner-content cpu">
-                { !isEmpty(data) && <h3 className="title">CPU Information</h3> }
-                { !isEmpty(data) && <ReactTable { ...tableProps }/> }
-            </div>
+            !isEmpty(data)
+                ? <div className="inner-content cpu">
+                    <h3 className="title">CPU Information</h3>
+                    <ReactTable { ...tableProps }/>
+                </div>
+                : null
         )
     }
 

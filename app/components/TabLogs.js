@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { get, isEqual } from 'lodash';
-import Logs from './Logs';
+import { get, isEqual }     from 'lodash';
+import Logs                 from './Logs';
+import Config               from '../modules/Config';
 
 export default class TabLogs extends React.Component {
     state = {
         activeTab: 'gpu',
+        data: Config.storage,
         payload: {}
     };
 
@@ -13,6 +15,13 @@ export default class TabLogs extends React.Component {
     constructor(props) {
         super(props);
         this.state.payload = 'payload' in props ? props.payload : {};
+
+        if (!get(this.state.data, 'config.machine.gpu_miner.enable', false)) {
+            this.state.activeTab = 'cpu';
+            if (!get(this.state.data, 'config.machine.cpu_miner.enable', false)) {
+                this.state.activeTab = 'server';
+            }
+        }
     }
 
     shouldComponentUpdate() {
@@ -23,6 +32,7 @@ export default class TabLogs extends React.Component {
 
         const oldPayload = this.state.payload;
         const newPayload = nextProps.payload;
+        const oldActive  = this.state.activeTab;
 
         let key = false;
         switch (this.state.activeTab) {
@@ -68,26 +78,18 @@ export default class TabLogs extends React.Component {
         const gpuMiner  = get(this.state.payload, 'miner:logs:gpu:0', false);
         const serverLog = get(this.state.payload, 'serverlog', false);
 
-        const hasPayload = !(!cpuMiner && !gpuMiner && !serverLog);
-
         return (
-
             <div className="tabbed-content">
-                { hasPayload
-                    && <div className={ 'tab-headers tab-active-' + this.state.activeTab }>
+                <div className={ 'tab-headers tab-active-' + this.state.activeTab }>
+                    { serverLog && <div className="tab server" onClick={ () => changeTab('server') }>Server Logs</div> }
                     { gpuMiner  && <div className="tab gpu" onClick={ () => changeTab('gpu')    }>GPU Miner</div> }
                     { cpuMiner  && <div className="tab cpu" onClick={ () => changeTab('cpu')    }>CPU Miner</div> }
-                    { serverLog && <div className="tab server" onClick={ () => changeTab('server') }>Server Logs</div> }
-                    </div>
-
-                }
-                { hasPayload
-                    && <div className="tab-content">
-                        { gpuMiner  && isActive('gpu') && <div className="content active"><Logs logs={ gpuMiner } /></div> }
-                        { cpuMiner  && isActive('cpu') && <div className="content active"><Logs logs={ cpuMiner } /></div> }
-                        { serverLog && isActive('server') && <div className="content active"><Logs logs={ serverLog.split("\n") } /></div> }
-                    </div>
-                }
+                </div>
+                <div className="tab-content">
+                    { serverLog && isActive('server') && <div className="content active"><Logs logs={ serverLog.split("\n") } /></div> }
+                    { gpuMiner  && isActive('gpu')    && <div className="content active"><Logs logs={ gpuMiner } /></div> }
+                    { cpuMiner  && isActive('cpu')    && <div className="content active"><Logs logs={ cpuMiner } /></div> }
+                </div>
             </div>
         )
     }

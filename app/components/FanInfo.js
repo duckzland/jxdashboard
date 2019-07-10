@@ -51,18 +51,18 @@ export default class FanInfo extends React.Component {
     render() {
         const { data } = this.state;
         return (
-            <div className="inner-content fans">
-                { !isEmpty(data) && <h3 className="title">Fans</h3> }
-                { !isEmpty(data)
-                    && <div className="fan-info">
-                        { data.map((fan) => {
-                            return (
-                                <div key={ 'fan-element-' + fan.label } className="coin"><span className="label">{ fan.label }</span> { fan.speed }</div>
-                            )
-                        }) }
-                      </div>
-                }
+        !isEmpty(data)
+            ? <div className="inner-content fans">
+                <h3 className="title">Fans</h3>
+                <div className="fan-info">
+                    { data.map((fan) => {
+                        return (
+                            <div key={ 'fan-element-' + fan.label } className="coin"><span className="label">{ fan.label }</span> { fan.speed }</div>
+                        )
+                    }) }
+                </div>
             </div>
+            : null
         )
     }
 

@@ -43,14 +43,17 @@ export default class NetworkInfo extends React.Component {
 
     render() {
         const { sent, receive } = this.state;
+        const visible = sent || receive;
         return (
-            <div className="inner-content network">
-                <h3 className="title">Network</h3>
-                <div className="network-info">
-                    { sent    && <div className="sent"><span className="label">Sent</span> { sent }</div>           }
-                    { receive && <div className="receive"><span className="label">Received</span> { receive }</div> }
+            visible
+                ? <div className="inner-content network">
+                    <h3 className="title">Network</h3>
+                    <div className="network-info">
+                        { sent    && <div className="sent"><span className="label">Sent</span> { sent }</div>           }
+                        { receive && <div className="receive"><span className="label">Received</span> { receive }</div> }
+                    </div>
                 </div>
-            </div>
+                : null
         )
     }
 

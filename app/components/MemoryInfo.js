@@ -44,15 +44,18 @@ export default class MemoryInfo extends React.Component {
 
     render() {
         const { total, available, used, buffered, cached } = this.state;
+        const visible = total || available || used || buffered || cached;
         return (
-            <div className="inner-content memory">
-                <h3 className="title">Memory</h3>
-                <div className="memory-info">
-                    { total     && <div className="total"><span className="label">Total</span> { total }</div>             }
-                    { available && <div className="available"><span className="label">Available</span> { available }</div> }
-                    { used      && <div className="used"><span className="label">Used</span> { used }</div>                }
+            visible
+                ? <div className="inner-content memory">
+                    <h3 className="title">Memory</h3>
+                    <div className="memory-info">
+                        { total     && <div className="total"><span className="label">Total</span> { total }</div>             }
+                        { available && <div className="available"><span className="label">Available</span> { available }</div> }
+                        { used      && <div className="used"><span className="label">Used</span> { used }</div>                }
+                    </div>
                 </div>
-            </div>
+                : null
         )
     }
 

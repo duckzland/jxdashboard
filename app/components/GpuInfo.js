@@ -135,10 +135,12 @@ export default class GpuInfo extends React.Component {
         };
 
         return (
-            <div className="inner-content gpu">
-                { !isEmpty(data) && <h3 className="title">GPU Information</h3> }
-                { !isEmpty(data) && <ReactTable { ...tableProps }/> }
-            </div>
+            !isEmpty(data)
+                ? <div className="inner-content gpu">
+                    <h3 className="title">GPU Information</h3>
+                    <ReactTable { ...tableProps }/>
+                </div>
+                : null
         )
     }
 
