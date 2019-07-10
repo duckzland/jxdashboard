@@ -35,24 +35,29 @@ export default class DiskInfo extends React.Component {
     }
 
     processPayload = (payload) => {
+
+        const total     = get(payload, 'disk:usage:total', false);
+        const available = get(payload, 'disk:usage:free', false);
+        const used      = get(payload, 'disk:usage:used', false);
+
         return {
-            total:     prettyBytes(get(payload, 'disk:usage:total', 0)),
-            available: prettyBytes(get(payload, 'disk:usage:free', 0)),
-            used:      prettyBytes(get(payload, 'disk:usage:used', 0))
+            total:     total     !== false ? prettyBytes(total)     : false,
+            available: available !== false ? prettyBytes(available) : false,
+            used:      used      !== false ? prettyBytes(used)      : false
         }
     };
 
     render() {
         const { total, available, used } = this.state;
-        const visible = total || available || used;
+        const visible = total !== false || available !== false || used !== false;
         return (
             visible
                 ? <div className="inner-content disk">
                     <h3 className="title">Disk</h3>
                     <div className="disk-info">
-                        { total     && <div className="total"><span className="label">Total</span> { total }</div>             }
-                        { available && <div className="available"><span className="label">Available</span> { available }</div> }
-                        { used      && <div className="used"><span className="label">Used</span> { used }</div>                }
+                        { total     !== false && <div className="total"><span className="label">Total</span> { total }</div>             }
+                        { available !== false && <div className="available"><span className="label">Available</span> { available }</div> }
+                        { used      !== false && <div className="used"><span className="label">Used</span> { used }</div>                }
                     </div>
                 </div>
                 : null

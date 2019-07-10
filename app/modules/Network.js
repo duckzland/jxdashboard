@@ -1,5 +1,7 @@
 import Packer from 'pypacker';
 
+var networkTimer = null;
+
 export default class Network {
 
     packer  = false;
@@ -15,14 +17,17 @@ export default class Network {
 
     onData  = function() {};
     onClose = function() {};
+    onError = function() {};
 
-    constructor(host, port, action, onData = false, onClose = false) {
+    constructor(host, port, action, onData = false, onClose = false, onError = false, Live = false) {
         this.host    = String(host);
         this.port    = parseInt(port);
         this.action  = action;
         this.packer  = new Packer('>I');
         this.onData  = onData  ? onData  : this.onData;
         this.onClose = onClose ? onClose : this.onClose;
+        this.onError = onError ? onError : this.onError;
+        this.live    = Live;
     }
 
     receive(message) {
@@ -75,6 +80,8 @@ export default class Network {
                 allowHalfOpen: true
             });
 
+            this.socket.setTimeout(10000);
+
             this.socket.connect(this.port, this.host, () => {
                 this.socket.write(this.packer.pack(String(this.action.length)) + this.action);
                 if (payload) {
@@ -102,19 +109,26 @@ export default class Network {
                 }
             });
 
+            this.socket.on('timeout', this.promiseClose);
+
+            this.socket.on('end', this.promiseClose);
+
             this.socket.on('data', (data) => {
                 this.receive(data);
                 this.onData(this, this.buffers);
+                clearTimeout(networkTimer);
             });
 
             this.socket.on('close', () => {
+                clearTimeout(networkTimer);
                 this.close();
                 this.onClose(this, this.buffers);
             });
 
             this.socket.on("error", (err) => {
+                clearTimeout(networkTimer);
                 this.close();
-                this.onClose(this, err, this.buffers);
+                this.onError(this, err, this.buffers);
             });
         }
     };
@@ -122,4 +136,11 @@ export default class Network {
     isConnected = () => {
         return this.socket ? this.socket.readable : false;
     };
+
+    promiseClose = () => {
+        networkTimer = setTimeout(() => {
+            this.close();
+            this.onClose(this, this.buffers);
+        }, 1000);
+    }
 }

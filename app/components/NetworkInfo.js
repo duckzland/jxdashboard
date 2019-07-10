@@ -35,22 +35,26 @@ export default class NetworkInfo extends React.Component {
     }
 
     processPayload = (payload) => {
+
+        const sent    = get(payload, 'network:status:bytes_sent', false);
+        const receive = get(payload, 'network:status:bytes_recv', false);
+
         return {
-            sent: prettyBytes(get(payload, 'network:status:bytes_sent', 0)),
-            receive: prettyBytes(get(payload, 'network:status:bytes_recv', 0))
+            sent:    sent     !== false ? prettyBytes(sent)    : false,
+            receive: receive  !== false ? prettyBytes(receive) : false
         }
     };
 
     render() {
         const { sent, receive } = this.state;
-        const visible = sent || receive;
+        const visible = sent !== false || receive !== false;
         return (
             visible
                 ? <div className="inner-content network">
                     <h3 className="title">Network</h3>
                     <div className="network-info">
-                        { sent    && <div className="sent"><span className="label">Sent</span> { sent }</div>           }
-                        { receive && <div className="receive"><span className="label">Received</span> { receive }</div> }
+                        { sent    !== false && <div className="sent"><span className="label">Sent</span> { sent }</div>           }
+                        { receive !== false && <div className="receive"><span className="label">Received</span> { receive }</div> }
                     </div>
                 </div>
                 : null

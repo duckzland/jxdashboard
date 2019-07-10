@@ -20,11 +20,13 @@ export default class PageDashboard extends React.Component {
     port    = window.jxdashboard.port;
     host    = window.jxdashboard.host;
     monitor = false;
+    root    = false;
 
     constructor(props) {
         super(props);
-        this.monitor = new Network(this.host, this.port, 'monitor:server', this.update, this.disconnected);
+        this.monitor = new Network(this.host, this.port, 'monitor:server', this.update, this.disconnected, this.disconnected);
         this.monitor.send();
+        this.root = props.root;
     }
 
     componentWillUnmount() {

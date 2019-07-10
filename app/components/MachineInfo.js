@@ -51,25 +51,29 @@ export default class MachineInfo extends React.Component {
 
     render() {
         const { title, gpuPool, gpuCoin, gpuHashrate, gpuShares, gpuDiff, cpuPool, cpuCoin, cpuHashrate, cpuShares, cpuDiff } = this.state;
-        return (
-            <div className="inner-content machine">
-                { title && <h1 className="title">{ title } </h1> }
-                { gpuCoin && <div className="miners gpu">
-                    { (gpuCoin !== false)     && <div className="coin"><span className="label">Coin</span> { gpuCoin }</div>             }
-                    { (gpuPool !== false)     && <div className="pool"><span className="label">Pool</span> { gpuPool }</div>             }
-                    { (gpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span> { gpuHashrate }</div> }
-                    { (gpuShares !== false)   && <div className="shares"><span className="label">Shares</span> { gpuShares }</div>       }
-                    { (gpuDiff !== false)     && <div className="diff"><span className="label">Diff</span> { gpuDiff }</div>     }
-                </div> }
+        const visible = title !== false || gpuCoin !== false || cpuCoin !== false;
 
-                { cpuCoin && <div className="miners cpu">
-                    { (cpuCoin !== false)     && <div className="coin"><span className="label">Coin</span> { cpuCoin }</div>             }
-                    { (cpuPool !== false)     && <div className="pool"><span className="label">Pool</span> { cpuPool }</div>             }
-                    { (cpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span> { cpuHashrate }</div> }
-                    { (cpuShares !== false)   && <div className="shares"><span className="label">Shares</span> { cpuShares }</div>       }
-                    { (cpuDiff !== false)     && <div className="diff"><span className="label">Diff</span> { cpuDiff }</div>     }
-                </div> }
-            </div>
+        return (
+            visible
+                ? <div className="inner-content machine">
+                    { title !== false && <h1 className="title">{ title } </h1> }
+                    { gpuCoin !== false && <div className="miners gpu">
+                        { (gpuCoin !== false)     && <div className="coin"><span className="label">Coin</span> { gpuCoin }</div>             }
+                        { (gpuPool !== false)     && <div className="pool"><span className="label">Pool</span> { gpuPool }</div>             }
+                        { (gpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span> { gpuHashrate }</div>     }
+                        { (gpuShares !== false)   && <div className="shares"><span className="label">Shares</span> { gpuShares }</div>       }
+                        { (gpuDiff !== false)     && <div className="diff"><span className="label">Diff</span> { gpuDiff }</div>             }
+                    </div> }
+
+                    { cpuCoin !== false && <div className="miners cpu">
+                        { (cpuCoin !== false)     && <div className="coin"><span className="label">Coin</span> { cpuCoin }</div>             }
+                        { (cpuPool !== false)     && <div className="pool"><span className="label">Pool</span> { cpuPool }</div>             }
+                        { (cpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span> { cpuHashrate }</div>     }
+                        { (cpuShares !== false)   && <div className="shares"><span className="label">Shares</span> { cpuShares }</div>       }
+                        { (cpuDiff !== false)     && <div className="diff"><span className="label">Diff</span> { cpuDiff }</div>             }
+                    </div> }
+                </div>
+                : null
         )
     }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { get, isEqual } from 'lodash';
-import prettyBytes from 'pretty-byte';
+import { get, isEqual }     from 'lodash';
+import prettyBytes          from 'pretty-byte';
 
 export default class MemoryInfo extends React.Component {
     state = {};
@@ -35,24 +35,28 @@ export default class MemoryInfo extends React.Component {
     }
 
     processPayload = (payload) => {
+        const total     = get(payload, 'memory:virtual:total', false);
+        const available = get(payload, 'memory:virtual:available', false);
+        const used      = get(payload, 'memory:virtual:used', false);
+
         return {
-            total:     prettyBytes(get(payload, 'memory:virtual:total', 0)),
-            available: prettyBytes(get(payload, 'memory:virtual:available', 0)),
-            used:      prettyBytes(get(payload, 'memory:virtual:used', 0))
+            total:     total     !== false ? prettyBytes(total)     : false,
+            available: available !== false ? prettyBytes(available) : false,
+            used:      used      !== false ? prettyBytes(used)      : false
         }
     };
 
     render() {
         const { total, available, used, buffered, cached } = this.state;
-        const visible = total || available || used || buffered || cached;
+        const visible = total !== false || available !== false || used !== false;
         return (
             visible
                 ? <div className="inner-content memory">
                     <h3 className="title">Memory</h3>
                     <div className="memory-info">
-                        { total     && <div className="total"><span className="label">Total</span> { total }</div>             }
-                        { available && <div className="available"><span className="label">Available</span> { available }</div> }
-                        { used      && <div className="used"><span className="label">Used</span> { used }</div>                }
+                        { total     !== false && <div className="total"><span className="label">Total</span> { total }</div>             }
+                        { available !== false && <div className="available"><span className="label">Available</span> { available }</div> }
+                        { used      !== false && <div className="used"><span className="label">Used</span> { used }</div>                }
                     </div>
                 </div>
                 : null

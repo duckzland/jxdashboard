@@ -1,5 +1,5 @@
 import Network from './Network';
-import { merge, get, isArray, isObject, forEach, omit } from 'lodash';
+import { merge, get, isArray, isObject, forEach, omit, isEmpty } from 'lodash';
 
 /**
  * Class for managing apps wide configuration
@@ -21,7 +21,6 @@ export default class Config {
 
     load(onLoad = false, onComplete = false, onError = false) {
         const network = new Network(this.host, this.port, 'config:load:json',
-
             (network, buffers) => {
                 let payload = false;
                 try {
@@ -37,16 +36,28 @@ export default class Config {
                     onComplete && onComplete();
                 }
             },
-
             () => {
+                onComplete && onComplete();
                 setTimeout(function() {
                     onLoad && onLoad();
                     network.send();
-                }, 1000);
+                }, 5000);
+            },
+            () => {
+                onError && onError();
+                setTimeout(function() {
+                    onLoad && onLoad();
+                    network.send();
+                }, 5000);
             });
 
         onLoad && onLoad();
         network.send();
+    }
+
+
+    isReady() {
+        return !isEmpty(Config.storage);
     }
 
 
@@ -58,6 +69,7 @@ export default class Config {
         network.send(JSON.stringify(payload));
     }
 
+
     reload() {
         const network = new Network(this.host, this.port, 'server:reboot', function() {}, function() {});
         network.send()
@@ -68,4 +80,8 @@ export default class Config {
         merge(Config.storage, omit(config, ['miners']));
     }
 
+
+    reset() {
+        Config.storage = {}
+    }
 }
