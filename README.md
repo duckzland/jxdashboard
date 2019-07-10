@@ -31,6 +31,10 @@ Please consult with your Linux distro on how to install them.
     npm run deb64
 ```
 
+### Developing with webpack watch
+```bash
+    npm run watch
+```
 
 
 ## Authors
