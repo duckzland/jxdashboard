@@ -141,6 +141,6 @@ export default class Network {
         networkTimer = setTimeout(() => {
             this.close();
             this.onClose(this, this.buffers);
-        }, 1000);
+        }, 5000);
     }
 }
