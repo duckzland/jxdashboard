@@ -7,6 +7,8 @@ import { Form }     from 'informed';
 
 import { forEach, get, merge, isEmpty, omit, isEqual, unset } from 'lodash';
 
+var coinsTimer = null;
+
 export default class PageCoins extends ConfigPanel {
     state = {
         data: {}
@@ -14,8 +16,8 @@ export default class PageCoins extends ConfigPanel {
 
     constructor(props) {
         super(props);
-        this.parseProps({ data: omit(Config.storage, 'local') });
 
+        this.parseProps({ data: omit(Config.storage, 'local') });
         this.convertProps();
 
         // Set the initial row
@@ -32,9 +34,7 @@ export default class PageCoins extends ConfigPanel {
 
     convertProps = () => {
         const coins = get(this.state.data, 'config.coins', {});
-
         this.state.data.local = [];
-
         forEach(coins, (coin, ticker) => {
             const algo = get(coin, 'algo', '');
             this.state.data.local.push({
@@ -48,7 +48,6 @@ export default class PageCoins extends ConfigPanel {
 
     convertLocal = () => {
         const coins = this.state.data.local;
-
         if (coins && this.state.data.config) {
             this.state.data.config.coins = {};
             forEach(coins, (coin) => {
@@ -64,11 +63,16 @@ export default class PageCoins extends ConfigPanel {
     };
 
     handleChange = () => {
-        if (!isEqual(this.formApi.getState().values.local, this.state.data.local)) {
-            this.state.data.local = this.formApi.getState().values.local;
-            this.convertLocal();
-            this.setState(this.state.data);
-        }
+        // @bugfix must create "promise" to prevent broken coin list created due to formapi hasn't got enough
+        // time to populate its form value.
+        clearTimeout(coinsTimer);
+        coinsTimer = setTimeout(() => {
+            if (!isEqual(this.formApi.getState().values.local, this.state.data.local)) {
+                this.state.data.local = this.formApi.getState().values.local;
+                this.convertLocal();
+                this.setState(this.state);
+            }
+        }, 300);
     };
 
     handleSave = () => {

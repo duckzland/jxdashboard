@@ -8,7 +8,7 @@ import { merge, get, isArray, isObject, forEach, omit, isEmpty } from 'lodash';
  */
 export default class Config {
 
-    static storage  = {};
+    static storage   = {};
 
     port      = window.jxdashboard.port;
     host      = window.jxdashboard.host;

@@ -16,17 +16,15 @@ import Config       from '../modules/Config';
 
 export default class PageDashboard extends React.Component {
 
-    state   = { payload: '', connected: false, data: Config.storage };
+    state   = { payload: '', connected: false };
     port    = window.jxdashboard.port;
     host    = window.jxdashboard.host;
     monitor = false;
-    root    = false;
 
     constructor(props) {
         super(props);
         this.monitor = new Network(this.host, this.port, 'monitor:server', this.update, this.disconnected, this.disconnected);
         this.monitor.send();
-        this.root = props.root;
     }
 
     componentWillUnmount() {
@@ -75,19 +73,20 @@ export default class PageDashboard extends React.Component {
     };
 
     extractHashRate = () => {
-        const { payload, data } = this.state;
+        const { payload } = this.state;
+        const data = Config.storage;
         return get(data, 'config.machine.gpu_miner.enable', false)
             ? get(payload, 'miner:hashrate:gpu:0', false)
             : get(data, 'config.machine.cpu_miner.enable', false) ? get(payload, 'miner:hashrate:cpu', false) : false;
     };
 
     extractPowerRate = () => {
-        const { payload, data } = this.state;
+        const { payload } = this.state;
         return get(payload, 'gpu:total_watt', false);
     };
 
     extractTempRate = () => {
-        const { payload, data } = this.state;
+        const { payload } = this.state;
         return get(payload, 'temperature:highest',  false);
     };
 

@@ -23,7 +23,7 @@ export default class CoinRow extends Component {
                             <Text type="text" key={ 'local-' + index + '-name' }   field={ 'name'   }/>
                         </div>
                         <div className="items">
-                            { showLabel && <label className="form-label">Wallet</label> }
+                            { showLabel && <label className="form-label">Address</label> }
                             <Text type="text" key={ 'local-' + index + '-wallet' } field={ 'wallet' }/>
                         </div>
                         <div className="items">
