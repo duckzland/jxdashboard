@@ -63,6 +63,7 @@
     "svg-url-loader": "^2.3.1",
     "transform-runtime": "0.0.0",
     "uglifyjs-3-webpack-plugin": "^1.2.4",
+    "url-loader": "^2.1.0",
     "webpack": "^3.12.0"
   },
   "dependencies": {}

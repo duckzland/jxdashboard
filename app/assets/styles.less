@@ -1,15 +1,15 @@
 /**
   Main Variables
   **/
-@InspectorBackground: #051017;
-@InspectorText: #c3ecf5;
+@InspectorBackground: #050608;
+@InspectorText: #ffffff;
 @InspectorElementBackground: #071c2a;
 @InspectorElementText: #d3f7ff;
 @InspectorElementMargin: 15px;
 @contentBackground: #03131d;
 @sidebarBackground: #011d2f;
-@labelColor: #4682b4;
-@headingColor: #0f96af;
+@labelColor: #ffffff;
+@headingColor: #ffffff;
 @menuBackground: #162229;
 @menuActiveBackground: #005565;
 @sectionBorder: #112125;
@@ -17,24 +17,24 @@
 @nvidiaGreen: #3b7701;
 @amdRed: #840313;
 
-@ScrollerBackground: #082739;
-@ScrollerElement: #196597;
+@ScrollerBackground: #050608;
+@ScrollerElement: #ff5a00;
 
-@ControlBarBackground: #196597;
-@ControlBarText: #d3f7ff;
+@ControlBarBackground: #050608;
+@ControlBarText: #ffffff;
 
 @EditorBackground: #081c27;
 @EditorText: #9abdc5;
 @FrameBackground: #0a2835;
 
-@FormElementBackground: #213946;
-@FormElementBorder: #040f15;
-@FormElementText: #d3f7ff;
-@FormElementHeaderText: #13a6d9;
-@FormElementActiveText: #13a6d9;
-@FormElementButtonColor: #13a6d9;
-@FormElementButtonText: #d3f7ff;
-@FormElementPlaceholder: #94b4bc;
+@FormElementBackground: #522c01;
+@FormElementBorder: #3c1902;
+@FormElementText: #cccccc;
+@FormElementHeaderText: #ffffff;
+@FormElementActiveText: #ffffff;
+@FormElementButtonColor: #964519;
+@FormElementButtonText: #ffffff;
+@FormElementPlaceholder: #dddddd;
 
 @TabsBackground: #001027;
 @TabsText: #6d8d95;
@@ -61,9 +61,54 @@
 @ToolTipBackground: #03141d;
 @ToolTipText: #d3f7ff;
 
+
+@dark: #bbbbbb;
+@main: #ff6600;
+@light: #ffffff;
+
+@dark: #964519;
+@main: #fb8b33;
+@light: #ff7900;
+
+@dark: rgb(181, 5, 5);
+@main: #964519;
+@light: #feec67;
+
+@dark: #ff5a00;
+@main: #964519;
+@light: #964519;
+
+@dark: #050608;
+@main: #050608;
+@light: #3a1f00;
+
 /**
   Generic Styling for both vertical and horizontal
   **/
+@font-face {
+  font-family: 'orbitronlight';
+  src: url('orbitron-light-webfont.woff2') format('woff2'),
+  url('orbitron-light-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'orbitronregular';
+  src: url('orbitron-medium-webfont.woff2') format('woff2'),
+  url('orbitron-medium-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Electrolize';
+  src: url('electrolize-regular-webfont.woff2') format('woff2'),
+  url('electrolize-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 /**
   Reset required
@@ -74,6 +119,8 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: "Electrolize", arial, verdana, sans-serif;
+  font-size: 16px;
 }
 
 /**
@@ -93,7 +140,6 @@ body {
   vertical-align: middle;
   box-sizing: border-box;
   font-size: 13px;
-  font-family: Arial, Helvetica, Verdana, sans-serif;
   transition: all linear 0.3s;
   height: 100vh;
   overflow: hidden;
@@ -108,7 +154,6 @@ body {
     vertical-align: middle;
     box-sizing: border-box;
     font-size: 11px;
-    font-family: Arial, Helvetica, Verdana, sans-serif;
   }
 
   #not-connected {
@@ -131,7 +176,6 @@ body {
       .side-panels {
         height: ~"calc(100vh - 30px)";
         overflow: hidden;
-        background: @sidebarBackground;
         min-width: 140px;
 
         &.large {
@@ -150,22 +194,12 @@ body {
           }
         }
         .inner-content {
-          padding: 10px 10px 12px;
-          border: 1px solid #000;
           width: 100%;
           margin: 20px 10px 5px;
-          border-radius: 3px;
-          background: #001027;
 
           .title {
-            font-size: 9px;
+            font-family: orbitronregular, tahoma, serif;
             text-transform: uppercase;
-            font-weight: 400;
-            padding: 3px 10px;
-            border-radius: 3px;
-            margin: -20px -5px 3px;
-            border: 1px solid #000;
-            background: #072c47;
           }
 
           h1.title {
@@ -173,12 +207,6 @@ body {
           }
 
           .label {
-            font-size: 7px;
-            text-transform: uppercase;
-            display: block;
-            margin-top: 5px;
-            letter-spacing: 1px;
-            color: @labelColor;
           }
 
           &.memory,
@@ -228,7 +256,6 @@ body {
         flex-grow: 1;
         height: ~"calc(100vh - 30px)";
         overflow: hidden;
-        background: @contentBackground;
 
         .inner-content {
           padding: 10px 10px;
@@ -280,16 +307,12 @@ body {
             }
 
             .temp {
-              background: @ColorBlue;
             }
             .disk {
-              background: @ColorGreen;
             }
             .memory {
-              background: @ColorPurple;
             }
             .watt {
-              background: @ColorOrange;
             }
           }
 
@@ -407,23 +430,40 @@ body {
     padding: 0;
     display: flex;
     flex-direction: row;
-    background: @menuBackground;
 
     .items {
-      padding: 3px 12px;
+      padding: 4px 0;
       cursor: pointer;
-      font-weight: 500;
       text-transform: uppercase;
-      font-size: 10px;
-      line-height: 25px;
-      max-height: 30px;
+      font-size: 11px;
+      font-family: orbitronlight, "helvetica neue", arial, sans-serif;
+      line-height: 32px;
+      vertical-align: middle;
+      color: #cccccc;
+      text-shadow: 0 0 5px #fb8b33;
+
+      &:after,
+      &:before {
+        content: '[';
+        display: inline-block;
+        color: #964519;
+        padding: 0 4px;
+        font-size: 20px;
+        line-height: 25px;
+        position: relative;
+        top: 4px;
+        text-shadow: none;
+      }
+
+      &:after {
+        content: ']';
+      }
     }
 
     &.menu-active-configuration .configuration,
     &.menu-active-dashboard .dashboard,
     &.menu-active-coins .coins,
     &.menu-active-pools .pools {
-      background: @menuActiveBackground;
     }
   }
 
@@ -442,13 +482,11 @@ body {
       &.tab-active-server .server,
       &.tab-active-cpu .cpu,
       &.tab-active-gpu .gpu {
-        background: @menuActiveBackground;
       }
     }
 
     .tab-content {
       border: 1px solid #000;
-      background: #12161c;
       padding: 10px;
 
       * {
@@ -484,7 +522,6 @@ body {
       }
     }
   }
-
 
   /**
     Form Items
@@ -554,7 +591,7 @@ body {
       border: 1px solid @FormElementBorder;
       height: 20px;
       width: 10px;
-      background: @ColorBlue;
+      background: @InspectorBackground;
       cursor: pointer;
       margin-top: -7px;
     }
@@ -563,7 +600,7 @@ body {
       border: 1px solid @FormElementBorder;
       height: 20px;
       width: 10px;
-      background: @ColorBlue;
+      background: @InspectorBackground;
       cursor: pointer;
       margin-top: -7px;
     }
@@ -572,7 +609,7 @@ body {
       border: 1px solid @FormElementBorder;
       height: 20px;
       width: 10px;
-      background: @ColorBlue;
+      background: @InspectorBackground;
       cursor: pointer;
       margin-top: -7px;
     }
@@ -700,7 +737,7 @@ body {
     border: 1px solid @FormElementBorder;
     width: calc(100% - 10px);
     height: 20px;
-    color: @ColorBlue;
+    color: @InspectorBackground;
     margin: 4px 5px 0;
 
     &::-moz-progress-bar,
@@ -710,7 +747,7 @@ body {
     }
 
     &::-webkit-progress-value {
-      background-image: @ColorBlue;
+      background-image: @InspectorBackground;
     }
   }
 

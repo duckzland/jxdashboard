@@ -6,8 +6,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     entry: './app/index.js',
     output: {
-        path: path.resolve(__dirname, ''),
-        filename: 'dist/build.js'
+        path: __dirname + '/dist',
+        filename: 'build.js'
     },
     module: {
         loaders: [
@@ -20,8 +20,20 @@ module.exports = {
                 loader: ExtractTextPlugin.extract(['css-loader'])
             },
             {
-                test: /\.(png|jpg|woff|woff2|eot|ttf|otf)$/,
+                test: /\.(png|jpg|eot|)$/,
                 loaders: ['file-loader']
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'fonts/'
+                        }
+                    }
+                ]
             },
             {
                 test: /\.(svg)$/,
@@ -68,7 +80,7 @@ module.exports = {
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.AggressiveMergingPlugin(),
         new ExtractTextPlugin({
-            filename: 'dist/style.css',
+            filename: 'style.css',
             allChunks: true
         })
     ],
