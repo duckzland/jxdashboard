@@ -5,6 +5,7 @@ import prettyBytes          from 'pretty-byte';
 export default class MemoryInfo extends React.Component {
     state = {};
     locked = false;
+    svgElement = false;
 
     constructor(props) {
         super(props);
@@ -52,11 +53,21 @@ export default class MemoryInfo extends React.Component {
         return (
             visible
                 ? <div className="inner-content memory">
+                    <svg className="svg-frame"
+                         ref={ref => (this.svgElement = ref)}
+                         viewBox='0 0 100 40'
+                         xmlns='http://www.w3.org/2000/svg'
+                         preserveAspectRatio="none">
+                        <path className="orange-line" d='M0,10 L0,0 L10,0'/>
+                        <path className="orange-line" d='M90,0 L100,0 L100,10'/>
+                        <path className="orange-line" d='M10,40 L0,40 L0,30'/>
+                        <path className="orange-line" d='M100,30 L100,40 L90,40'/>
+                    </svg>
                     <h3 className="title">Memory</h3>
                     <div className="memory-info">
-                        { total     !== false && <div className="total"><span className="label">Total</span> { total }</div>             }
-                        { available !== false && <div className="available"><span className="label">Available</span> { available }</div> }
-                        { used      !== false && <div className="used"><span className="label">Used</span> { used }</div>                }
+                        { total     !== false && <div className="total"><span className="label">Total</span><span className="value">{ total }</span></div>             }
+                        { available !== false && <div className="available"><span className="label">Available</span><span className="value">{ available }</span></div> }
+                        { used      !== false && <div className="used"><span className="label">Used</span><span className="value">{ used }</span></div>                }
                     </div>
                 </div>
                 : null

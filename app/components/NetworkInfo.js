@@ -5,6 +5,7 @@ import prettyBytes from 'pretty-byte';
 export default class NetworkInfo extends React.Component {
     state = {};
     locked = false;
+    svgElement = false;
 
     constructor(props) {
         super(props);
@@ -51,10 +52,20 @@ export default class NetworkInfo extends React.Component {
         return (
             visible
                 ? <div className="inner-content network">
+                    <svg className="svg-frame"
+                         ref={ref => (this.svgElement = ref)}
+                         viewBox='0 0 100 40'
+                         xmlns='http://www.w3.org/2000/svg'
+                         preserveAspectRatio="none">
+                        <path className="orange-line" d='M0,10 L0,0 L10,0'/>
+                        <path className="orange-line" d='M90,0 L100,0 L100,10'/>
+                        <path className="orange-line" d='M10,40 L0,40 L0,30'/>
+                        <path className="orange-line" d='M100,30 L100,40 L90,40'/>
+                    </svg>
                     <h3 className="title">Network</h3>
                     <div className="network-info">
-                        { sent    !== false && <div className="sent"><span className="label">Sent</span> { sent }</div>           }
-                        { receive !== false && <div className="receive"><span className="label">Received</span> { receive }</div> }
+                        { sent    !== false && <div className="sent"><span className="label">Sent</span><span className="value">{ sent }</span></div>           }
+                        { receive !== false && <div className="receive"><span className="label">Received</span><span className="value">{ receive }</span></div> }
                     </div>
                 </div>
                 : null

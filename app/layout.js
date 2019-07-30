@@ -93,6 +93,16 @@ export default class Layout extends React.Component {
                 </div>
                 : <div key="main-layout" id="main-layout">
                     <div id="main-menu" className={ 'menu-active-' + activePage }>
+                        <svg className="svg-frame"
+                             ref={ref => (this.svgElement = ref)}
+                             viewBox='0 0 100 40'
+                             xmlns='http://www.w3.org/2000/svg'
+                             preserveAspectRatio="none">
+                            <path className="orange-line" d='M0,10 L0,0 L10,0'/>
+                            <path className="orange-line" d='M90,0 L100,0 L100,10'/>
+                            <path className="orange-line" d='M10,40 L0,40 L0,30'/>
+                            <path className="orange-line" d='M100,30 L100,40 L90,40'/>
+                        </svg>
                         <div className="items dashboard" onClick={ () => changePage('dashboard') }>
                             Dashboard
                         </div>

@@ -57,7 +57,7 @@ export default class FanInfo extends React.Component {
                 <div className="fan-info">
                     { data.map((fan) => {
                         return (
-                            <div key={ 'fan-element-' + fan.label } className="coin"><span className="label">{ fan.label }</span> { fan.speed }</div>
+                            <div key={ 'fan-element-' + fan.label } className="coin"><span className="label">{ fan.label }</span><span className="value">{ fan.speed }</span></div>
                         )
                     }) }
                 </div>

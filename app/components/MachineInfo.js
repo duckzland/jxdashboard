@@ -4,6 +4,7 @@ import { get, isEqual } from 'lodash';
 export default class MachineInfo extends React.Component {
     state = {};
     locked = false;
+    svgElement = false;
 
     constructor(props) {
         super(props);
@@ -56,21 +57,31 @@ export default class MachineInfo extends React.Component {
         return (
             visible
                 ? <div className="inner-content machine">
+                    <svg className="svg-frame"
+                         ref={ref => (this.svgElement = ref)}
+                         viewBox='0 0 100 40'
+                         xmlns='http://www.w3.org/2000/svg'
+                         preserveAspectRatio="none">
+                        <path className="orange-line" d='M0,10 L0,0 L10,0'/>
+                        <path className="orange-line" d='M90,0 L100,0 L100,10'/>
+                        <path className="orange-line" d='M10,40 L0,40 L0,30'/>
+                        <path className="orange-line" d='M100,30 L100,40 L90,40'/>
+                    </svg>
                     { title !== false && <h1 className="title">{ title } </h1> }
                     { gpuCoin !== false && <div className="miners gpu">
-                        { (gpuCoin !== false)     && <div className="coin"><span className="label">Coin</span> { gpuCoin }</div>             }
-                        { (gpuPool !== false)     && <div className="pool"><span className="label">Pool</span> { gpuPool }</div>             }
-                        { (gpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span> { gpuHashrate }</div>     }
-                        { (gpuShares !== false)   && <div className="shares"><span className="label">Shares</span> { gpuShares }</div>       }
-                        { (gpuDiff !== false)     && <div className="diff"><span className="label">Diff</span> { gpuDiff }</div>             }
+                        { (gpuCoin !== false)     && <div className="coin"><span className="label">Coin</span><span className="value">{ gpuCoin }</span></div>             }
+                        { (gpuPool !== false)     && <div className="pool"><span className="label">Pool</span><span className="value">{ gpuPool }</span></div>             }
+                        { (gpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span><span className="value">{ gpuHashrate }</span></div>     }
+                        { (gpuShares !== false)   && <div className="shares"><span className="label">Shares</span><span className="value">{ gpuShares }</span></div>       }
+                        { (gpuDiff !== false)     && <div className="diff"><span className="label">Diff</span><span className="value">{ gpuDiff }</span></div>             }
                     </div> }
 
                     { cpuCoin !== false && <div className="miners cpu">
-                        { (cpuCoin !== false)     && <div className="coin"><span className="label">Coin</span> { cpuCoin }</div>             }
-                        { (cpuPool !== false)     && <div className="pool"><span className="label">Pool</span> { cpuPool }</div>             }
-                        { (cpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span> { cpuHashrate }</div>     }
-                        { (cpuShares !== false)   && <div className="shares"><span className="label">Shares</span> { cpuShares }</div>       }
-                        { (cpuDiff !== false)     && <div className="diff"><span className="label">Diff</span> { cpuDiff }</div>             }
+                        { (cpuCoin !== false)     && <div className="coin"><span className="label">Coin</span><span className="value">{ cpuCoin }</span></div>             }
+                        { (cpuPool !== false)     && <div className="pool"><span className="label">Pool</span><span className="value">{ cpuPool }</span></div>             }
+                        { (cpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span><span className="value">{ cpuHashrate }</span></div>     }
+                        { (cpuShares !== false)   && <div className="shares"><span className="label">Shares</span><span className="value">{ cpuShares }</span></div>       }
+                        { (cpuDiff !== false)     && <div className="diff"><span className="label">Diff</span><span className="value">{ cpuDiff }</span></div>             }
                     </div> }
                 </div>
                 : null

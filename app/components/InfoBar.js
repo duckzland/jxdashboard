@@ -46,10 +46,10 @@ export default class InfoBar extends React.Component {
         const { temp, disk, memory, watt } = this.state;
         return (
             <div className="infobar-info">
-                { (temp !== false)   && <div className="temp"  ><span className="label">Temperature</span> { parseInt(temp, 0)   }C</div> }
-                { (disk !== false)   && <div className="disk"  ><span className="label">Disk       </span> { parseInt(disk, 0)   }%</div> }
-                { (memory !== false) && <div className="memory"><span className="label">Memory     </span> { parseInt(memory, 0) }%</div> }
-                { (watt !== false)   && <div className="watt"  ><span className="label">Watt       </span> { parseInt(watt, 0)   }W</div> }
+                { (temp !== false)   && <div className="temp"  ><span className="label">Temperature</span><span className="value">{ parseInt(temp, 0)   }C</span></div> }
+                { (disk !== false)   && <div className="disk"  ><span className="label">Disk       </span><span className="value">{ parseInt(disk, 0)   }%</span></div> }
+                { (memory !== false) && <div className="memory"><span className="label">Memory     </span><span className="value">{ parseInt(memory, 0) }%</span></div> }
+                { (watt !== false)   && <div className="watt"  ><span className="label">Watt       </span><span className="value">{ parseInt(watt, 0)   }W</span></div> }
             </div>
         )
     }
