@@ -54,11 +54,30 @@ export default class PanelFanControl extends ConfigPanel {
     render() {
 
         const { data, fansName } = this.state;
+        const isActive  = get(data, 'config.fans.casing.enable', false);
+        const btn       = (this.isSaving
+                ? <button type="submit" className="form-button" disabled>Saving in progress...</button>
+                : <button type="submit" className="form-button" onClick={ this.handleSave }>Save</button>
+        );
+        const svg       = (
+            <svg className="svg-frame"
+                 ref={ref => (this.svgElement = ref)}
+                 viewBox="0 0 69.393 35.638"
+                 xmlns="http://www.w3.org/2000/svg"
+                 vector-effect="non-scaling-stroke"
+                 preserveAspectRatio="none">
+                <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
+                <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
+                <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
+                <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
+            </svg>
+        );
 
         return (
-            <div className="inner-content">
-                <Form id="fans-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
-                    <h1 className="form-title">Global Settings</h1>
+            <Form id="fans-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
+                <div className="inner-content">
+                    { svg }
+                    <h1 className="title form-title">Global Settings</h1>
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="enable_tuner"
@@ -71,7 +90,7 @@ export default class PanelFanControl extends ConfigPanel {
                             </div>
                         </div>
                     </div>
-                    { get(data, 'config.fans.casing.enable', false)
+                    { isActive
                         && <div className="fan-tuners-block">
                             <div className="form-row">
                                 <div className="items">
@@ -91,39 +110,36 @@ export default class PanelFanControl extends ConfigPanel {
                                           initialValue={ get(data, 'config.fans.casing.tick') }/>
                                 </div>
                             </div>
-
-                            <h1 className="form-title">Tuner</h1>
-                            <div className="tuner-box">
-                                <div className="action-bar">
-                                    <div className="form-row">
-                                        <div className="items">
-                                            <label className="form-label">Select Fans:</label>
-                                            <FanSelector key="local.name.pwm"
-                                                         field="local.name.pwm"
-                                                         hasGlobal={ true }
-                                                         initialValue={ get(data, 'local.name.pwm') }/>
-                                        </div>
+                        </div> }
+                    { btn }
+                </div>
+                { isActive
+                    && <div className="inner-content">
+                        { svg }
+                        <h1 className="title form-title">Tuner</h1>
+                        <div className="tuner-box">
+                            <div className="action-bar">
+                                <div className="form-row">
+                                    <div className="items">
+                                        <label className="form-label">Select Fans:</label>
+                                        <FanSelector key="local.name.pwm"
+                                                     field="local.name.pwm"
+                                                     hasGlobal={ true }
+                                                     initialValue={ get(data, 'local.name.pwm') }/>
                                     </div>
                                 </div>
-                                { !isEmpty(fansName) && <FanSettings name={ fansName } data={ data } formApi={ this.formApi } curve={ get(data, fansName + '.curve_enable', false) } checkbox={ false } /> }
                             </div>
+                            { !isEmpty(fansName) && <FanSettings name={ fansName } data={ data } formApi={ this.formApi } curve={ get(data, fansName + '.curve_enable', false) } checkbox={ false } /> }
                         </div>
-                    }
-
-                    { this.isSaving
-                        ? <button type="submit" className="form-button" disabled>
-                            Saving in progress...
-                        </button>
-                        : <button type="submit" className="form-button" onClick={ this.handleSave }>
-                            Save
-                        </button>
-                    }
-                    { ( get(data, 'local.name.pwm', 'global') !== 'global' )
+                        { btn }
+                        { ( get(data, 'local.name.pwm', 'global') !== 'global' )
                         && <button type="submit" className="form-button" onClick={ this.removeOverride }>
                             Remove
                         </button> }
-                </Form>
-            </div>
+                    </div>
+                }
+
+            </Form>
         )
     }
 }

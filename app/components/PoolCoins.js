@@ -72,7 +72,7 @@ export default class PoolCoins extends Component {
                             <Text key={ active + '-' + index + '-password' } type="text" field={ 'password' } initialValue={ coin.password }/>
                         </div>
                         <div className="items">
-                            { showLabel            && <label className="form-label">Action</label> }
+                            { showLabel            && <label className="form-label">&nbsp;</label> }
                             { !isActive(coin.coin) && <button type="submit" className="form-button" onClick={ () => onRemove(index) }>X</button> }
                             { isActive(coin.coin)  && <button type="submit" className="form-button" disabled>O</button> }
                         </div>

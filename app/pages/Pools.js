@@ -239,7 +239,7 @@ export default class PagePools extends ConfigPanel {
             key: 'content-element',
             speed: 0.8,
             className: 'main-panels panel',
-            contentClassName: 'content',
+            contentClassName: 'content configuration',
             horizontal: false,
             vertical: true
         };
@@ -249,6 +249,46 @@ export default class PagePools extends ConfigPanel {
         const fieldName     = 'pools.' + activePool;
         const activeData    = get(data, 'local.' + activePool);
         const format        = get(data, 'pools.' + activePool + '.format',    { name: '', wallet: '', address: ''});
+        const btn           = (this.isSaving
+                ? <button type="submit" className="form-button" disabled>Saving in progress...</button>
+                : <button type="submit" className="form-button" onClick={ this.handleSave }>Save</button>
+        );
+        const svg           = (
+            <svg className="svg-frame"
+                 ref={ref => (this.svgElement = ref)}
+                 viewBox="0 0 69.393 35.638"
+                 xmlns="http://www.w3.org/2000/svg"
+                 vector-effect="non-scaling-stroke"
+                 preserveAspectRatio="none">
+                <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
+                <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
+                <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
+                <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
+            </svg>
+        );
+        const svg2          = (
+            <svg className="svg-frame svg-top"
+                 ref={ref => (this.svgElement = ref)}
+                 viewBox="0 0 69.393 35.638"
+                 xmlns="http://www.w3.org/2000/svg"
+                 vector-effect="non-scaling-stroke"
+                 preserveAspectRatio="none">
+                <path className="orange-line" d="M69.189 5.079V2.433l-.794-1.323h-3.44l-.764-.977-5.778.033-.601.944H1.455L.132 2.433v2.646"/>
+                <path className="orange-line" d="M63.351 1.292l-.395.695-3.585-.006"/>
+            </svg>
+        );
+        const svg3         = (
+            <svg className="svg-frame svg-bottom"
+                 ref={ref => (this.svgElement = ref)}
+                 viewBox="0 0 69.393 5.424"
+                 xmlns="http://www.w3.org/2000/svg"
+                 vector-effect="non-scaling-stroke"
+                 preserveAspectRatio="none">
+                <path className="orange-line" d="M69.256.74l.004 2.13-1.321 1.439-9.94-.032-.981 1.015h-6.616l-1.323-1.323H1.455L.132 2.646V0"/>
+                <path className="orange-line" d="M51.75 3.585l.319-.565 3.585.006"/>
+            </svg>
+        );
+
         const { name, wallet, address } = format;
 
         return (
@@ -257,12 +297,12 @@ export default class PagePools extends ConfigPanel {
                     <PoolNavigator data={ data } active={ activePool } onRegister={ this.addPool } onChange={ this.changePool } />
                 </ScrollArea>
                 <ScrollArea { ...contentProps }>
-                    <div className="inner-content">
-                        <Form id="configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
-                            { !isEmpty(activePool)
-                                ? <div className="form-content">
-                                    <h1 className="form-title">Pool: { activePool }</h1>
-
+                    <Form id="configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
+                        { !isEmpty(activePool)
+                            ? <div className="form-content">
+                                <div className="inner-content">
+                                    { svg }
+                                    <h1 className="title form-title">Settings</h1>
                                     <div className="form-group">
                                         <label className="form-label">Pool Name</label>
                                         <Text key={ fieldName + '.format.name' }
@@ -290,37 +330,35 @@ export default class PagePools extends ConfigPanel {
                                             { 'Example format : {protocol}://{url}:{port}' }
                                         </div>
                                     </div>
-                                    <h1 className="form-title">Coin Settings</h1>
-                                    { activeData
-                                        && activePool
-                                        && <PoolCoins data={ activeData }
-                                                      active={ activePool }
-                                                      onRegister={ this.addCoin }
-                                                      onRemove={ this.removeCoin }/> }
-                                  </div>
-                                : <div className="form-content">
+                                    { btn }
+                                    { !isEmpty(activePool)
+                                        && !isActive()
+                                        && <button type="submit" className="form-button" onClick={ this.removePool }>
+                                            Remove
+                                        </button> }
+                                </div>
+                            { activeData
+                                && activePool
+                                && <div className="inner-content">
+                                    { svg2 }
+                                    { svg3 }
+                                    <h1 className="title form-title">Coin Settings</h1>
+                                    <PoolCoins data={ activeData }
+                                                  active={ activePool }
+                                                  onRegister={ this.addCoin }
+                                                  onRemove={ this.removeCoin }/>
+                                    { btn }
+                                </div> }
+                              </div>
+                            : <div className="form-content">
+                                <div className="inner-content">
+                                    { svg }
                                     <h1 className="form-title">No Pool Defined, please add one or more pool</h1>
                                     <Text key={ 'pools' } field={ 'pools' } type="hidden"/>
-                                  </div>
-                            }
-
-                            { this.isSaving
-                                ? <button type="submit" className="form-button" disabled>
-                                    Saving in progress...
-                                </button>
-                                : <button type="submit" className="form-button" onClick={ this.handleSave }>
-                                    Save
-                                </button>
-                            }
-                            { !isEmpty(activePool)
-                                && !isActive()
-                                && <button type="submit" className="form-button" onClick={ this.removePool }>
-                                    Remove
-                                </button>
-                            }
-
-                        </Form>
-                    </div>
+                                </div>
+                              </div>
+                        }
+                    </Form>
                 </ScrollArea>
             </div>
         )

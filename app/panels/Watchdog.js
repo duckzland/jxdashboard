@@ -22,14 +22,32 @@ export default class PanelWatchdog extends ConfigPanel {
 
     render() {
 
-        const { data } = this.state;
+        const { data }  = this.state;
+        const btn       = (this.isSaving
+                ? <button type="submit" className="form-button" disabled>Saving in progress...</button>
+                : <button type="submit" className="form-button" onClick={ this.handleSave }>Save</button>
+        );
+        const svg       = (
+            <svg className="svg-frame"
+                ref={ref => (this.svgElement = ref)}
+                viewBox="0 0 69.393 35.638"
+                xmlns="http://www.w3.org/2000/svg"
+                vector-effect="non-scaling-stroke"
+                preserveAspectRatio="none">
+                <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
+                <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
+                <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
+                <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
+            </svg>
+        );
 
         return (
-            <div className="inner-content">
-                <Form id="watchdog-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
+            <Form id="watchdog-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
 
-                    { /* GPU Checker */ }
-                    <h1 className="form-title">GPU Checker</h1>
+                { /* GPU Checker */ }
+                <div className="inner-content">
+                    { svg }
+                    <h1 className="title form-title">GPU Checker</h1>
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="enable_gpu_check"
@@ -77,9 +95,13 @@ export default class PanelWatchdog extends ConfigPanel {
                             </div>
                         </div>
                     }
+                    { btn }
+                </div>
 
-                    { /* Systemd */ }
-                    <h1 className="form-title">SystemD Watcher</h1>
+                { /* Systemd */ }
+                <div className="inner-content">
+                    { svg }
+                    <h1 className="title form-title">SystemD Watcher</h1>
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="watchdog_systemd"
@@ -104,9 +126,13 @@ export default class PanelWatchdog extends ConfigPanel {
                             </div>
                         </div>
                     </div>
+                    { btn }
+                </div>
 
-                    { /* Watchdog */ }
-                    <h1 className="form-title">Miner Watchdog</h1>
+                { /* Watchdog */ }
+                <div className="inner-content">
+                    { svg }
+                    <h1 className="title form-title">Miner Watchdog</h1>
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="watchdog_enable"
@@ -182,17 +208,9 @@ export default class PanelWatchdog extends ConfigPanel {
                             }
                         </div>
                     }
-
-                    { this.isSaving
-                        ? <button type="submit" className="form-button" disabled>
-                            Saving in progress...
-                        </button>
-                        : <button type="submit" className="form-button" onClick={ this.handleSave }>
-                            Save
-                        </button>
-                    }
-                </Form>
-            </div>
+                    { btn }
+                </div>
+            </Form>
         )
     }
 }

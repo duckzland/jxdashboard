@@ -166,11 +166,30 @@ export default class PanelTuner extends ConfigPanel {
 
         const { data, fansName, tuneName } = this.state;
         const overrides = this.generateOverrideSelector();
+        const isActive  = get(data, 'config.tuner.settings.enable', false);
+        const btn       = (this.isSaving
+                ? <button type="submit" className="form-button" disabled>Saving in progress...</button>
+                : <button type="submit" className="form-button" onClick={ this.handleSave }>Save</button>
+        );
+        const svg       = (
+            <svg className="svg-frame"
+                 ref={ref => (this.svgElement = ref)}
+                 viewBox="0 0 69.393 35.638"
+                 xmlns="http://www.w3.org/2000/svg"
+                 vector-effect="non-scaling-stroke"
+                 preserveAspectRatio="none">
+                <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
+                <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
+                <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
+                <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
+            </svg>
+        );
 
         return (
-            <div className="inner-content">
-                <Form id="tuner-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
-                    <h1 className="form-title">Global Settings</h1>
+            <Form id="tuner-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
+                <div className="inner-content">
+                    { svg }
+                    <h1 className="title form-title">Global Settings</h1>
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="enable_tuner"
@@ -183,110 +202,104 @@ export default class PanelTuner extends ConfigPanel {
                             </div>
                         </div>
                     </div>
-
-                    { get(data, 'config.tuner.settings.enable', false)
-                        && <div className="gpu-tuners-block">
-                            <div className="form-row">
-                                <div className="items">
-                                    <label className="form-label">Tuning Mode</label>
-                                    <Select id="tuner_mode"
-                                            field="config.tuner.settings.mode"
-                                            initialValue={ get(data, 'config.tuner.settings.mode') }>
-                                        <Option value="dynamic">Dynamic</Option>
-                                        <Option value="static">Static</Option>
-                                        <Option value="time">Time based</Option>
-                                    </Select>
-                                </div>
-                                { ( get(data, 'config.tuner.settings.mode', 'dynamic') === 'time')
-                                    && <div className="items">
-                                        <label className="form-label">Hour to use minimum power</label>
-                                        <Text id="tuner_minhour"
-                                              field="config.tuner.settings.minHour"
-                                              type="number"
-                                              min="0"
-                                              max="24"
-                                              initialValue={ get(data, 'config.tuner.settings.minHour') }/>
-                                    </div> }
-                                { ( get(data, 'config.tuner.settings.mode', 'dynamic') === 'time')
-                                    && <div className="items">
-                                        <label className="form-label">Hour to use maximum power</label>
-                                        <Text id="tuner_maxhour"
-                                              field="config.tuner.settings.maxHour"
-                                              type="number"
-                                              min="0"
-                                              max="24"
-                                              initialValue={ get(data, 'config.tuner.settings.maxHour') }/>
-                                    </div> }
-                                { ( get(data, 'config.tuner.settings.mode', 'dynamic') === 'dynamic')
-                                    && <div className="items">
-                                        <label className="form-label">Interval Period in seconds</label>
-                                        <Text id="tuner_tick"
-                                              field="config.tuner.settings.tick"
-                                              type="number"
-                                              min="0"
-                                              initialValue={ get(data, 'config.tuner.settings.tick') }/>
-                                    </div> }
+                    { isActive
+                        &&  <div className="gpu-tuners-block">
+                        <div className="form-row">
+                            <div className="items">
+                                <label className="form-label">Tuner Mode</label>
+                                <Select id="tuner_mode"
+                                        field="config.tuner.settings.mode"
+                                        initialValue={ get(data, 'config.tuner.settings.mode') }>
+                                    <Option value="dynamic">Dynamic</Option>
+                                    <Option value="static">Static</Option>
+                                    <Option value="time">Time based</Option>
+                                </Select>
                             </div>
-
-                            <h1 className="form-title">Tuner</h1>
-                            <div className="tuner-box">
-                                <div className="action-bar">
-                                    <div className="form-row">
-                                        <div className="items">
-                                            <label className="form-label">Select GPU:</label>
-                                            <GpuSelector key="local.name.gpu"
-                                                         field="local.name.gpu"
-                                                         hasGlobal={ true }
-                                                         onChange={ this.handleOverrideChange }
-                                                         initialValue={ get(data, 'local.name.gpu') }/>
-                                        </div>
-                                        <div className="items">
-                                            <label className="form-label">Coin Overrides:</label>
-                                            <CoinSelector key="local.name.coin"
-                                                          field="local.name.coin"
-                                                          hasGlobal={ true }
-                                                          onChange={ this.handleOverrideChange }
-                                                          initialValue={ get(data, 'local.name.coin') }/>
-                                        </div>
-                                        { !isEmpty(overrides)
-                                            && <div className="items">
-                                                <label className="form-label">Stored Overrides</label>
-                                                <Select id="tuner_overides"
-                                                        field="local.name.overrides"
-                                                        onChange={ this.handleOverrideChange }
-                                                        initialValue={ get(data, 'local.name.overrides') }>
-                                                    <Option value="global">Select Override</Option>
-
-                                                    { overrides.map((override, key) => {
-                                                        return (<Option key={ 'gpu-override-' + key } value={ override.value }>{ override.text }</Option>);
-                                                    }) }
-
-                                                </Select>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                                { !isEmpty(fansName) && <FanSettings name={ fansName } data={ data } formApi={ this.formApi } curve={ get(data, fansName + '.curve_enable', false) } checkbox={ true } /> }
-                                { !isEmpty(tuneName) && <GpuTuner    name={ tuneName } data={ data } formApi={ this.formApi } label={ get(data, fansName + '.curve_enable', false) } /> }
-                            </div>
+                            { ( get(data, 'config.tuner.settings.mode', 'dynamic') === 'time')
+                            && <div className="items">
+                                <label className="form-label">Hour to use minimum power</label>
+                                <Text id="tuner_minhour"
+                                      field="config.tuner.settings.minHour"
+                                      type="number"
+                                      min="0"
+                                      max="24"
+                                      initialValue={ get(data, 'config.tuner.settings.minHour') }/>
+                            </div> }
+                            { ( get(data, 'config.tuner.settings.mode', 'dynamic') === 'time')
+                            && <div className="items">
+                                <label className="form-label">Hour to use maximum power</label>
+                                <Text id="tuner_maxhour"
+                                      field="config.tuner.settings.maxHour"
+                                      type="number"
+                                      min="0"
+                                      max="24"
+                                      initialValue={ get(data, 'config.tuner.settings.maxHour') }/>
+                            </div> }
+                            { ( get(data, 'config.tuner.settings.mode', 'dynamic') === 'dynamic')
+                            && <div className="items">
+                                <label className="form-label">Interval Period in seconds</label>
+                                <Text id="tuner_tick"
+                                      field="config.tuner.settings.tick"
+                                      type="number"
+                                      min="0"
+                                      initialValue={ get(data, 'config.tuner.settings.tick') }/>
+                            </div> }
                         </div>
-                    }
+                    </div> }
+                    { btn }
+                </div>
 
-                    { this.isSaving
-                        ? <button type="submit" className="form-button" disabled>
-                            Saving in progress...
-                        </button>
-                        : <button type="submit" className="form-button" onClick={ this.handleSave }>
-                            Save
-                        </button>
-                    }
+                { isActive
+                    && <div className="inner-content">
+                        { svg }
+                        <h1 className="title form-title">GPU Tuner</h1>
+                        <div className="tuner-box">
+                            <div className="action-bar">
+                                <div className="form-row">
+                                    <div className="items">
+                                        <label className="form-label">Select GPU:</label>
+                                        <GpuSelector key="local.name.gpu"
+                                                     field="local.name.gpu"
+                                                     hasGlobal={ true }
+                                                     onChange={ this.handleOverrideChange }
+                                                     initialValue={ get(data, 'local.name.gpu') }/>
+                                    </div>
+                                    <div className="items">
+                                        <label className="form-label">Coin Overrides:</label>
+                                        <CoinSelector key="local.name.coin"
+                                                      field="local.name.coin"
+                                                      hasGlobal={ true }
+                                                      onChange={ this.handleOverrideChange }
+                                                      initialValue={ get(data, 'local.name.coin') }/>
+                                    </div>
+                                    { !isEmpty(overrides)
+                                        && <div className="items">
+                                            <label className="form-label">Stored Overrides</label>
+                                            <Select id="tuner_overides"
+                                                    field="local.name.overrides"
+                                                    onChange={ this.handleOverrideChange }
+                                                    initialValue={ get(data, 'local.name.overrides') }>
+                                                <Option value="global">Select Override</Option>
 
-                    { ( get(data, 'local.name.gpu', 'global') !== 'global' || get(data, 'local.name.coin', 'global') !== 'global' )
+                                                { overrides.map((override, key) => {
+                                                    return (<Option key={ 'gpu-override-' + key } value={ override.value }>{ override.text }</Option>);
+                                                }) }
+
+                                            </Select>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            { !isEmpty(fansName) && <FanSettings name={ fansName } data={ data } formApi={ this.formApi } curve={ get(data, fansName + '.curve_enable', false) } checkbox={ true } /> }
+                            { !isEmpty(tuneName) && <GpuTuner    name={ tuneName } data={ data } formApi={ this.formApi } label={ get(data, fansName + '.curve_enable', false) } /> }
+                        </div>
+                        { btn }
+                        { ( get(data, 'local.name.gpu', 'global') !== 'global' || get(data, 'local.name.coin', 'global') !== 'global' )
                         && <button type="submit" className="form-button" onClick={ this.removeOverride }>
                             Remove
                         </button> }
-                </Form>
-            </div>
+                    </div> }
+            </Form>
         )
     }
 }

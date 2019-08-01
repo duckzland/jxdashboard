@@ -66,7 +66,10 @@ export default class Graph extends React.Component {
     }
 
     handleResize = () => {
-        this.setState({windowWidth: this.element.current.clientWidth - 10})
+        this.element
+            && this.element.current
+            && this.element.current.clientWidth
+            && this.setState({windowWidth: this.element.current.clientWidth - 10})
     };
 
     ticker = () => {
@@ -101,16 +104,29 @@ export default class Graph extends React.Component {
     render() {
         const { title, labelX, labelY } = this.props;
         const width = this.state.windowWidth;
+
         return (
             <div ref={ this.element } className="graph-content">
+                <svg className="svg-frame"
+                 ref={ref => (this.svgElement = ref)}
+                 viewBox="0 0 69.393 35.638"
+                 xmlns="http://www.w3.org/2000/svg"
+                 vector-effect="non-scaling-stroke"
+                 preserveAspectRatio="none">
+                    <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
+                    <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
+                    <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
+                    <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
+                </svg>
+                { !(title && width) && <div className="graph-not-ready">Loading data...</div> }
                 { (title && width) && <h1 className="title">{ title }</h1> }
                 { (title && width) && <AreaChart
                     datePattern={ '%d-%b-%y %H:%M:%S' }
-                    width={ width }
+                    width={ width - 40 }
                     height={ width / 2 }
                     xType={'time'}
                     axisLabels={ {x: labelX, y: labelY} }
-                    areaColors={['#005565']}
+                    areaColors={['#ff7700', '#000000']}
                     yDomainRange={ [0, this.highest * 1.5] }
                     interpolate={ false }
                     xTicks={ this.buffers.length }
@@ -120,7 +136,7 @@ export default class Graph extends React.Component {
                     dataPoints
                     style={{
                         '.Area0': {
-                            stroke: '#072c47'
+                            stroke: '#ff7700'
                         },
                         'circle.data-point': {
                             transition: 'none !important'

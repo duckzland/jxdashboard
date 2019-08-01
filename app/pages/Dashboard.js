@@ -20,6 +20,7 @@ export default class PageDashboard extends React.Component {
     port    = window.jxdashboard.port;
     host    = window.jxdashboard.host;
     monitor = false;
+    debug   = false;
 
     constructor(props) {
         super(props);
@@ -91,12 +92,13 @@ export default class PageDashboard extends React.Component {
     };
 
     render() {
-        const { connection, extractHashRate, extractPowerRate, extractTempRate } = this;
+        const { debug, connection, extractHashRate, extractPowerRate, extractTempRate } = this;
 
         const { connected } = this.state;
         const hashRate      = extractHashRate();
         const tempRate      = extractTempRate();
         const powerRate     = extractPowerRate();
+        const hasGraph      = hashRate || tempRate || powerRate;
 
         const sidebarProps = {
             key: 'sidebar-element',
@@ -116,9 +118,14 @@ export default class PageDashboard extends React.Component {
             vertical: true
         };
 
+        const panelProps = {
+            key: 'main-panel',
+            className: 'panels ' + (connected ? 'server-connected' : 'server-disconnected')
+        };
+
         return (
-            <div className="panels">
-                <ScrollArea { ...sidebarProps }>
+            <div {...panelProps}>
+                { connected && <ScrollArea { ...sidebarProps }>
                     <MachineInfo { ...this.state } />
                     <MemoryInfo  { ...this.state } />
                     <DiskInfo    { ...this.state } />
@@ -126,30 +133,48 @@ export default class PageDashboard extends React.Component {
                     <FanInfo     { ...this.state } />
                     <CpuInfo     { ...this.state } />
                     <GpuInfo     { ...this.state } />
-                </ScrollArea>
+                </ScrollArea> }
                 <ScrollArea { ...contentProps }>
-                    <div className="inner-content statusbar-info">
-                        <div className="status">
-                            Status: { connected ? 'Connected' : 'Disconnected' }
+                    <div className="inner-content wrappedbar">
+                        <div className="statusbar-info">
+                            <svg className="svg-frame"
+                                 ref={ref => (this.svgElement = ref)}
+                                 viewBox="0 0 69.393 14.471"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 vector-effect="non-scaling-stroke"
+                                 preserveAspectRatio="none">
+                                <path className="orange-line" d="M69.257 9.788l.004 2.129-1.322 1.438L58 13.324l-.982 1.015h-6.615l-1.323-1.323H1.455L.132 11.693V9.047"/>
+                                <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
+                                <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
+                                <path className="orange-line" d="M51.75 12.632l.32-.565 3.584.006"/>
+                            </svg>
+                            <div className="inner-content">
+                                <h3 className="title">Status</h3>
+                                <div className="statusbar">
+                                    <div className="status">
+                                        { connected ? 'Connected' : 'Disconnected' }
+                                    </div>
+                                    <div className="action">
+                                        { connected
+                                            ? <button type="button" className="form-button" onClick={ () => { connection('stop')    } }>Stop</button>
+                                            : <button type="button" className="form-button" onClick={ () => { connection('connect') } }>Start</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="action">
-                            { connected
-                                ? <button type="button" className="form-button" onClick={ () => { connection('stop')    } }>Stop</button>
-                                : <button type="button" className="form-button" onClick={ () => { connection('connect') } }>Start</button>
-                            }
-                        </div>
+                        { connected && <InfoBar { ...this.state } /> }
                     </div>
-                    <div className="inner-content infobar">
-                        <InfoBar { ...this.state } />
-                    </div>
-                    <div className="inner-content graph">
+                    { connected && hasGraph && <div className="inner-content graph">
                         { hashRate  !== false && <Graph title="Hash Rate"   labelX="" labelY="" payload={ String(hashRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
+                        { debug     !== false && <Graph title="Hash Rate"   labelX="" labelY="" payload={ String(hashRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
+                        { debug     !== false && <Graph title="Hash Rate"   labelX="" labelY="" payload={ String(hashRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
                         { tempRate  !== false && <Graph title="Temperature" labelX="" labelY="" payload={ String(tempRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
                         { powerRate !== false && <Graph title="Power Usage" labelX="" labelY="" payload={ String(powerRate).replace(/[^0-9.]/g, "") } connected={ connected }/> }
-                    </div>
-                    <div className="inner-content tabs">
+                    </div> }
+                    { connected && <div className="inner-content tabs">
                         <TabLogs { ...this.state }/>
-                    </div>
+                    </div> }
                 </ScrollArea>
             </div>
         )

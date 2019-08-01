@@ -32,7 +32,7 @@ export default class FanSettings extends Component {
     setCurve = (newCurve) => {
         const { name    } = this.state;
         const { formApi } = this.props;
-        !isEmpty(name) && !isEmpty(newCurve) && formApi.setValue(name + '.curve', newCurve);
+        !isEmpty(name) && !isEmpty(newCurve) && formApi && formApi.setValue(name + '.curve', newCurve);
     };
 
     convertCurve(curve) {

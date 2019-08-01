@@ -55,13 +55,12 @@ export default class MemoryInfo extends React.Component {
                 ? <div className="inner-content memory">
                     <svg className="svg-frame"
                          ref={ref => (this.svgElement = ref)}
-                         viewBox='0 0 100 40'
-                         xmlns='http://www.w3.org/2000/svg'
+                         viewBox="0 0 23.738 22.944"
+                         xmlns="http://www.w3.org/2000/svg"
+                         vector-effect="non-scaling-stroke"
                          preserveAspectRatio="none">
-                        <path className="orange-line" d='M0,10 L0,0 L10,0'/>
-                        <path className="orange-line" d='M90,0 L100,0 L100,10'/>
-                        <path className="orange-line" d='M10,40 L0,40 L0,30'/>
-                        <path className="orange-line" d='M100,30 L100,40 L90,40'/>
+                        <path className="orange-line" d="M19.186 22.808l2.13.004 1.438-1.322-.032-9.94.883-.456-.017-7.056-.934-.669-.053-1.99L21.25.159l-2.07.006M4.638 22.801l-2.246-.003-1.179-1.002-.045-3.269-1.035-.77.033-5.778 1.133-.668-.053-9.945L2.45.144 4.331.132"/>
+                        <path className="orange-line" d="M1.271 17.058l.695-.395-.006-3.585m20.263-8.085l-.566.319.006 3.585"/>
                     </svg>
                     <h3 className="title">Memory</h3>
                     <div className="memory-info">

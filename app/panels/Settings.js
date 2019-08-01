@@ -32,13 +32,31 @@ export default class PanelSettings extends ConfigPanel {
         const coinData  = coin ? get(data, 'config.coins.' + coin, false) : false;
         const dual      = coinData && coinData.algo ? get(data, 'config.miner.' + coinData.algo + '.dual', false) : false;
         const secondary = coinData && coinData.algo ? get(data, 'config.miner.' + coinData.algo + '.secondary', false) : false;
+        const btn       = (this.isSaving
+            ? <button type="submit" className="form-button" disabled>Saving in progress...</button>
+            : <button type="submit" className="form-button" onClick={ this.handleSave }>Save</button>
+        );
+        const svg       = (
+            <svg className="svg-frame"
+                 ref={ref => (this.svgElement = ref)}
+                 viewBox="0 0 69.393 35.638"
+                 xmlns="http://www.w3.org/2000/svg"
+                 vector-effect="non-scaling-stroke"
+                 preserveAspectRatio="none">
+                <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
+                <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
+                <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
+                <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
+            </svg>
+        );
+
 
         return (
-            <div className="inner-content">
-                <Form id="settings-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
-
-                    { /* General Settings */ }
-                    <h1 className="form-title">General Settings</h1>
+            <Form id="settings-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
+                { /* General Settings */ }
+                <div className="inner-content">
+                    { svg }
+                    <h1 className="title form-title">General Settings</h1>
                     <div className="form-group">
                         <label className="form-label">Box name</label>
                         <Text id="box_name"
@@ -57,9 +75,13 @@ export default class PanelSettings extends ConfigPanel {
                               field="config.machine.settings.email"
                               initialValue={ get(data, 'config.machine.settings.email') }/>
                     </div>
+                    { btn }
+                </div>
 
-                    { /* GPU Miner */ }
-                    <h1 className="form-title">GPU Miner</h1>
+                { /* GPU Miner */ }
+                <div className="inner-content">
+                    { svg }
+                    <h1 className="title form-title">GPU Miner</h1>
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="gpu_miner_enable"
@@ -148,10 +170,13 @@ export default class PanelSettings extends ConfigPanel {
                             </div>
                         </div>
                     }
+                    { btn }
+                </div>
 
-
-                    { /* CPU Miner */ }
-                    <h1 className="form-title">CPU Miner</h1>
+                { /* CPU Miner */ }
+                <div className="inner-content">
+                    { svg }
+                    <h1 className="title form-title">CPU Miner</h1>
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="cpu_miner_enable"
@@ -209,17 +234,9 @@ export default class PanelSettings extends ConfigPanel {
                             </div>
                         </div>
                     }
-                    { this.isSaving
-                        ? <button type="submit" className="form-button" disabled>
-                            Saving in progress...
-                        </button>
-                        : <button type="submit" className="form-button" onClick={ this.handleSave }>
-                            Save
-                        </button>
-                    }
-
-                </Form>
-            </div>
+                    { btn }
+                </div>
+            </Form>
         )
     }
 }
