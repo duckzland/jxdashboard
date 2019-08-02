@@ -1,6 +1,7 @@
 import React                from 'react';
 import Component            from '../base/Component';
-import { Text, Checkbox }   from 'informed';
+import FormGroup            from './FormGroup';
+import { Text }             from 'informed';
 import { isEqual, get }     from 'lodash';
 
 export default class GpuTuner extends Component {
@@ -50,41 +51,31 @@ export default class GpuTuner extends Component {
 
             return (
                 <div key={ 'row-' + t } className="form-row">
-                    <div className="items">
-                        <div className="pretty p-default">
-                            <Checkbox key={ k + '.enable' } field={ k + '.enable' } initialValue={ enable }/>
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    { l }
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="items">
-                        { showLabel && <label className="form-label">Target</label> }
+                    <FormGroup title={ l }
+                               elementType="checkbox"
+                               elementClass="items"
+                               key={ k + '.enable' } field={ k + '.enable' } initialValue={ enable }/>
+
+                    <FormGroup title={ showLabel && 'Target' } elementClass="items">
                         <Text key={ k + '.target.text'   } field={ k + '.target' } initialValue={ target }/>
                         <Text key={ k + '.target.slider' } field={ k + '.target' } initialValue={ target } type="range" min="0" max="100" />
-                    </div>
-                    <div className="items">
-                        { showLabel && <label className="form-label">Minimum</label> }
+                    </FormGroup>
+                    <FormGroup title={ showLabel && 'Minimum' } elementClass="items">
                         <Text key={ k + '.min.text'      } field={ k + '.min'    } initialValue={ min    }/>
                         <Text key={ k + '.min.slider'    } field={ k + '.min'    } initialValue={ min    } type="range" min="0" max="100"/>
-                    </div>
-                    <div className="items">
-                        { showLabel && <label className="form-label">Maximum</label> }
+                    </FormGroup>
+                    <FormGroup title={ showLabel && 'Maximum' } elementClass="items">
                         <Text key={ k + '.max.text'      } field={ k + '.max'    } initialValue={ max    }/>
                         <Text key={ k + '.max.slider'    } field={ k + '.max'    } initialValue={ max    } type="range" min="0" max="100"/>
-                    </div>
-                    <div className="items">
-                        { showLabel && <label className="form-label">Step Up</label> }
+                    </FormGroup>
+                    <FormGroup title={ showLabel && 'Step Up' } elementClass="items">
                         <Text key={ k + '.up.text'       } field={ k + '.up'     } initialValue={ up     }/>
                         <Text key={ k + '.up.slider'     } field={ k + '.up'     } initialValue={ up     } type="range" min="0" max="100"/>
-                    </div>
-                    <div className="items">
-                        { showLabel && <label className="form-label">Step Down</label> }
+                    </FormGroup>
+                    <FormGroup title={ showLabel && 'Step Down' } elementClass="items">
                         <Text key={ k + '.down.text'     } field={ k + '.down'   } initialValue={ down   }/>
                         <Text key={ k + '.down.slider'   } field={ k + '.down'   } initialValue={ down   } type="range" min="0" max="100"/>
-                    </div>
+                    </FormGroup>
                 </div>
             )
         });

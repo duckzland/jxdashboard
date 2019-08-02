@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
-import { get, isEqual }     from 'lodash';
+import React                from 'react';
+import Component            from '../base/Component';
 import Frame                from './Frame';
+
+import { get, isEqual }     from 'lodash';
 
 export default class MachineInfo extends React.Component {
     state = {};
@@ -9,10 +11,6 @@ export default class MachineInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = 'payload' in props ? this.processPayload(props.payload) : {};
-    }
-
-    shouldComponentUpdate() {
-        return !this.locked;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -24,14 +22,6 @@ export default class MachineInfo extends React.Component {
             this.setState(newPayload);
         }
 
-    }
-
-    componentDidMount() {
-        this.locked = true;
-    }
-
-    componentDidUpdate() {
-        this.locked = true;
     }
 
     processPayload = (payload) => {

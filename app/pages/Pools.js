@@ -5,8 +5,9 @@ import Config        from '../modules/Config';
 import PoolNavigator from '../components/PoolNavigator';
 import PoolCoins     from '../components/PoolCoins';
 import Frame         from '../components/Frame';
+import FormGroup     from '../components/FormGroup';
 
-import { get, unset, isEmpty, forEach, isEqual, merge, omit } from 'lodash';
+import { get, unset, isEmpty, forEach, merge, omit } from 'lodash';
 import { Text, Form } from 'informed';
 
 export default class PagePools extends ConfigPanel {
@@ -267,33 +268,29 @@ export default class PagePools extends ConfigPanel {
                         { !isEmpty(activePool)
                             ? <div className="form-content">
                                 <Frame frameType="frame-c" title="Settings">
-                                    <div className="form-group">
-                                        <label className="form-label">Pool Name</label>
-                                        <Text key={ fieldName + '.format.name' }
-                                              field={ fieldName + '.format.name' }
-                                              type="text" initialValue={ name }/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Wallet Format</label>
-                                        <Text key={ fieldName + '.format.wallet' }
-                                              field={ fieldName + '.format.wallet' }
-                                              type="text" initialValue={ wallet }/>
+                                    <FormGroup title="Pool Name"
+                                               elementType="text"
+                                               key={ fieldName + '.format.name' }
+                                               field={ fieldName + '.format.name' }
+                                               type="text"
+                                               initialValue={ name }/>
 
-                                        <div className="form-description">
-                                            { 'Example format : {wallet}.{worker}/{email}' }
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Address Format</label>
-                                        <Text key={ fieldName + '.format.address' }
-                                              field={ fieldName + '.format.address' }
-                                              type="text"
-                                              initialValue={ address }/>
+                                    <FormGroup title="Wallet Format"
+                                               description={ 'Example format : {wallet}.{worker}/{email}' }
+                                               elementType="text"
+                                               key={ fieldName + '.format.wallet' }
+                                               field={ fieldName + '.format.wallet' }
+                                               type="text"
+                                               initialValue={ wallet }/>
 
-                                        <div className="form-description">
-                                            { 'Example format : {protocol}://{url}:{port}' }
-                                        </div>
-                                    </div>
+                                    <FormGroup title="Address Format"
+                                               description={ 'Example format : {protocol}://{url}:{port}' }
+                                               elementType="text"
+                                               key={ fieldName + '.format.address' }
+                                               field={ fieldName + '.format.address' }
+                                               type="text"
+                                               initialValue={ address }/>
+
                                     { btn }
                                     { !isEmpty(activePool)
                                         && !isActive()

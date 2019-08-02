@@ -1,19 +1,16 @@
-import React, { Component } from 'react';
-import { get, isEqual } from 'lodash';
-import prettyBytes from 'pretty-byte';
+import React                from 'react';
+import Component            from '../base/Component';
 import Frame                from './Frame';
+import { get, isEqual }     from 'lodash';
+import prettyBytes          from 'pretty-byte';
 
-export default class DiskInfo extends React.Component {
+export default class DiskInfo extends Component {
     state = {};
     locked = false;
 
     constructor(props) {
         super(props);
         this.state = 'payload' in props ? this.processPayload(props.payload) : {};
-    }
-
-    shouldComponentUpdate() {
-        return !this.locked;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -25,14 +22,6 @@ export default class DiskInfo extends React.Component {
             this.setState(newPayload);
         }
 
-    }
-
-    componentDidMount() {
-        this.locked = true;
-    }
-
-    componentDidUpdate() {
-        this.locked = true;
     }
 
     processPayload = (payload) => {

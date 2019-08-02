@@ -1,6 +1,7 @@
 import React                from 'react';
 import { Text, Checkbox }   from 'informed';
 import CurveEditor          from './CurveEditor';
+import FormGroup            from './FormGroup';
 import Component            from '../base/Component';
 import { isEqual, get, isEmpty } from 'lodash';
 
@@ -66,57 +67,41 @@ export default class FanSettings extends Component {
                 </div>
                 { curve && <CurveEditor onChange={ setCurve } data={ convertCurve(curve_value) }/> }
                 { curve && <Text type="hidden" field={ name + '.curve' } initialValue={ curve_value } /> }
-                <div className="form-group">
-                    <div className="pretty p-default">
-                        <Checkbox key={ name + '.curve_enable' } field={ name + '.curve_enable' } initialValue={ curve_enable }/>
-                        <div className="state p-success-o">
-                            <label className="form-checkbox">
-                                Use Curve
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                <FormGroup title="Use Curve"
+                           elementType="checkbox"
+                           key={ name + '.curve_enable' } field={ name + '.curve_enable' } initialValue={ curve_enable }/>
+
                 { !curve && <div className="form-row">
-                    { checkbox && <div className="items">
-                        <div className="pretty p-default">
-                            <Checkbox key={ name + '.enable' } field={ name + '.enable' } initialValue={ enable } />
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    Fan Settings
-                                </label>
-                            </div>
-                        </div>
-                    </div> }
-                    { !checkbox && <div className="items">
-                        <label className="form-checkbox">
-                            Fan Settings
-                        </label>
-                    </div> }
-                    <div className="items">
-                        <label className="form-label">Target</label>
-                        <Text key={ name + '.target.text'   } field={ name + '.target' } initialValue={ target } />
+                    { checkbox &&
+                    <FormGroup title="Fan Settings"
+                               elementType="checkbox"
+                               elementClass="items"
+                               key={ name + '.enable' } field={ name + '.enable' } initialValue={ enable } />
+                    }
+                    { !checkbox &&
+                    <FormGroup title="Fan Settings"
+                               elementClass="items" />
+                    }
+                    <FormGroup title="Target" elementClass="items">
+                        <Text key={ name + '.target.text'   } field={ name + '.target' } initialValue={ target }/>
                         <Text key={ name + '.target.slider' } field={ name + '.target' } initialValue={ target } type="range" min="0" max="100" />
-                    </div>
-                    <div className="items">
-                        <label className="form-label">Minimum</label>
-                        <Text key={ name + '.min.text'      } field={ name + '.min'    } initialValue={ min } />
-                        <Text key={ name + '.min.slider'    } field={ name + '.min'    } initialValue={ min } type="range" min="0" max="100"/>
-                    </div>
-                    <div className="items">
-                        <label className="form-label">Maximum</label>
-                        <Text key={ name + '.max.text'      } field={ name + '.max'    } initialValue={ max } />
-                        <Text key={ name + '.max.slider'    } field={ name + '.max'    } initialValue={ max } type="range" min="0" max="100"/>
-                    </div>
-                    <div className="items">
-                        <label className="form-label">Step Up</label>
-                        <Text key={ name + '.up.text'      } field={ name + '.up'      } initialValue={ up } />
-                        <Text key={ name + '.up.slider'    } field={ name + '.up'      } initialValue={ up } type="range" min="0" max="100"/>
-                    </div>
-                    <div className="items">
-                        <label className="form-label">Step Down</label>
-                        <Text key={ name + '.down.text'    } field={ name + '.down'    } initialValue={ down } />
-                        <Text key={ name + '.down.slider'  } field={ name + '.down'    } initialValue={ down } type="range" min="0" max="100"/>
-                    </div>
+                    </FormGroup>
+                    <FormGroup title="Minimum" elementClass="items">
+                        <Text key={ name + '.min.text'      } field={ name + '.min'    } initialValue={ min    }/>
+                        <Text key={ name + '.min.slider'    } field={ name + '.min'    } initialValue={ min    } type="range" min="0" max="100"/>
+                    </FormGroup>
+                    <FormGroup title="Maximum" elementClass="items">
+                        <Text key={ name + '.max.text'      } field={ name + '.max'    } initialValue={ max    }/>
+                        <Text key={ name + '.max.slider'    } field={ name + '.max'    } initialValue={ max    } type="range" min="0" max="100"/>
+                    </FormGroup>
+                    <FormGroup title="Step Up" elementClass="items">
+                        <Text key={ name + '.up.text'       } field={ name + '.up'     } initialValue={ up     }/>
+                        <Text key={ name + '.up.slider'     } field={ name + '.up'     } initialValue={ up     } type="range" min="0" max="100"/>
+                    </FormGroup>
+                    <FormGroup title="Step Down" elementClass="items">
+                        <Text key={ name + '.down.text'     } field={ name + '.down'   } initialValue={ down   }/>
+                        <Text key={ name + '.down.slider'   } field={ name + '.down'   } initialValue={ down   } type="range" min="0" max="100"/>
+                    </FormGroup>
                 </div> }
             </div>
         )

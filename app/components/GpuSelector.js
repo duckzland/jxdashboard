@@ -2,7 +2,7 @@ import React              from 'react';
 import Component          from '../base/Component';
 import Config             from '../modules/Config';
 import { Select, Option } from 'informed';
-import { forEach, get, isEmpty, findKey }   from 'lodash';
+import { forEach, get, isEmpty, sortBy, findKey }   from 'lodash';
 
 export default class GpuSelector extends Component {
 
@@ -52,6 +52,8 @@ export default class GpuSelector extends Component {
                 });
             });
         });
+
+        this.state.gpu = sortBy(this.state.gpu, 'index');
 
     };
 

@@ -95,7 +95,7 @@ export default class AlgoSelector extends Component {
             }
             this.state.algos.push( algo );
         });
-
+        this.state.algos.sort();
     };
 
     render() {

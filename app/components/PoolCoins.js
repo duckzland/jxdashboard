@@ -1,9 +1,9 @@
 import React                from 'react';
 import Component            from '../base/Component';
-import CoinSelector         from '../components/CoinSelector';
+import FormGroup            from '../components/FormGroup';
 import Config               from '../modules/Config';
 import { forEach }          from 'lodash';
-import { Text, Scope }      from 'informed';
+import { Scope   }          from 'informed';
 
 export default class PoolCoins extends Component {
 
@@ -51,26 +51,21 @@ export default class PoolCoins extends Component {
             return (
                 <div key={ 'pool-coins-row-' + active + '-' + index } className="form-row">
                     <Scope scope={ active + '[' + index + ']' }>
-                        <div className="items">
-                            { showLabel && <label className="form-label">Coin Code</label> }
-                            <CoinSelector field={ 'coin' } onlyHasMiner={ true } hasEmpty={ true } initialValue={ coin.coin }/>
-                        </div>
-                        <div className="items">
-                            { showLabel && <label className="form-label">Protocol</label> }
-                            <Text key={ active + '-' + index + '-protocol' } type="text" field={ 'protocol' } initialValue={ coin.protocol }/>
-                        </div>
-                        <div className="items">
-                            { showLabel && <label className="form-label">Url</label> }
-                            <Text key={ active + '-' + index + '-url' } type="text" field={ 'url' } initialValue={ coin.url }/>
-                        </div>
-                        <div className="items">
-                            { showLabel && <label className="form-label">Port</label> }
-                            <Text key={ active + '-' + index + '-port' } type="text" field={ 'port' } initialValue={ coin.port }/>
-                        </div>
-                        <div className="items">
-                            { showLabel && <label className="form-label">Password</label> }
-                            <Text key={ active + '-' + index + '-password' } type="text" field={ 'password' } initialValue={ coin.password }/>
-                        </div>
+                        <FormGroup title={ showLabel && 'Coin Code' } elementType="coinselector" elementClass="items"
+                                   field={ 'coin' } onlyHasMiner={ true } hasEmpty={ true } initialValue={ coin.coin }/>
+
+                        <FormGroup title={ showLabel && 'Protocol' } elementType="text" elementClass="items"
+                                   key={ active + '-' + index + '-protocol' } type="text" field={ 'protocol' } initialValue={ coin.protocol }/>
+
+                        <FormGroup title={ showLabel && 'Url' } elementType="text" elementClass="items"
+                                   key={ active + '-' + index + '-url' } type="text" field={ 'url' } initialValue={ coin.url }/>
+
+                        <FormGroup title={ showLabel && 'Port' } elementType="text" elementClass="items"
+                                   key={ active + '-' + index + '-port' } type="text" field={ 'port' } initialValue={ coin.port }/>
+
+                        <FormGroup title={ showLabel && 'Password' } elementType="text" elementClass="items"
+                                   key={ active + '-' + index + '-password' } type="text" field={ 'password' } initialValue={ coin.password }/>
+
                         <div className="items">
                             { showLabel            && <label className="form-label">&nbsp;</label> }
                             { !isActive(coin.coin) && <button type="submit" className="form-button" onClick={ () => onRemove(index) }>X</button> }

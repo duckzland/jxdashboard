@@ -1,8 +1,9 @@
-import React, { Component }          from 'react';
-import { isEmpty, isEqual, forEach } from 'lodash';
+import React                         from 'react';
+import Component                     from '../base/Component';
 import Frame                         from './Frame';
+import { isEmpty, isEqual, forEach } from 'lodash';
 
-export default class FanInfo extends React.Component {
+export default class FanInfo extends Component {
     state = {
         data: {}
     };
@@ -15,10 +16,6 @@ export default class FanInfo extends React.Component {
         this.state.data = 'payload' in props ? this.processPayload(props.payload) : {};
     }
 
-    shouldComponentUpdate() {
-        return !this.locked;
-    }
-
     componentWillReceiveProps(nextProps) {
         const nextPayload = this.processPayload(nextProps.payload);
 
@@ -26,14 +23,6 @@ export default class FanInfo extends React.Component {
             this.locked = false;
             this.setState({ data: nextPayload });
         }
-    }
-
-    componentDidMount() {
-        this.locked = true;
-    }
-
-    componentDidUpdate() {
-        this.locked = true;
     }
 
     processPayload(payload) {
@@ -64,9 +53,7 @@ export default class FanInfo extends React.Component {
             ? <Frame frameType="frame-d" className="fans" title="Fans">
                 <div className="fan-info">
                     { data.map((fan) => {
-                        return (
-                            <div key={ 'fan-element-' + fan.label } className="fan"><span className="label">{ fan.label }</span><span className="value">{ fan.speed }</span></div>
-                        )
+                        return ( <div key={ 'fan-element-' + fan.label } className="fan"><span className="label">{ fan.label }</span><span className="value">{ fan.speed }</span></div> )
                     }) }
                 </div>
             </Frame>

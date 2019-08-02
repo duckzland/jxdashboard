@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { get, isEqual }     from 'lodash';
-import Logs                 from './Logs';
+import React                from 'react';
+import Component            from '../base/Component';
 import Config               from '../modules/Config';
+import Logs                 from './Logs';
 import Frame                from './Frame';
+import { get, isEqual }     from 'lodash';
 
-export default class TabLogs extends React.Component {
+export default class TabLogs extends Component {
     state = {
         activeTab: 'gpu',
         data: Config.storage,
@@ -12,7 +13,6 @@ export default class TabLogs extends React.Component {
     };
 
     locked = false;
-    svgElement = false;
 
     constructor(props) {
         super(props);
@@ -24,10 +24,6 @@ export default class TabLogs extends React.Component {
                 this.state.activeTab = 'server';
             }
         }
-    }
-
-    shouldComponentUpdate() {
-        return !this.locked;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -53,14 +49,6 @@ export default class TabLogs extends React.Component {
             this.locked = false;
             this.setState({ payload: newPayload });
         }
-    }
-
-    componentDidMount() {
-        this.locked = true;
-    }
-
-    componentDidUpdate() {
-        this.locked = true;
     }
 
     changeTab = (type) => {

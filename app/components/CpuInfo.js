@@ -1,8 +1,9 @@
-import React, { Component }               from 'react';
-import { isEmpty, isEqual, forEach }      from 'lodash';
+import React                              from 'react';
+import Component                          from '../base/Component';
 import Frame                              from './Frame';
+import { isEmpty, isEqual, forEach }      from 'lodash';
 
-export default class CpuInfo extends React.Component {
+export default class CpuInfo extends Component {
     state = {
         data: {},
         headers: {}
@@ -17,10 +18,6 @@ export default class CpuInfo extends React.Component {
         this.state.headers = {};
     }
 
-    shouldComponentUpdate() {
-        return !this.locked;
-    }
-
     componentWillReceiveProps(nextProps) {
         const oldHeaders = this.state.headers;
         const nextPayload = this.processPayload(nextProps.payload);
@@ -29,14 +26,6 @@ export default class CpuInfo extends React.Component {
             this.state.data = nextPayload;
             this.setState(this.state);
         }
-    }
-
-    componentDidMount() {
-        this.locked = true;
-    }
-
-    componentDidUpdate() {
-        this.locked = true;
     }
 
     processPayload(payload) {

@@ -28,7 +28,7 @@ export default class FanSelector extends Component {
         forEach(fans, (index) => {
             this.state.fans.push(index);
         });
-
+        this.state.fans.sort();
     };
 
     render() {

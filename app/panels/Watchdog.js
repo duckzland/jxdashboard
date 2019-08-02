@@ -2,9 +2,9 @@ import React        from 'react';
 import Config       from '../modules/Config';
 import ConfigPanel  from '../base/ConfigPanel';
 import Frame        from '../components/Frame';
-
-import { get, merge, unset, isEmpty } from 'lodash';
-import { Form, Text, Checkbox, Select, Option } from 'informed';
+import FormGroup    from '../components/FormGroup';
+import { Form }     from 'informed';
+import { get  }     from 'lodash';
 
 export default class PanelWatchdog extends ConfigPanel {
 
@@ -35,51 +35,36 @@ export default class PanelWatchdog extends ConfigPanel {
 
                 { /* GPU Checker */ }
                 <Frame frameType="frame-c" title="GPU Checker">
-                    <div className="form-group">
-                        <div className="pretty p-default">
-                            <Checkbox id="enable_gpu_check"
-                                      field="config.machine.gpu_check_total.enable"
-                                      initialValue={ get(data, 'config.machine.gpu_check_total.enable') }/>
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    Enable GPU checker
-                                </label>
-                            </div>
-                        </div>
-                        <div className="form-description">
-                            Caution : do not enable this when debugging or repairing GPU as it will cause infinite rebooting due to mismatch GPU count
-                        </div>
-                    </div>
+                    <FormGroup title="Enable GPU checker"
+                               description="Caution : do not enable this when debugging or repairing GPU as it will cause infinite rebooting due to mismatch GPU count"
+                               elementType="checkbox"
+                               id="enable_gpu_check"
+                               field="config.machine.gpu_check_total.enable"
+                               initialValue={ get(data, 'config.machine.gpu_check_total.enable') }/>
+
                     { get(data, 'config.machine.gpu_check_total.enable', false)
                         && <div className="form-blocks">
-                            <div className="form-group">
-                                <div className="pretty p-default">
-                                    <Checkbox id="gpu_check_reboot_failed"
-                                              field="config.machine.gpu_check_total.reboot_when_failed"
-                                              initialValue={ get(data, 'config.machine.gpu_check_total.reboot_when_failed') }/>
-                                    <div className="state p-success-o">
-                                        <label className="form-checkbox">
-                                            Reboot machine when check failed
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">AMD GPU in the system</label>
-                                <Text id="gpu_check_amd"
-                                      field="config.machine.gpu_check_total.amd"
-                                      type="number"
-                                      min="0"
-                                      initialValue={ get(data, 'config.machine.gpu_check_total.amd') }/>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Nvidia GPU in the system</label>
-                                <Text id="gpu_check_nvidia"
-                                      field="config.machine.gpu_check_total.nvidia"
-                                      type="number"
-                                      min="0"
-                                      initialValue={ get(data, 'config.machine.gpu_check_total.nvidia') }/>
-                            </div>
+                            <FormGroup title="Reboot machine when check failed"
+                                       elementType="checkbox"
+                                       id="gpu_check_reboot_failed"
+                                       field="config.machine.gpu_check_total.reboot_when_failed"
+                                       initialValue={ get(data, 'config.machine.gpu_check_total.reboot_when_failed') }/>
+
+                            <FormGroup title="AMD GPU in the system"
+                                       elementType="text"
+                                       id="gpu_check_amd"
+                                       field="config.machine.gpu_check_total.amd"
+                                       type="number"
+                                       min="0"
+                                       initialValue={ get(data, 'config.machine.gpu_check_total.amd') }/>
+
+                            <FormGroup title="Nvidia GPU in the system"
+                                       elementType="text"
+                                       id="gpu_check_nvidia"
+                                       field="config.machine.gpu_check_total.nvidia"
+                                       type="number"
+                                       min="0"
+                                       initialValue={ get(data, 'config.machine.gpu_check_total.nvidia') }/>
                         </div>
                     }
                     { btn }
@@ -87,107 +72,79 @@ export default class PanelWatchdog extends ConfigPanel {
 
                 { /* Systemd */ }
                 <Frame frameType="frame-c" title="SystemD Watcher">
-                    <div className="form-group">
-                        <div className="pretty p-default">
-                            <Checkbox id="watchdog_systemd"
-                                      field="config.systemd.settings.enable"
-                                      initialValue={ get(data, 'config.systemd.settings.enable') }/>
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    Enable Systemd Watcher
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="pretty p-default">
-                            <Checkbox id="hard_reboot"
-                                      field="config.machine.settings.hard_reboot"
-                                      initialValue={ get(data, 'config.machine.settings.hard_reboot') }/>
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    Use hard reboot by calling Linux magic command
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <FormGroup title="Enable Systemd Watcher"
+                               elementType="checkbox"
+                               id="watchdog_systemd"
+                               field="config.systemd.settings.enable"
+                               initialValue={ get(data, 'config.systemd.settings.enable') }/>
+
+                    <FormGroup title="Use hard reboot by calling Linux magic command"
+                               elementType="checkbox"
+                               id="hard_reboot"
+                               field="config.machine.settings.hard_reboot"
+                               initialValue={ get(data, 'config.machine.settings.hard_reboot') }/>
+
                     { btn }
                 </Frame>
 
                 { /* Watchdog */ }
                 <Frame frameType="frame-c" title="Miner Watchdog">
-                    <div className="form-group">
-                        <div className="pretty p-default">
-                            <Checkbox id="watchdog_enable"
-                                      field="config.watchdog.settings.enable"
-                                      initialValue={ get(data, 'config.watchdog.settings.enable') }/>
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    Enable Watchdog
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <FormGroup title="Enable Watchdog"
+                               elementType="checkbox"
+                               id="watchdog_enable"
+                               field="config.watchdog.settings.enable"
+                               initialValue={ get(data, 'config.watchdog.settings.enable') }/>
 
                     { get(data, 'config.watchdog.settings.enable', false)
                         && <div className="form-blocks">
-                            <div className="form-group">
-                                <label className="form-label">Checking interval in seconds</label>
-                                <Text id="watchdog_interval"
-                                      field="config.watchdog.settings.tick"
-                                      type="number"
-                                      min="0"
-                                      initialValue={ get(data, 'config.watchdog.settings.tick') }/>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Maximum soft restarting retries</label>
-                                <Text id="watchdog_retry"
-                                      field="config.watchdog.settings.maximum_retry"
-                                      type="number"
-                                      min="0"
-                                      initialValue={ get(data, 'config.watchdog.settings.maximum_retry') }/>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Delay in seconds before rebooting</label>
-                                <Text id="reboot_delay"
-                                      field="config.watchdog.settings.reboot_delay"
-                                      type="number"
-                                      min="0"
-                                      initialValue={ get(data, 'config.watchdog.settings.reboot_delay') }/>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Maximum retry for soft reboot before going to full reboot</label>
-                                <Text id="maximum_retry"
-                                      field="config.watchdog.settings.maximum_retry"
-                                      type="number"
-                                      min="0"
-                                      initialValue={ get(data, 'config.watchdog.settings.maximum_retry') }/>
-                            </div>
+                            <FormGroup title="Checking interval in seconds"
+                                       elementType="text"
+                                       id="watchdog_interval"
+                                       field="config.watchdog.settings.tick"
+                                       type="number"
+                                       min="0"
+                                       initialValue={ get(data, 'config.watchdog.settings.tick') }/>
 
-                            { get(data, 'config.machine.gpu_miner.enable', false)
-                                && <div className="form-group">
-                                    <label className="form-label">GPU Miner Minimum Hash rate</label>
-                                    <Text id="gpu_hashrate"
-                                          field="config.machine.gpu_miner.minimum_hashrate"
-                                          initialValue={ get(data, 'config.machine.gpu_miner.minimum_hashrate') }/>
-                                    <div className="form-description">
-                                        Warning : different miner will report different value denomination of hash rate.
-                                        Leave this field empty to disable this feature.
-                                    </div>
-                                </div>
+                            <FormGroup title="Maximum soft restarting retries"
+                                       elementType="text"
+                                       id="watchdog_retry"
+                                       field="config.watchdog.settings.maximum_retry"
+                                       type="number"
+                                       min="0"
+                                       initialValue={ get(data, 'config.watchdog.settings.maximum_retry') }/>
+
+                            <FormGroup title="Delay in seconds before rebooting"
+                                       elementType="text"
+                                       id="reboot_delay"
+                                       field="config.watchdog.settings.reboot_delay"
+                                       type="number"
+                                       min="0"
+                                       initialValue={ get(data, 'config.watchdog.settings.reboot_delay') }/>
+
+                            <FormGroup title="Maximum retry for soft reboot before going to full reboot"
+                                       elementType="text"
+                                       id="maximum_retry"
+                                       field="config.watchdog.settings.maximum_retry"
+                                       type="number"
+                                       min="0"
+                                       initialValue={ get(data, 'config.watchdog.settings.maximum_retry') }/>
+
+                            { get(data, 'config.machine.gpu_miner.enable', false) &&
+                            <FormGroup title="GPU Miner Minimum Hash rate"
+                                       description="Warning : different miner will report different value denomination of hash rate. Leave this field empty to disable this feature."
+                                       elementType="text"
+                                       id="gpu_hashrate"
+                                       field="config.machine.gpu_miner.minimum_hashrate"
+                                       initialValue={ get(data, 'config.machine.gpu_miner.minimum_hashrate') }/>
                             }
 
-                            { get(data, 'config.machine.cpu_miner.enable', false)
-                                && <div className="form-group">
-                                    <label className="form-label">CPU Miner Minimum Hash rate</label>
-                                    <Text id="cpu_hashrate"
-                                          field="config.machine.cpu_miner.minimum_hashrate"
-                                          initialValue={ get(data, 'config.machine.cpu_miner.minimum_hashrate') }/>
-                                    <div className="form-description">
-                                        Warning : different miner will report different value denomination of hash rate.
-                                        Leave this field empty to disable this feature.
-                                    </div>
-                                </div>
+                            { get(data, 'config.machine.cpu_miner.enable', false) &&
+                            <FormGroup title="CPU Miner Minimum Hash rate"
+                                       description="Warning : different miner will report different value denomination of hash rate. Leave this field empty to disable this feature."
+                                       elementType="text"
+                                       id="cpu_hashrate"
+                                       field="config.machine.cpu_miner.minimum_hashrate"
+                                       initialValue={ get(data, 'config.machine.cpu_miner.minimum_hashrate') }/>
                             }
                         </div>
                     }

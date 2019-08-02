@@ -1,14 +1,14 @@
 import React        from 'react';
 import GpuTuner     from '../components/GpuTuner';
 import FanSettings  from '../components/FanSettings';
-import CoinSelector from '../components/CoinSelector';
-import GpuSelector  from '../components/GpuSelector';
 import Frame        from '../components/Frame';
+import FormGroup    from '../components/FormGroup';
 import Config       from '../modules/Config';
 import ConfigPanel  from '../base/ConfigPanel';
+import { Form, Option } from 'informed';
 
-import { get, merge, unset, isEmpty, forEach, omit, defer, uniqBy } from 'lodash';
-import { Form, Text, Checkbox, Select, Option } from 'informed';
+import { get, merge, unset, isEmpty, forEach, uniqBy } from 'lodash';
+
 
 
 export default class PanelTuner extends ConfigPanel {
@@ -177,60 +177,58 @@ export default class PanelTuner extends ConfigPanel {
         return (
             <Form id="tuner-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
                 <Frame frameType="frame-c" title="Global Settings">
-                    <div className="form-group">
-                        <div className="pretty p-default">
-                            <Checkbox id="enable_tuner"
-                                      field="config.tuner.settings.enable"
-                                      initialValue={ get(data, 'config.tuner.settings.enable') }/>
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    Enable GPU Tuner
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <FormGroup title="Enable GPU Tuner"
+                               elementType="checkbox"
+                               id="enable_tuner"
+                               field="config.tuner.settings.enable"
+                               initialValue={ get(data, 'config.tuner.settings.enable') }/>
+
                     { isActive
                         &&  <div className="gpu-tuners-block">
                         <div className="form-row">
-                            <div className="items">
-                                <label className="form-label">Tuner Mode</label>
-                                <Select id="tuner_mode"
-                                        field="config.tuner.settings.mode"
-                                        initialValue={ get(data, 'config.tuner.settings.mode') }>
-                                    <Option value="dynamic">Dynamic</Option>
-                                    <Option value="static">Static</Option>
-                                    <Option value="time">Time based</Option>
-                                </Select>
-                            </div>
+                            <FormGroup title="Tuner Mode"
+                                       elementClass="items"
+                                       elementType="select"
+                                       id="tuner_mode"
+                                       field="config.tuner.settings.mode"
+                                       initialValue={ get(data, 'config.tuner.settings.mode') }>
+                                <Option value="dynamic">Dynamic</Option>
+                                <Option value="static">Static</Option>
+                                <Option value="time">Time based</Option>
+                            </FormGroup>
+
                             { ( get(data, 'config.tuner.settings.mode', 'dynamic') === 'time')
-                            && <div className="items">
-                                <label className="form-label">Hour to use minimum power</label>
-                                <Text id="tuner_minhour"
-                                      field="config.tuner.settings.minHour"
-                                      type="number"
-                                      min="0"
-                                      max="24"
-                                      initialValue={ get(data, 'config.tuner.settings.minHour') }/>
-                            </div> }
+                            && <FormGroup title="Hour to use minimum power"
+                                          elementClass="items"
+                                          elementType="text"
+                                          id="tuner_minhour"
+                                          field="config.tuner.settings.minHour"
+                                          type="number"
+                                          min="0"
+                                          max="24"
+                                          initialValue={ get(data, 'config.tuner.settings.minHour') }/>
+                            }
                             { ( get(data, 'config.tuner.settings.mode', 'dynamic') === 'time')
-                            && <div className="items">
-                                <label className="form-label">Hour to use maximum power</label>
-                                <Text id="tuner_maxhour"
-                                      field="config.tuner.settings.maxHour"
-                                      type="number"
-                                      min="0"
-                                      max="24"
-                                      initialValue={ get(data, 'config.tuner.settings.maxHour') }/>
-                            </div> }
+                            && <FormGroup title="Hour to use maximum power"
+                                          elementClass="items"
+                                          elementType="text"
+                                          id="tuner_maxhour"
+                                          field="config.tuner.settings.maxHour"
+                                          type="number"
+                                          min="0"
+                                          max="24"
+                                          initialValue={ get(data, 'config.tuner.settings.maxHour') }/>
+                            }
                             { ( get(data, 'config.tuner.settings.mode', 'dynamic') === 'dynamic')
-                            && <div className="items">
-                                <label className="form-label">Interval Period in seconds</label>
-                                <Text id="tuner_tick"
-                                      field="config.tuner.settings.tick"
-                                      type="number"
-                                      min="0"
-                                      initialValue={ get(data, 'config.tuner.settings.tick') }/>
-                            </div> }
+                            && <FormGroup title="Interval Period in seconds"
+                                          elementClass="items"
+                                          elementType="text"
+                                          id="tuner_tick"
+                                          field="config.tuner.settings.tick"
+                                          type="number"
+                                          min="0"
+                                          initialValue={ get(data, 'config.tuner.settings.tick') }/>
+                            }
                         </div>
                     </div> }
                     { btn }
@@ -241,37 +239,37 @@ export default class PanelTuner extends ConfigPanel {
                         <div className="tuner-box">
                             <div className="action-bar">
                                 <div className="form-row">
-                                    <div className="items">
-                                        <label className="form-label">Select GPU:</label>
-                                        <GpuSelector key="local.name.gpu"
-                                                     field="local.name.gpu"
-                                                     hasGlobal={ true }
-                                                     onChange={ this.handleOverrideChange }
-                                                     initialValue={ get(data, 'local.name.gpu') }/>
-                                    </div>
-                                    <div className="items">
-                                        <label className="form-label">Coin Overrides:</label>
-                                        <CoinSelector key="local.name.coin"
-                                                      field="local.name.coin"
-                                                      hasGlobal={ true }
-                                                      onChange={ this.handleOverrideChange }
-                                                      initialValue={ get(data, 'local.name.coin') }/>
-                                    </div>
+                                    <FormGroup title="Select GPU:"
+                                               elementClass="items"
+                                               elementType="gpuselector"
+                                               key="local.name.gpu"
+                                               field="local.name.gpu"
+                                               hasGlobal={ true }
+                                               onChange={ this.handleOverrideChange }
+                                               initialValue={ get(data, 'local.name.gpu') }/>
+
+                                    <FormGroup title="Coin Overrides:"
+                                               elementClass="items"
+                                               elementType="coinselector"
+                                               key="local.name.coin"
+                                               field="local.name.coin"
+                                               hasGlobal={ true }
+                                               onChange={ this.handleOverrideChange }
+                                               initialValue={ get(data, 'local.name.coin') }/>
+
                                     { !isEmpty(overrides)
-                                        && <div className="items">
-                                            <label className="form-label">Stored Overrides</label>
-                                            <Select id="tuner_overides"
-                                                    field="local.name.overrides"
-                                                    onChange={ this.handleOverrideChange }
-                                                    initialValue={ get(data, 'local.name.overrides') }>
-                                                <Option value="global">Select Override</Option>
-
-                                                { overrides.map((override, key) => {
-                                                    return (<Option key={ 'gpu-override-' + key } value={ override.value }>{ override.text }</Option>);
-                                                }) }
-
-                                            </Select>
-                                        </div>
+                                        && <FormGroup title="Stored Overrides"
+                                                      elementClass="items"
+                                                      elementType="select"
+                                                      id="tuner_overides"
+                                                      field="local.name.overrides"
+                                                      onChange={ this.handleOverrideChange }
+                                                      initialValue={ get(data, 'local.name.overrides') }>
+                                            <Option value="global">Select Override</Option>
+                                            { overrides.map((override, key) => {
+                                                return (<Option key={ 'gpu-override-' + key } value={ override.value }>{ override.text }</Option>);
+                                            }) }
+                                        </FormGroup>
                                     }
                                 </div>
                             </div>

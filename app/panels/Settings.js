@@ -4,9 +4,9 @@ import Config       from '../modules/Config';
 import CoinSelector from '../components/CoinSelector';
 import PoolSelector from '../components/PoolSelector';
 import Frame        from '../components/Frame';
-
-import { get, merge, unset, isEmpty } from 'lodash';
-import { Form, Text, Checkbox, Select, Option } from 'informed';
+import FormGroup    from '../components/FormGroup';
+import { get  }     from 'lodash';
+import { Form }     from 'informed';
 
 export default class PanelSettings extends ConfigPanel {
 
@@ -42,115 +42,91 @@ export default class PanelSettings extends ConfigPanel {
             <Form id="settings-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
                 { /* General Settings */ }
                 <Frame frameType="frame-c" title="General Settings">
-                    <div className="form-group">
-                        <label className="form-label">Box name</label>
-                        <Text id="box_name"
-                              field="config.machine.settings.box_name"
-                              initialValue={ get(data, 'config.machine.settings.box_name') }/>
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Worker name</label>
-                        <Text id="worker_name"
-                              field="config.machine.settings.worker"
-                              initialValue={ get(data, 'config.machine.settings.worker') }/>
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Email address</label>
-                        <Text id="email"
-                              field="config.machine.settings.email"
-                              initialValue={ get(data, 'config.machine.settings.email') }/>
-                    </div>
+                    <FormGroup title="Box Name"
+                               elementType="text"
+                               id="box_name"
+                               field="config.machine.settings.box_name"
+                               initialValue={ get(data, 'config.machine.settings.box_name') } />
+
+                    <FormGroup title="Worker name"
+                               elementType="text"
+                               id="worker_name"
+                               field="config.machine.settings.worker"
+                               initialValue={ get(data, 'config.machine.settings.worker') }/>
+
+                    <FormGroup title="Email address"
+                               elementType="text"
+                               id="email"
+                               field="config.machine.settings.email"
+                               initialValue={ get(data, 'config.machine.settings.email') }/>
                     { btn }
                 </Frame>
 
                 { /* GPU Miner */ }
                 <Frame frameType="frame-c" title="GPU Miner">
-                    <div className="form-group">
-                        <div className="pretty p-default">
-                            <Checkbox id="gpu_miner_enable"
-                                      field="config.machine.gpu_miner.enable"
-                                      initialValue={ get(data, 'config.machine.gpu_miner.enable') }/>
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    Enable GPU Miner
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <FormGroup title="Enable GPU Miner"
+                               elementType="checkbox"
+                               id="gpu_miner_enable"
+                               field="config.machine.gpu_miner.enable"
+                               initialValue={ get(data, 'config.machine.gpu_miner.enable') }/>
 
                     { get(data, 'config.machine.gpu_miner.enable', false)
                         && <div className="form-blocks">
-                            <div className="form-group">
-                                <label className="form-label">Coin to mine</label>
-                                <CoinSelector field="config.machine.gpu_miner.coin"
-                                              onlyHasWallet={ true }
-                                              onlyHasPool={ true }
-                                              onlyHasMiner={ true }
-                                              onlyHasNvidia={ true }
-                                              onlyHasAmd={ true }
-                                              hasEmpty={ true }
-                                              initialValue={ get(data, 'config.machine.gpu_miner.coin') }/>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Pool to use</label>
-                                <PoolSelector field="config.machine.gpu_miner.pool"
-                                              onlyHasCoin={ get(data, 'config.machine.gpu_miner.coin', false) }
-                                              hasEmpty={ true }
-                                              initialValue={ get(data, 'config.machine.gpu_miner.pool') }/>
-                            </div>
+                            <FormGroup title="Coin to mine"
+                                       elementType="coinselector"
+                                       field="config.machine.gpu_miner.coin"
+                                       onlyHasWallet={ true }
+                                       onlyHasPool={ true }
+                                       onlyHasMiner={ true }
+                                       onlyHasNvidia={ true }
+                                       onlyHasAmd={ true }
+                                       hasEmpty={ true }
+                                       initialValue={ get(data, 'config.machine.gpu_miner.coin') } />
+
+                            <FormGroup title="Pool to use"
+                                       elementType="poolselector"
+                                       field="config.machine.gpu_miner.pool"
+                                       onlyHasCoin={ get(data, 'config.machine.gpu_miner.coin', false) }
+                                       hasEmpty={ true }
+                                       initialValue={ get(data, 'config.machine.gpu_miner.pool') } />
 
                             { (dual && !secondary)
-                                && <div className="form-group">
-                                    <div className="pretty p-default">
-                                        <Checkbox key="gpu_miner_dual"
-                                                  field="config.machine.gpu_miner.dual"
-                                                  initialValue={ get(data, 'config.machine.gpu_miner.dual') }/>
-                                        <div className="state p-success-o">
-                                            <label className="form-checkbox">
-                                                Enable dual mining
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                                && <FormGroup title="Enable dual mining"
+                                              elementType="checkbox"
+                                              key="gpu_miner_dual"
+                                              field="config.machine.gpu_miner.dual"
+                                              initialValue={ get(data, 'config.machine.gpu_miner.dual') }/>
                             }
                             { get(data, 'config.machine.gpu_miner.dual', false)
                                 && dual
                                 && !secondary
                                 && <div className="form-blocks">
-                                    <div className="form-group">
-                                        <label className="form-label">Second Coin to mine</label>
-                                        <CoinSelector key="config.machine.gpu_miner.second_coin"
-                                                      field="config.machine.gpu_miner.second_coin"
-                                                      onlyHasWallet={ true }
-                                                      onlyHasPool={ true }
-                                                      onlyHasMiner={ true }
-                                                      onlyHasDual={ true }
-                                                      onlyHasSecondary = { true }
-                                                      hasEmpty={ true }
-                                                      initialValue={ get(data, 'config.machine.gpu_miner.second_coin') }/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Second Pool to use</label>
-                                        <PoolSelector key="config.machine.gpu_miner.second_pool"
-                                                      field="config.machine.gpu_miner.second_pool"
-                                                      onlyHasCoin={ get(data, 'config.machine.gpu_miner.second_coin', false) }
-                                                      hasEmpty={ true }
-                                                      initialValue={ get(data, 'config.machine.gpu_miner.second_pool') }/>
-                                    </div>
+                                    <FormGroup title="Second Coin to mine"
+                                               elementType="coinselector"
+                                               key="config.machine.gpu_miner.second_coin"
+                                               field="config.machine.gpu_miner.second_coin"
+                                               onlyHasWallet={ true }
+                                               onlyHasPool={ true }
+                                               onlyHasMiner={ true }
+                                               onlyHasDual={ true }
+                                               onlyHasSecondary = { true }
+                                               hasEmpty={ true }
+                                               initialValue={ get(data, 'config.machine.gpu_miner.second_coin') }/>
+
+                                    <FormGroup title="Second Pool to use"
+                                               elementType="poolselector"
+                                               key="config.machine.gpu_miner.second_pool"
+                                               field="config.machine.gpu_miner.second_pool"
+                                               onlyHasCoin={ get(data, 'config.machine.gpu_miner.second_coin', false) }
+                                               hasEmpty={ true }
+                                               initialValue={ get(data, 'config.machine.gpu_miner.second_pool') }/>
                                 </div>
                             }
-                            <div className="form-group">
-                                <div className="pretty p-default">
-                                    <Checkbox id="gpu_miner_enable"
-                                              field="config.machine.settings.gpu_strict_poser_mode"
-                                              initialValue={ get(data, 'config.machine.settings.gpu_strict_power_mode') }/>
-                                    <div className="state p-success-o">
-                                        <label className="form-checkbox">
-                                            Use strict power mode for reporting GPU power usage
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                            <FormGroup title="Use strict power mode for reporting GPU power usage"
+                                       elementType="checkbox"
+                                       id="gpu_miner_enable"
+                                       field="config.machine.settings.gpu_strict_poser_mode"
+                                       initialValue={ get(data, 'config.machine.settings.gpu_strict_power_mode') }/>
                         </div>
                     }
                     { btn }
@@ -158,61 +134,50 @@ export default class PanelSettings extends ConfigPanel {
 
                 { /* CPU Miner */ }
                 <Frame frameType="frame-c" title="CPU Miner">
-                    <div className="form-group">
-                        <div className="pretty p-default">
-                            <Checkbox id="cpu_miner_enable"
-                                      field="config.machine.cpu_miner.enable"
-                                      initialValue={ get(data, 'config.machine.cpu_miner.enable') }/>
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    Enable CPU Miner
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <FormGroup title="Enable CPU Miner"
+                               elementType="checkbox"
+                               id="cpu_miner_enable"
+                               field="config.machine.cpu_miner.enable"
+                               initialValue={ get(data, 'config.machine.cpu_miner.enable') }/>
+
                     { get(data, 'config.machine.cpu_miner.enable', false)
                         && <div className="form-blocks">
-                            <div className="form-group">
-                                <label className="form-label">Coin to mine</label>
-                                <CoinSelector key="config.machine.cpu_miner.coin"
-                                              field="config.machine.cpu_miner.coin"
-                                              onlyHasWallet={ true }
-                                              onlyHasPool={ true }
-                                              onlyHasMiner={ true }
-                                              onlyHasCpu={ true }
-                                              hasEmpty={ true }
-                                              initialValue={ get(data, 'config.machine.cpu_miner.coin') }/>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Pool to use</label>
-                                <PoolSelector key="config.machine.cpu_miner.pool"
-                                              field="config.machine.cpu_miner.pool"
-                                              onlyHasCoin={ get(data, 'config.machine.cpu_miner.coin', false) }
-                                              hasEmpty={ true }
-                                              initialValue={ get(data, 'config.machine.cpu_miner.pool') }/>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Number of CPU thread to use</label>
-                                <Text id="cpu_thread"
-                                      field="config.machine.cpu_miner.thread"
-                                      type="number"
-                                      min="0"
-                                      initialValue={ get(data, 'config.machine.cpu_miner.thread') }/>
-                                <div className="form-description">
-                                    Throttle the miner instance mining intensity by lowering the number of CPU thread to use.
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">CPU miner priority</label>
-                                <Text id="cpu_priority"
-                                      field="config.machine.cpu_miner.priority"
-                                      type="number"
-                                      min="0"
-                                      initialValue={ get(data, 'config.machine.cpu_miner.priority') }/>
-                                <div className="form-description">
-                                    Throttle the miner instance mining intensity by setting higher number of process priority.
-                                </div>
-                            </div>
+                            <FormGroup title="Coin to mine"
+                                       elementType="coinselector"
+                                       key="config.machine.cpu_miner.coin"
+                                       field="config.machine.cpu_miner.coin"
+                                       onlyHasWallet={ true }
+                                       onlyHasPool={ true }
+                                       onlyHasMiner={ true }
+                                       onlyHasCpu={ true }
+                                       hasEmpty={ true }
+                                       initialValue={ get(data, 'config.machine.cpu_miner.coin') }/>
+
+                            <FormGroup title="Pool to use"
+                                       elementType="poolselector"
+                                       key="config.machine.cpu_miner.pool"
+                                       field="config.machine.cpu_miner.pool"
+                                       onlyHasCoin={ get(data, 'config.machine.cpu_miner.coin', false) }
+                                       hasEmpty={ true }
+                                       initialValue={ get(data, 'config.machine.cpu_miner.pool') }/>
+
+                            <FormGroup title="Number of CPU thread to use"
+                                       description="Throttle the miner instance mining intensity by lowering the number of CPU thread to use."
+                                       elementType="text"
+                                       id="cpu_thread"
+                                       field="config.machine.cpu_miner.thread"
+                                       type="number"
+                                       min="0"
+                                       initialValue={ get(data, 'config.machine.cpu_miner.thread') } />
+
+                            <FormGroup title="CPU miner priority"
+                                       description="Throttle the miner instance mining intensity by setting higher number of process priority."
+                                       elementType="text"
+                                       id="cpu_priority"
+                                       field="config.machine.cpu_miner.priority"
+                                       type="number"
+                                       min="0"
+                                       initialValue={ get(data, 'config.machine.cpu_miner.priority') }/>
                         </div>
                     }
                     { btn }

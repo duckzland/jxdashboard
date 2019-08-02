@@ -62,26 +62,6 @@
 @ToolTipText: #d3f7ff;
 
 
-@dark: #bbbbbb;
-@main: #ff6600;
-@light: #ffffff;
-
-@dark: #964519;
-@main: #fb8b33;
-@light: #ff7900;
-
-@dark: rgb(181, 5, 5);
-@main: #964519;
-@light: #feec67;
-
-@dark: #ff5a00;
-@main: #964519;
-@light: #964519;
-
-@dark: #050608;
-@main: #050608;
-@light: #3a1f00;
-
 /**
   Generic Styling for both vertical and horizontal
   **/
@@ -168,13 +148,12 @@ body {
     }
   }
 
-  .frame-f {
+  .frame-c,
+  .frame-d {
     .svg-frame {
-      width: 1500px;
-      left: ~"calc(-100vw + 850px)";
+      max-height: 50px !important;
     }
   }
-
   .frame-b,
   .frame-a {
     .svg-frame {
@@ -1035,6 +1014,16 @@ body {
       min-width: 110px;
       align-items: center;
       padding: 0 2px;
+
+      input[role="combobox"],
+      input[type="text"],
+      input[type="url"],
+      input[type="number"],
+      input[type="tel"],
+      input:not([type]),
+      select {
+        max-width: 100%;
+      }
 
       &.checkbox {
         min-width: 35px;

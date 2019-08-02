@@ -2,7 +2,7 @@ import React              from 'react';
 import Component          from '../base/Component';
 import Config             from '../modules/Config';
 import { Select, Option } from 'informed';
-import { forEach, get, isEmpty, findKey }   from 'lodash';
+import { forEach, get, isEmpty, findKey, sortBy }   from 'lodash';
 
 export default class CoinSelector extends Component {
 
@@ -126,6 +126,8 @@ export default class CoinSelector extends Component {
             this.state.coins.push( coin );
         });
 
+        this.state.coins = sortBy(this.state.coins, 'name');
+
     };
 
     render() {
@@ -144,9 +146,7 @@ export default class CoinSelector extends Component {
                             value: coin.ticker
                         };
 
-                        return (
-                            <Option { ...optionProps } >{ coin.name }</Option>
-                        )
+                        return ( <Option { ...optionProps } >{ coin.name }</Option> )
                     })
                 }
             </Select>

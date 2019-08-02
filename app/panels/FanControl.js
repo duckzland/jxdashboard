@@ -1,12 +1,13 @@
 import React        from 'react';
 import FanSettings  from '../components/FanSettings';
-import FanSelector  from '../components/FanSelector';
 import ConfigPanel  from '../base/ConfigPanel';
 import Config       from '../modules/Config';
 import Frame        from '../components/Frame';
+import FormGroup    from '../components/FormGroup';
+import { Form, Option } from 'informed';
 
 import { get, merge, unset, isEmpty, forEach, omit } from 'lodash';
-import { Form, Text, Checkbox, Select, Option } from 'informed';
+
 
 export default class PanelFanControl extends ConfigPanel {
 
@@ -64,39 +65,31 @@ export default class PanelFanControl extends ConfigPanel {
         return (
             <Form id="fans-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
                 <Frame frameType="frame-c" title="Global Settings">
-                    { svg }
-                    <h1 className="title form-title">Global Settings</h1>
-                    <div className="form-group">
-                        <div className="pretty p-default">
-                            <Checkbox id="enable_tuner"
-                                      field="config.fans.casing.enable"
-                                      initialValue={ get(data, 'config.fans.casing.enable') }/>
-                            <div className="state p-success-o">
-                                <label className="form-checkbox">
-                                    Enable Fan Casing
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <FormGroup title="Enable Fan Casing"
+                               elementType="checkbox"
+                               id="enable_tuner"
+                               field="config.fans.casing.enable"
+                               initialValue={ get(data, 'config.fans.casing.enable') }/>
+
                     { isActive
                         && <div className="fan-tuners-block">
                             <div className="form-row">
-                                <div className="items">
-                                    <label className="form-label">Strategy</label>
-                                    <Select id="tuner_mode"
-                                            field="config.fans.casing.strategy"
-                                            initialValue={ get(data, 'config.fans.casing.strategy') }>
-                                        <Option value="highest">Highest</Option>
-                                        <Option value="average">Average</Option>
-                                    </Select>
-                                </div>
-                                <div className="items">
-                                    <label className="form-label">Interval Period in seconds</label>
-                                    <Text id="tuner_tick"
-                                          field="config.fans.casing.tick"
-                                          type="number"
-                                          initialValue={ get(data, 'config.fans.casing.tick') }/>
-                                </div>
+                                <FormGroup title="Strategy"
+                                           elementType="select"
+                                           elementClass="items"
+                                           id="tuner_mode"
+                                           field="config.fans.casing.strategy"
+                                           initialValue={ get(data, 'config.fans.casing.strategy') }>
+                                    <Option value="highest">Highest</Option>
+                                    <Option value="average">Average</Option>
+                                </FormGroup>
+                                <FormGroup title="Interval Period in seconds"
+                                           elementType="text"
+                                           elementClass="items"Interval Period in seconds
+                                           id="tuner_tick"
+                                           field="config.fans.casing.tick"
+                                           type="number"
+                                           initialValue={ get(data, 'config.fans.casing.tick') }/>
                             </div>
                         </div> }
                     { btn }
@@ -106,13 +99,13 @@ export default class PanelFanControl extends ConfigPanel {
                         <div className="tuner-box">
                             <div className="action-bar">
                                 <div className="form-row">
-                                    <div className="items">
-                                        <label className="form-label">Select Fans:</label>
-                                        <FanSelector key="local.name.pwm"
-                                                     field="local.name.pwm"
-                                                     hasGlobal={ true }
-                                                     initialValue={ get(data, 'local.name.pwm') }/>
-                                    </div>
+                                    <FormGroup title="Select Fans:"
+                                               elementType="fanselector"
+                                               elementClass="items"
+                                               key="local.name.pwm"
+                                               field="local.name.pwm"
+                                               hasGlobal={ true }
+                                               initialValue={ get(data, 'local.name.pwm') }/>
                                 </div>
                             </div>
                             { !isEmpty(fansName) && <FanSettings name={ fansName } data={ data } formApi={ this.formApi } curve={ get(data, fansName + '.curve_enable', false) } checkbox={ false } /> }

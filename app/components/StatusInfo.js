@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { get, isEqual }     from 'lodash';
+import React                from 'react';
+import Component            from '../base/Component';
 import Frame                from './Frame';
+import { get, isEqual }     from 'lodash';
 
-export default class StatusInfo extends React.Component {
+export default class StatusInfo extends Component {
     state = {
         connected: false
     };
@@ -13,10 +14,6 @@ export default class StatusInfo extends React.Component {
         this.state.connected = 'connected' in props ? props.connected : false ;
     }
 
-    shouldComponentUpdate() {
-        return !this.locked;
-    }
-
     componentWillReceiveProps(nextProps) {
         const { connected } = nextProps;
 
@@ -25,14 +22,6 @@ export default class StatusInfo extends React.Component {
             this.setState({ connected: connected });
         }
 
-    }
-
-    componentDidMount() {
-        this.locked = true;
-    }
-
-    componentDidUpdate() {
-        this.locked = true;
     }
 
     render() {

@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React                from 'react';
+import Component            from '../base/Component';
+import Frame                from './Frame';
 import { isEmpty }          from 'lodash';
 import { AreaChart }        from 'react-easy-chart';
-import moment               from 'moment';
-import Frame                from './Frame';
+import dayjs                from 'dayjs';
 
 export default class Graph extends React.Component {
     state = {
@@ -26,10 +27,6 @@ export default class Graph extends React.Component {
 
         this.element = React.createRef();
         this.state.windowWidth = false;
-    }
-
-    shouldComponentUpdate() {
-        return !this.locked;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -62,10 +59,6 @@ export default class Graph extends React.Component {
         window.removeEventListener('resize', this.handleResize);
     }
 
-    componentDidUpdate() {
-        this.locked = true;
-    }
-
     handleResize = () => {
         this.element
             && this.element.current
@@ -84,7 +77,7 @@ export default class Graph extends React.Component {
 
     update = () => {
         this.buffers.push({
-            x: moment().format('D-MMM-YY h:mm:ss'),
+            x: dayjs().format('D-MMM-YY h:mm:ss'),
             y: this.state.payload ? parseInt(this.state.payload, 0) : 0
         });
 
@@ -107,36 +100,36 @@ export default class Graph extends React.Component {
         const width = this.state.windowWidth;
 
         return (
-                <Frame frameType="frame-c" className="graph-content" title={ (title && width) ? title : false }>
-                    <div ref={ this.element } width="100%" />
-                    { !(title && width)
-                        ? <div className="graph-not-ready">Loading data...</div>
-                        : <AreaChart
-                            datePattern={ '%d-%b-%y %H:%M:%S' }
-                            width={ width }
-                            height={ width / 2 }
-                            xType={'time'}
-                            axisLabels={ {x: labelX, y: labelY} }
-                            areaColors={['#ff7700', '#000000']}
-                            yDomainRange={ [0, this.highest * 1.5] }
-                            interpolate={ false }
-                            xTicks={ this.buffers.length }
-                            yTicks={ 5 }
-                            axes
-                            grid
-                            dataPoints
-                            style={{
-                                '.Area0': {
-                                    stroke: '#ff7700'
-                                },
-                                'circle.data-point': {
-                                    transition: 'none !important'
-                                }
-                            }}
-                            data={ [ this.state.data ]}
-                        />
-                    }
-                </Frame>
+            <Frame frameType="frame-c" className="graph-content" title={ (title && width) ? title : false }>
+                <div ref={ this.element } width="100%" />
+                { !(title && width)
+                    ? <div className="graph-not-ready">Loading data...</div>
+                    : <AreaChart
+                        datePattern={ '%d-%b-%y %H:%M:%S' }
+                        width={ width }
+                        height={ width / 2 }
+                        xType={'time'}
+                        axisLabels={ {x: labelX, y: labelY} }
+                        areaColors={['#ff7700', '#000000']}
+                        yDomainRange={ [0, this.highest * 1.5] }
+                        interpolate={ false }
+                        xTicks={ this.buffers.length }
+                        yTicks={ 5 }
+                        axes
+                        grid
+                        dataPoints
+                        style={{
+                            '.Area0': {
+                                stroke: '#ff7700'
+                            },
+                            'circle.data-point': {
+                                transition: 'none !important'
+                            }
+                        }}
+                        data={ [ this.state.data ]}
+                    />
+                }
+            </Frame>
         )
     }
 

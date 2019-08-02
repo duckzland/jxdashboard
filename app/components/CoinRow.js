@@ -1,7 +1,7 @@
 import React                from 'react';
 import Component            from '../base/Component';
-import AlgoSelector         from '../components/AlgoSelector';
-import { Text, Checkbox, Select, Scope } from 'informed';
+import FormGroup            from '../components/FormGroup';
+import { Scope }            from 'informed';
 
 export default class CoinRow extends Component {
 
@@ -14,22 +14,18 @@ export default class CoinRow extends Component {
             <div key={ 'coin-rows-' + index } className="coin-rows">
                 <Scope scope={ 'local[' + index + ']'}>
                     <div className="form-row">
-                        <div className="items">
-                            { showLabel && <label className="form-label">Code</label> }
-                            <Text type="text" key={ 'local-' + index + '-ticker' } field={ 'ticker' }/>
-                        </div>
-                        <div className="items">
-                            { showLabel && <label className="form-label">Name</label> }
-                            <Text type="text" key={ 'local-' + index + '-name' }   field={ 'name'   }/>
-                        </div>
-                        <div className="items">
-                            { showLabel && <label className="form-label">Address</label> }
-                            <Text type="text" key={ 'local-' + index + '-wallet' } field={ 'wallet' }/>
-                        </div>
-                        <div className="items">
-                            { showLabel && <label className="form-label">Algorithm</label> }
-                            <AlgoSelector key={ 'local-' + index + '-algo' } field={ 'algo' } hasEmpty={ true }/>
-                        </div>
+                        <FormGroup title={ showLabel && 'Code' } elementType="text" elementClass="items"
+                                   type="text" key={ 'local-' + index + '-ticker' } field={ 'ticker' }/>
+
+                        <FormGroup title={ showLabel && 'Name' } elementType="text" elementClass="items"
+                                   type="text" key={ 'local-' + index + '-name' }   field={ 'name'   }/>
+
+                        <FormGroup title={ showLabel && 'Address' } elementType="text" elementClass="items"
+                                   type="text" key={ 'local-' + index + '-wallet' } field={ 'wallet' }/>
+
+                        <FormGroup title={ showLabel && 'Algorithm' } elementType="algoselector" elementClass="items"
+                                   key={ 'local-' + index + '-algo' } field={ 'algo' } hasEmpty={ true }/>
+
                         <div className="items">
                             { showLabel  && <label className="form-label">&nbsp;</label> }
                             { removable  && <button key={ 'local-' + index + '-remove' } type="submit" className="form-button" onClick={ onRemove }>X</button> }

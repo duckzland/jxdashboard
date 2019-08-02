@@ -1,8 +1,9 @@
 import React                         from 'react';
-import { isEmpty, isEqual, forEach } from 'lodash';
+import Component                     from '../base/Component';
 import Frame                         from './Frame';
+import { isEmpty, isEqual, forEach } from 'lodash';
 
-export default class GpuInfo extends React.Component {
+export default class GpuInfo extends Component {
     state = {
         data: {}
     };
@@ -15,10 +16,6 @@ export default class GpuInfo extends React.Component {
         this.state.data = 'payload' in props ? this.processPayload(props.payload) : {};
     }
 
-    shouldComponentUpdate() {
-        return !this.locked;
-    }
-
     componentWillReceiveProps(nextProps) {
         const nextPayload = this.processPayload(nextProps.payload);
 
@@ -26,14 +23,6 @@ export default class GpuInfo extends React.Component {
             this.locked = false;
             this.setState({ data: nextPayload });
         }
-    }
-
-    componentDidMount() {
-        this.locked = true;
-    }
-
-    componentDidUpdate() {
-        this.locked = true;
     }
 
     processPayload(payload) {

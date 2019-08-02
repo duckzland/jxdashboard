@@ -43,7 +43,9 @@ export default class PoolSelector extends Component {
 
         const pools = get(data, 'pools', {});
         const PoolSelector = [];
-        forEach(pools, (info, pool) => {
+
+        Object.keys(pools).sort().forEach((pool) => {
+            const info = pools[pool];
             const menuItemProps = {
                 key         : 'pool-selector-for-' + pool,
                 className   : (active === pool) ? 'items active' : 'items',
@@ -63,12 +65,12 @@ export default class PoolSelector extends Component {
                                 <input type="text" onChange={ update } placeholder="enter new pool name"/>
                             </div>
                             <div className="items">
-                                <button className="form-button" onClick={ create }>Add</button>
+                                <button className="form-button" onClick={ create }>+</button>
                             </div>
                         </div>
                     </Frame>
                 </div>
-                <Frame frameType="frame-e" className="menu">
+                <Frame frameType="frame-e" className="menu" title="Registered Pools">
                     { PoolSelector }
                 </Frame>
             </div>
