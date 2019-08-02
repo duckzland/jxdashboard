@@ -1,6 +1,7 @@
 import React        from 'react';
 import ScrollArea   from 'react-scrollbar';
 import CoinRow      from '../components/CoinRow';
+import Frame        from '../components/Frame';
 import ConfigPanel  from '../base/ConfigPanel';
 import Config       from '../modules/Config';
 import { Form }     from 'informed';
@@ -123,28 +124,6 @@ export default class PageCoins extends ConfigPanel {
     render() {
         const { isActive } =  this;
         const { data }     = this.state;
-        const svg          = (
-            <svg className="svg-frame svg-top"
-                 ref={ref => (this.svgElement = ref)}
-                 viewBox="0 0 69.393 35.638"
-                 xmlns="http://www.w3.org/2000/svg"
-                 vector-effect="non-scaling-stroke"
-                 preserveAspectRatio="none">
-                <path className="orange-line" d="M69.189 5.079V2.433l-.794-1.323h-3.44l-.764-.977-5.778.033-.601.944H1.455L.132 2.433v2.646"/>
-                <path className="orange-line" d="M63.351 1.292l-.395.695-3.585-.006"/>
-            </svg>
-        );
-        const svg2         = (
-            <svg className="svg-frame svg-bottom"
-                 ref={ref => (this.svgElement = ref)}
-                 viewBox="0 0 69.393 5.424"
-                 xmlns="http://www.w3.org/2000/svg"
-                 vector-effect="non-scaling-stroke"
-                 preserveAspectRatio="none">
-                <path className="orange-line" d="M69.256.74l.004 2.13-1.321 1.439-9.94-.032-.981 1.015h-6.616l-1.323-1.323H1.455L.132 2.646V0"/>
-                <path className="orange-line" d="M51.75 3.585l.319-.565 3.585.006"/>
-            </svg>
-        );
 
         const contentProps = {
             key: 'content-element',
@@ -168,25 +147,22 @@ export default class PageCoins extends ConfigPanel {
         return (
             <div className="panels">
                 <ScrollArea { ...contentProps }>
-                        <Form id="coin-configuration" className="form-instance wallet-form" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
-                            <div className="inner-content">
-                                { svg  }
-                                { svg2 }
-                                <h1 className="form-title">Registered Coins</h1>
-                                { Rows }
-                                { this.isSaving
-                                    ? <button type="submit" className="form-button" disabled>
-                                        Saving in progress...
-                                    </button>
-                                    : <button type="submit" className="form-button" onClick={ this.handleSave }>
-                                        Save
-                                    </button>
-                                }
-                                <button type="submit" className="form-button" onClick={ this.add }>
-                                    Add New
+                    <Form id="coin-configuration" className="form-instance wallet-form" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
+                        <Frame frameType="frame-c" title="Registered Coins">
+                            { Rows }
+                            { this.isSaving
+                                ? <button type="submit" className="form-button" disabled>
+                                    Saving in progress...
                                 </button>
-                            </div>
-                        </Form>
+                                : <button type="submit" className="form-button" onClick={ this.handleSave }>
+                                    Save
+                                </button>
+                            }
+                            <button type="submit" className="form-button" onClick={ this.add }>
+                                Add New
+                            </button>
+                        </Frame>
+                    </Form>
                 </ScrollArea>
             </div>
         )

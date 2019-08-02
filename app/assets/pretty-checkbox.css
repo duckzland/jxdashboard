@@ -64,7 +64,7 @@
 }
 
 .pretty .state label:before {
-    border-color: #62868e;
+    border-color: #b35300;
 }
 
 .pretty .state.p-is-hover, .pretty .state.p-is-indeterminate {
@@ -735,7 +735,7 @@
 }
 
 .pretty input:checked ~ .state.p-success label:after, .pretty.p-toggle .state.p-success label:after {
-    background-color: #5cb85c !important
+    background-color:#ff7900 !important
 }
 
 .pretty input:checked ~ .state.p-success .icon, .pretty input:checked ~ .state.p-success .svg, .pretty.p-toggle .state.p-success .icon, .pretty.p-toggle .state.p-success .svg {
@@ -744,7 +744,7 @@
 }
 
 .pretty input:checked ~ .state.p-success-o label:before, .pretty.p-toggle .state.p-success-o label:before {
-    border-color: #5cb85c
+    border-color:#ff7900
 }
 
 .pretty input:checked ~ .state.p-success-o label:after, .pretty.p-toggle .state.p-success-o label:after {
@@ -752,25 +752,25 @@
 }
 
 .pretty input:checked ~ .state.p-success-o .icon, .pretty input:checked ~ .state.p-success-o .svg, .pretty input:checked ~ .state.p-success-o svg, .pretty.p-toggle .state.p-success-o .icon, .pretty.p-toggle .state.p-success-o .svg, .pretty.p-toggle .state.p-success-o svg {
-    color: #5cb85c;
-    stroke: #5cb85c
+    color:#ff7900;
+    stroke:#ff7900
 }
 
 .pretty.p-default:not(.p-fill) input:checked ~ .state.p-success-o label:after {
-    background-color: #5cb85c !important
+    background-color:#ff7900 !important
 }
 
 .pretty.p-switch input:checked ~ .state.p-success:before {
-    border-color: #5cb85c
+    border-color:#ff7900
 }
 
 .pretty.p-switch.p-fill input:checked ~ .state.p-success:before {
-    background-color: #5cb85c !important
+    background-color:#ff7900 !important
 }
 
 .pretty.p-switch.p-slim input:checked ~ .state.p-success:before {
-    border-color: #357935;
-    background-color: #357935 !important
+    border-color: #964519;
+    background-color: #964519 !important
 }
 
 .pretty input:checked ~ .state.p-warning label:after, .pretty.p-toggle .state.p-warning label:after {

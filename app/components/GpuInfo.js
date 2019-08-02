@@ -1,6 +1,6 @@
-import React        from 'react';
-import ReactTable   from 'react-table';
+import React                         from 'react';
 import { isEmpty, isEqual, forEach } from 'lodash';
+import Frame                         from './Frame';
 
 export default class GpuInfo extends React.Component {
     state = {
@@ -8,7 +8,6 @@ export default class GpuInfo extends React.Component {
     };
 
     locked      = false;
-    svgElement  = false;
     debug       = false;
 
     constructor(props) {
@@ -145,34 +144,7 @@ export default class GpuInfo extends React.Component {
 
         return (
             !isEmpty(data)
-                ? <div className="inner-content gpu">
-                    { data.length < 14
-                        && <svg className="svg-frame"
-                             ref={ref => (this.svgElement = ref)}
-                             viewBox="0 0 41.612 25.584"
-                             xmlns="http://www.w3.org/2000/svg"
-                             vector-effect="non-scaling-stroke"
-                             preserveAspectRatio="none">
-                            <path className="orange-line" d="M41.476 20.9l.004 2.13-1.322 1.438-9.939-.032-.982 1.015h-6.615l-1.323-1.322H1.456L.133 22.806V20.16"/>
-                            <path className="orange-line" d="M41.408 5.079V2.432l-.794-1.323h-3.44L36.41.132l-5.777.033-.602.944H1.456L.133 2.432v2.646"/>
-                            <path className="orange-line" d="M35.569 1.292l-.394.695-3.585-.006"/>
-                            <path className="orange-line" d="M23.969 23.745l.32-.566 3.584.006"/>
-                        </svg> }
-                    { data.length > 13
-                        && <svg className="svg-frame"
-                            ref={ref => (this.svgElement = ref)}
-                            viewBox="0 0 69.393 35.638"
-                            xmlns="http://www.w3.org/2000/svg"
-                            vector-effect="non-scaling-stroke"
-                            preserveAspectRatio="none">
-                            <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
-                            <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
-                            <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
-                            <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
-                        </svg> }
-                    <h3 className="title">GPU Information</h3>
-                    <ReactTable { ...tableProps }/>
-                </div>
+                ? <Frame frameType="frame-d" className="gpu" title="GPU Information" table={ tableProps }/>
                 : null
         )
     }

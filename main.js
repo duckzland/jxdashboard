@@ -26,16 +26,16 @@ function createWindow() {
         frame: true,
         titleBarStyle: "hidden",
         //type: "desktop",
-        width: 800,
-        height: 600
+        width: 1024,
+        height: 768
     };
 
     if (development) {
         option = {
             //type: "desktop",
             fullscreen: false,
-            width: 800,
-            height: 600
+            width: 1024,
+            height: 768
         }
     }
 

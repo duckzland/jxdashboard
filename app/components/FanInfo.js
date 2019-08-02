@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component }          from 'react';
 import { isEmpty, isEqual, forEach } from 'lodash';
+import Frame                         from './Frame';
 
 export default class FanInfo extends React.Component {
     state = {
@@ -7,7 +8,6 @@ export default class FanInfo extends React.Component {
     };
 
     locked      = false;
-    svgElement  = false;
     debug       = false;
 
     constructor(props) {
@@ -61,17 +61,7 @@ export default class FanInfo extends React.Component {
         const { data } = this.state;
         return (
         !isEmpty(data)
-            ? <div className="inner-content fans">
-                <svg className="svg-frame"
-                     ref={ref => (this.svgElement = ref)}
-                     viewBox="0 0 41.612 14.471"
-                     xmlns="http://www.w3.org/2000/svg"
-                     vector-effect="non-scaling-stroke"
-                     preserveAspectRatio="none">
-                    <path className="orange-line" d="M41.475 9.788l.004 2.129-1.321 1.438-9.94-.032-.982 1.016h-6.614l-1.323-1.323H1.455L.132 11.693V9.047M41.407 5.078V2.433l-.793-1.323h-3.44L36.41.133l-5.778.033-.602.944H1.455L.132 2.433v2.645"/>
-                    <path className="orange-line" d="M35.57 1.292l-.395.695-3.585-.006M23.969 12.632l.319-.565 3.585.006"/>
-                </svg>
-                <h3 className="title">Fans</h3>
+            ? <Frame frameType="frame-d" className="fans" title="Fans">
                 <div className="fan-info">
                     { data.map((fan) => {
                         return (
@@ -79,7 +69,7 @@ export default class FanInfo extends React.Component {
                         )
                     }) }
                 </div>
-            </div>
+            </Frame>
             : null
         )
     }

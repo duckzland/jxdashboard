@@ -27,9 +27,9 @@
 @EditorText: #9abdc5;
 @FrameBackground: #0a2835;
 
-@FormElementBackground: #522c01;
-@FormElementBorder: #3c1902;
-@FormElementText: #cccccc;
+@FormElementBackground: #131313;
+@FormElementBorder: #b35300;
+@FormElementText: #ffffff;
 @FormElementHeaderText: #ffffff;
 @FormElementActiveText: #ffffff;
 @FormElementButtonColor: #964519;
@@ -86,26 +86,15 @@
   Generic Styling for both vertical and horizontal
   **/
 @font-face {
-  font-family: 'orbitronlight';
-  src: url('orbitron-light-webfont.woff2') format('woff2'),
-  url('orbitron-light-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-
-}
-
-@font-face {
   font-family: 'orbitronregular';
-  src: url('orbitron-medium-webfont.woff2') format('woff2'),
-  url('orbitron-medium-webfont.woff') format('woff');
+  src: url('orbitron-medium-webfont.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Electrolize';
-  src: url('electrolize-regular-webfont.woff2') format('woff2'),
-  url('electrolize-regular-webfont.woff') format('woff');
+  src: url('electrolize-regular-webfont.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -124,7 +113,10 @@ body {
   background: #000;
 }
 
-/**
+body {
+  background-image: radial-gradient(#964519 20%, transparent);
+}
+
 /**
   Inspector
   **/
@@ -132,7 +124,7 @@ body {
 
   @import "pretty-checkbox.css";
 
-  background: @InspectorBackground;
+  background: rgba(5,6,8, 0.85);
   color: @InspectorText;
   width: 100%;
   margin: 0;
@@ -154,6 +146,7 @@ body {
     line-height: 140%;
     vertical-align: middle;
     box-sizing: border-box;
+    text-rendering: optimizeLegibility;
   }
 
   #not-connected {
@@ -175,6 +168,20 @@ body {
     }
   }
 
+  .frame-f {
+    .svg-frame {
+      width: 1500px;
+      left: ~"calc(-100vw + 850px)";
+    }
+  }
+
+  .frame-b,
+  .frame-a {
+    .svg-frame {
+      max-width: 40px !important;
+    }
+  }
+
   .svg-frame {
     position: absolute;
     width: 100%;
@@ -189,14 +196,30 @@ body {
       display: block;
     }
 
+    &.svg-left {
+      left: 0;
+      right: auto;
+      width: auto;
+      max-width: 49%;
+    }
+
+    &.svg-right {
+      right: 0;
+      left: auto;
+      width: auto;
+      max-width: 49%;
+    }
+
     &.svg-top {
       height: auto;
+      max-height: 49%;
     }
 
     &.svg-bottom {
       top: auto;
       bottom: 0;
       height: auto;
+      max-height: 49%;
     }
   }
 
@@ -248,6 +271,7 @@ body {
     .statusbar-info {
       margin: 0 !important;
       padding: 30px !important;
+      min-width: 280px;
     }
   }
 
@@ -290,7 +314,7 @@ body {
           }
           .inner-content {
             width: 100%;
-            margin: 5px 10px 5px;
+            margin: 20px 10px 10px;
             position: relative;
             padding: 30px;
 
@@ -381,6 +405,10 @@ body {
               margin: 20px;
               width: ~"calc(100% - 40px)";
 
+              .title {
+                margin-bottom: 15px;
+              }
+
               > *:not(svg) {
                 position: relative;
                 z-index: 2;
@@ -389,7 +417,7 @@ body {
           }
 
           .inner-content {
-            padding: 10px;
+            padding: 23px 10px 5px;
 
             .inner-content {
               padding: 0;
@@ -399,17 +427,22 @@ body {
               flex-direction: row;
               flex-wrap: wrap;
               position: relative;
-              padding: 20px 30px;
-              min-width: 260px;
+              padding: 30px 30px 20px;
               max-width: 50%;
               flex-grow: 1;
               margin: 0 0 0 20px;
               align-items: center;
               order: 2;
+              width: auto;
+
+              .title {
+                margin-bottom: 0;
+              }
 
               .statusbar {
                 display: flex;
                 flex-direction: row;
+                width: 100%;
               }
 
               .status {
@@ -426,6 +459,7 @@ body {
               padding: 30px 30px 20px;
               position: relative;
               flex-grow: 1;
+              width: auto;
 
               .infobar {
                 display: flex;
@@ -572,6 +606,7 @@ body {
 
       .items {
         width: 20%;
+        padding: 0 2px;
 
         &:last-child {
           width: 60px;
@@ -591,7 +626,7 @@ body {
       padding: 10px;
       cursor: pointer;
       text-transform: uppercase;
-      font-size: 13px;
+      font-size: 11px;
       font-family: orbitronregular, "helvetica neue", arial, sans-serif;
       line-height: 34px;
       vertical-align: middle;
@@ -624,7 +659,10 @@ body {
 
   .tabbed-content {
     position: relative;
-    padding: 30px 20px;
+
+    &.inner-content {
+      padding: 30px 20px !important;
+    }
 
     .tab-headers {
       display: flex;
@@ -701,11 +739,11 @@ body {
     background: @FormElementBackground;
     border: 1px solid @FormElementBorder;
     color: @FormElementText;
-    padding: 0 7px;
-    line-height: 29px;
+    padding: 0 8px;
+    line-height: 35px;
     min-height: 0;
     height: auto;
-    font-size: 11px;
+    font-size: 13px;
     border-radius: 0;
     margin: 0;
     width: 100%;
@@ -718,12 +756,12 @@ body {
   input[type="tel"],
   input:not([type]),
   select {
-    height: 29px;
+    height: 35px;
     max-width: 380px;
   }
 
   textarea {
-    padding: 6px 7px;
+    padding: 8px;
   }
 
   input[type=range] {
@@ -829,6 +867,7 @@ body {
 
   input[disabled] {
     background: darken(@FormElementBackground, 5%);
+    border-color: darken(@FormElementBorder, 5%);
   }
 
   .font-element-autocomplete {
@@ -946,10 +985,14 @@ body {
   .form-title {
     font-size: 11px;
     padding-bottom: 4px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     margin-top: 20px;
-    font-weight: 300;
     color: @headingColor;
+
+    &.title {
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
   }
 
   .form-title:first-child {
@@ -958,20 +1001,24 @@ body {
 
   .form-label {
     text-transform: uppercase;
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .form-description {
-    font-size: 9px;
+    font-size: 11px;
     margin-top: 3px;
   }
 
   .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
+
+    &:last-child {
+      margin-bottom: 15px;
+    }
   }
 
   .form-checkbox {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .form-checkbox input {
@@ -987,6 +1034,7 @@ body {
       flex-wrap: wrap;
       min-width: 110px;
       align-items: center;
+      padding: 0 2px;
 
       &.checkbox {
         min-width: 35px;
@@ -1046,6 +1094,7 @@ body {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 0 2px;
 
       &:nth-child(2) {
         flex-grow: 1;
@@ -1060,26 +1109,32 @@ body {
 
   .form-row .items {
     button {
-      margin: 0 0 4px 5px;
+      margin: 0;
       line-height: 18px;
+      height: 35px;
     }
   }
 
   .form-button {
-    font-size: 10px;
-    padding: 3px 8px;
-    background: @FormElementButtonColor;
-    color: @FormElementButtonText;
-    border: none;
-    outline: none;
-    border-radius: 3px;
+    color: #fb8b33;
     cursor: pointer;
+    outline: none;
+    position: relative;
+    font-size: 11px;
     text-align: center;
-    margin-right: 6px;
-    margin-top: 10px;
+    background-color: rgba(251,139,51,0.125);
+    transition: color 250ms ease-out;
+    line-height: 1;
+    text-transform: uppercase;
+    margin: 10px 6px 0 0;
+    padding: 6px 12px;
+    border: 1px solid rgba(150,69,25,0.5);
+    position: relative;
+    z-index: 3;
 
     :hover {
-      background: darken(@FormElementButtonColor, 5%);
+      color: #964519;
+      border-color: rgba(181,5,5,0.5);
     }
   }
 

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { get, isEqual } from 'lodash';
-import prettyBytes from 'pretty-byte';
+import { get, isEqual }     from 'lodash';
+import prettyBytes          from 'pretty-byte';
+import Frame                from './Frame';
 
 export default class NetworkInfo extends React.Component {
     state = {};
     locked = false;
-    svgElement = false;
 
     constructor(props) {
         super(props);
@@ -51,22 +51,12 @@ export default class NetworkInfo extends React.Component {
         const visible = sent !== false || receive !== false;
         return (
             visible
-                ? <div className="inner-content network">
-                    <svg className="svg-frame"
-                         ref={ref => (this.svgElement = ref)}
-                         viewBox="0 0 41.612 14.471"
-                         xmlns="http://www.w3.org/2000/svg"
-                         vector-effect="non-scaling-stroke"
-                         preserveAspectRatio="none">
-                        <path className="orange-line" d="M41.475 9.788l.004 2.129-1.321 1.438-9.94-.032-.982 1.016h-6.614l-1.323-1.323H1.455L.132 11.693V9.047M41.407 5.078V2.433l-.793-1.323h-3.44L36.41.133l-5.778.033-.602.944H1.455L.132 2.433v2.645"/>
-                        <path className="orange-line" d="M35.57 1.292l-.395.695-3.585-.006M23.969 12.632l.319-.565 3.585.006"/>
-                    </svg>
-                    <h3 className="title">Network</h3>
+                ? <Frame frameType="frame-d" className="network" title="Network">
                     <div className="network-info">
                         { sent    !== false && <div className="sent"><span className="label">Sent</span><span className="value">{ sent }</span></div>           }
                         { receive !== false && <div className="receive"><span className="label">Received</span><span className="value">{ receive }</span></div> }
                     </div>
-                </div>
+                </Frame>
                 : null
         )
     }

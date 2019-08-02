@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { isEmpty } from 'lodash';
-import { AreaChart } from 'react-easy-chart';
-import moment from 'moment';
+import { isEmpty }          from 'lodash';
+import { AreaChart }        from 'react-easy-chart';
+import moment               from 'moment';
+import Frame                from './Frame';
 
 export default class Graph extends React.Component {
     state = {
@@ -106,45 +107,36 @@ export default class Graph extends React.Component {
         const width = this.state.windowWidth;
 
         return (
-            <div ref={ this.element } className="graph-content">
-                <svg className="svg-frame"
-                 ref={ref => (this.svgElement = ref)}
-                 viewBox="0 0 69.393 35.638"
-                 xmlns="http://www.w3.org/2000/svg"
-                 vector-effect="non-scaling-stroke"
-                 preserveAspectRatio="none">
-                    <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
-                    <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
-                    <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
-                    <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
-                </svg>
-                { !(title && width) && <div className="graph-not-ready">Loading data...</div> }
-                { (title && width) && <h1 className="title">{ title }</h1> }
-                { (title && width) && <AreaChart
-                    datePattern={ '%d-%b-%y %H:%M:%S' }
-                    width={ width - 40 }
-                    height={ width / 2 }
-                    xType={'time'}
-                    axisLabels={ {x: labelX, y: labelY} }
-                    areaColors={['#ff7700', '#000000']}
-                    yDomainRange={ [0, this.highest * 1.5] }
-                    interpolate={ false }
-                    xTicks={ this.buffers.length }
-                    yTicks={ 5 }
-                    axes
-                    grid
-                    dataPoints
-                    style={{
-                        '.Area0': {
-                            stroke: '#ff7700'
-                        },
-                        'circle.data-point': {
-                            transition: 'none !important'
-                        }
-                    }}
-                    data={ [ this.state.data ]}
-                    /> }
-            </div>
+                <Frame frameType="frame-c" className="graph-content" title={ (title && width) ? title : false }>
+                    <div ref={ this.element } width="100%" />
+                    { !(title && width)
+                        ? <div className="graph-not-ready">Loading data...</div>
+                        : <AreaChart
+                            datePattern={ '%d-%b-%y %H:%M:%S' }
+                            width={ width }
+                            height={ width / 2 }
+                            xType={'time'}
+                            axisLabels={ {x: labelX, y: labelY} }
+                            areaColors={['#ff7700', '#000000']}
+                            yDomainRange={ [0, this.highest * 1.5] }
+                            interpolate={ false }
+                            xTicks={ this.buffers.length }
+                            yTicks={ 5 }
+                            axes
+                            grid
+                            dataPoints
+                            style={{
+                                '.Area0': {
+                                    stroke: '#ff7700'
+                                },
+                                'circle.data-point': {
+                                    transition: 'none !important'
+                                }
+                            }}
+                            data={ [ this.state.data ]}
+                        />
+                    }
+                </Frame>
         )
     }
 

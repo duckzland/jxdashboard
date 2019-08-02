@@ -3,7 +3,8 @@ import ScrollArea   from 'react-scrollbar';
 import { get }      from 'lodash';
 import TabLogs      from '../components/TabLogs';
 import Network      from '../modules/Network';
-import InfoBar      from '../components/InfoBar';
+import SummaryInfo  from '../components/SummaryInfo';
+import StatusInfo   from '../components/StatusInfo';
 import Graph        from '../components/Graph';
 import MachineInfo  from '../components/MachineInfo';
 import NetworkInfo  from '../components/NetworkInfo';
@@ -136,34 +137,8 @@ export default class PageDashboard extends React.Component {
                 </ScrollArea> }
                 <ScrollArea { ...contentProps }>
                     <div className="inner-content wrappedbar">
-                        <div className="statusbar-info">
-                            <svg className="svg-frame"
-                                 ref={ref => (this.svgElement = ref)}
-                                 viewBox="0 0 69.393 14.471"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 vector-effect="non-scaling-stroke"
-                                 preserveAspectRatio="none">
-                                <path className="orange-line" d="M69.257 9.788l.004 2.129-1.322 1.438L58 13.324l-.982 1.015h-6.615l-1.323-1.323H1.455L.132 11.693V9.047"/>
-                                <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
-                                <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
-                                <path className="orange-line" d="M51.75 12.632l.32-.565 3.584.006"/>
-                            </svg>
-                            <div className="inner-content">
-                                <h3 className="title">Status</h3>
-                                <div className="statusbar">
-                                    <div className="status">
-                                        { connected ? 'Connected' : 'Disconnected' }
-                                    </div>
-                                    <div className="action">
-                                        { connected
-                                            ? <button type="button" className="form-button" onClick={ () => { connection('stop')    } }>Stop</button>
-                                            : <button type="button" className="form-button" onClick={ () => { connection('connect') } }>Start</button>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        { connected && <InfoBar { ...this.state } /> }
+                        { <StatusInfo handleClick={ connection } connected={ connected }/> }
+                        { connected && <SummaryInfo { ...this.state } /> }
                     </div>
                     { connected && hasGraph && <div className="inner-content graph">
                         { hashRate  !== false && <Graph title="Hash Rate"   labelX="" labelY="" payload={ String(hashRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }

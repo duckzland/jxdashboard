@@ -3,8 +3,10 @@ import GpuTuner     from '../components/GpuTuner';
 import FanSettings  from '../components/FanSettings';
 import CoinSelector from '../components/CoinSelector';
 import GpuSelector  from '../components/GpuSelector';
+import Frame        from '../components/Frame';
 import Config       from '../modules/Config';
 import ConfigPanel  from '../base/ConfigPanel';
+
 import { get, merge, unset, isEmpty, forEach, omit, defer, uniqBy } from 'lodash';
 import { Form, Text, Checkbox, Select, Option } from 'informed';
 
@@ -171,25 +173,10 @@ export default class PanelTuner extends ConfigPanel {
                 ? <button type="submit" className="form-button" disabled>Saving in progress...</button>
                 : <button type="submit" className="form-button" onClick={ this.handleSave }>Save</button>
         );
-        const svg       = (
-            <svg className="svg-frame"
-                 ref={ref => (this.svgElement = ref)}
-                 viewBox="0 0 69.393 35.638"
-                 xmlns="http://www.w3.org/2000/svg"
-                 vector-effect="non-scaling-stroke"
-                 preserveAspectRatio="none">
-                <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
-                <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
-                <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
-                <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
-            </svg>
-        );
 
         return (
             <Form id="tuner-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
-                <div className="inner-content">
-                    { svg }
-                    <h1 className="title form-title">Global Settings</h1>
+                <Frame frameType="frame-c" title="Global Settings">
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="enable_tuner"
@@ -247,12 +234,10 @@ export default class PanelTuner extends ConfigPanel {
                         </div>
                     </div> }
                     { btn }
-                </div>
+                </Frame>
 
                 { isActive
-                    && <div className="inner-content">
-                        { svg }
-                        <h1 className="title form-title">GPU Tuner</h1>
+                    && <Frame frameType="frame-c" title="GPU Tuner">
                         <div className="tuner-box">
                             <div className="action-bar">
                                 <div className="form-row">
@@ -298,7 +283,7 @@ export default class PanelTuner extends ConfigPanel {
                         && <button type="submit" className="form-button" onClick={ this.removeOverride }>
                             Remove
                         </button> }
-                    </div> }
+                    </Frame> }
             </Form>
         )
     }

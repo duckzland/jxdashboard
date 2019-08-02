@@ -3,6 +3,7 @@ import ConfigPanel  from '../base/ConfigPanel';
 import Config       from '../modules/Config';
 import CoinSelector from '../components/CoinSelector';
 import PoolSelector from '../components/PoolSelector';
+import Frame        from '../components/Frame';
 
 import { get, merge, unset, isEmpty } from 'lodash';
 import { Form, Text, Checkbox, Select, Option } from 'informed';
@@ -36,27 +37,11 @@ export default class PanelSettings extends ConfigPanel {
             ? <button type="submit" className="form-button" disabled>Saving in progress...</button>
             : <button type="submit" className="form-button" onClick={ this.handleSave }>Save</button>
         );
-        const svg       = (
-            <svg className="svg-frame"
-                 ref={ref => (this.svgElement = ref)}
-                 viewBox="0 0 69.393 35.638"
-                 xmlns="http://www.w3.org/2000/svg"
-                 vector-effect="non-scaling-stroke"
-                 preserveAspectRatio="none">
-                <path className="orange-line" d="M69.257 30.954l.004 2.13-1.322 1.438L58 34.49l-.982 1.016h-6.615l-1.323-1.324H1.455L.132 32.859v-2.646"/>
-                <path className="orange-line" d="M69.189 5.079V2.432l-.794-1.323h-3.44l-.764-.977-5.777.033-.602.944H1.455L.132 2.432v2.646"/>
-                <path className="orange-line" d="M63.35 1.292l-.394.695-3.585-.006"/>
-                <path className="orange-line" d="M51.75 33.799l.32-.566 3.584.007"/>
-            </svg>
-        );
-
 
         return (
             <Form id="settings-configuration" className="form-instance" getApi={ this.setFormApi } onChange={ this.handleChange } initialValues={ data }>
                 { /* General Settings */ }
-                <div className="inner-content">
-                    { svg }
-                    <h1 className="title form-title">General Settings</h1>
+                <Frame frameType="frame-c" title="General Settings">
                     <div className="form-group">
                         <label className="form-label">Box name</label>
                         <Text id="box_name"
@@ -76,12 +61,10 @@ export default class PanelSettings extends ConfigPanel {
                               initialValue={ get(data, 'config.machine.settings.email') }/>
                     </div>
                     { btn }
-                </div>
+                </Frame>
 
                 { /* GPU Miner */ }
-                <div className="inner-content">
-                    { svg }
-                    <h1 className="title form-title">GPU Miner</h1>
+                <Frame frameType="frame-c" title="GPU Miner">
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="gpu_miner_enable"
@@ -171,12 +154,10 @@ export default class PanelSettings extends ConfigPanel {
                         </div>
                     }
                     { btn }
-                </div>
+                </Frame>
 
                 { /* CPU Miner */ }
-                <div className="inner-content">
-                    { svg }
-                    <h1 className="title form-title">CPU Miner</h1>
+                <Frame frameType="frame-c" title="CPU Miner">
                     <div className="form-group">
                         <div className="pretty p-default">
                             <Checkbox id="cpu_miner_enable"
@@ -235,7 +216,7 @@ export default class PanelSettings extends ConfigPanel {
                         </div>
                     }
                     { btn }
-                </div>
+                </Frame>
             </Form>
         )
     }
