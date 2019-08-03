@@ -1,0 +1,82 @@
+/**
+ Style for ansi text, css class produced by ansi to react with class modules
+ **/
+.ansi-black-fg,
+.ansi-black {
+    color: #ccc;
+}
+
+.ansi-red-fg,
+.ansi-red {
+    color: rgb(187, 0, 0);
+}
+
+.ansi-green-fg,
+.ansi-green {
+    color: rgb(0, 187, 0);
+}
+
+.ansi-yellow-fg,
+.ansi-yellow {
+    color: rgb(187, 187, 0);
+}
+
+.ansi-blue-fg,
+.ansi-blue {
+    color: rgb(0, 0, 187);
+}
+
+.ansi-magenta-fg,
+.ansi-magenta {
+    color: rgb(187, 0, 187);
+}
+
+.ansi-cyan-fg,
+.ansi-cyan {
+    color: rgb(0, 187, 187);
+}
+
+.ansi-white-fg,
+.ansi-white {
+    color: #fff;
+}
+
+.ansi-bright-black-fg,
+.ansi-bright-black {
+    color: #ddd;
+}
+
+.ansi-bright-red-fg,
+.ansi-bright-red {
+    color: rgb(255, 85, 85);
+}
+
+.ansi-bright-green-fg,
+.ansi-bright-green {
+    color: rgb(0, 255, 0);
+}
+
+.ansi-bright-yellow-fg,
+.ansi-bright-yellow {
+    color: rgb(255, 255, 85);
+}
+
+.ansi-bright-blue-fg,
+.ansi-bright-blue {
+    color: rgb(85, 85, 255);
+}
+
+.ansi-bright-magenta-fg,
+.ansi-bright-magenta {
+    color: rgb(255, 85, 255);
+}
+
+.ansi-bright-cyan-fg,
+.ansi-bright-cyan {
+    color: rgb(85, 255, 255);
+}
+
+.ansi-bright-white-fg,
+.ansi-bright-white {
+    color: #fff;
+}

@@ -1,6 +1,7 @@
 import React                         from 'react';
 import Component                     from '../base/Component';
 import Frame                         from './Frame';
+import InfoLine                      from './InfoLine';
 import { isEmpty, isEqual, forEach } from 'lodash';
 
 export default class FanInfo extends Component {
@@ -9,7 +10,7 @@ export default class FanInfo extends Component {
     };
 
     locked      = false;
-    debug       = false;
+    debug       = true;
 
     constructor(props) {
         super(props);
@@ -53,7 +54,7 @@ export default class FanInfo extends Component {
             ? <Frame frameType="frame-d" className="fans" title="Fans">
                 <div className="fan-info">
                     { data.map((fan) => {
-                        return ( <div key={ 'fan-element-' + fan.label } className="fan"><span className="label">{ fan.label }</span><span className="value">{ fan.speed }</span></div> )
+                        return ( <InfoLine key={ 'fan-element-' + fan.label } className="fan" label={ fan.label } value={ fan.speed }/> )
                     }) }
                 </div>
             </Frame>

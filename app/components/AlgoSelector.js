@@ -16,12 +16,6 @@ export default class AlgoSelector extends Component {
         onlyHasSecondary : false
     };
 
-    constructor(props) {
-        super(props);
-        this.locked = false;
-        this.parseProps(props);
-    }
-
     componentWillReceiveProps(nextProps) {
         forEach(['onlyHasCpu', 'onlyHasAmd', 'onlyHasNvidia', 'onlyHasDual', 'onlyHasSecondary'], (key) => {
             if (key in nextProps && !isEqual(nextProps[key], this.state[key])) {

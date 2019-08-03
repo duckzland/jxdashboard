@@ -2,6 +2,7 @@ import React        from 'react';
 import ScrollArea   from 'react-scrollbar';
 import CoinRow      from '../components/CoinRow';
 import Frame        from '../components/Frame';
+import Donation     from '../components/Donation';
 import ConfigPanel  from '../base/ConfigPanel';
 import Config       from '../modules/Config';
 import { Form }     from 'informed';
@@ -14,6 +15,9 @@ export default class PageCoins extends ConfigPanel {
     state = {
         data: {}
     };
+
+    delay = 0;
+    duration = 100;
 
     constructor(props) {
         super(props);
@@ -163,6 +167,7 @@ export default class PageCoins extends ConfigPanel {
                             </button>
                         </Frame>
                     </Form>
+                    <Donation/>
                 </ScrollArea>
             </div>
         )

@@ -1,7 +1,7 @@
 import React                from 'react';
 import Component            from '../base/Component';
 import Frame                from './Frame';
-
+import InfoLine             from './InfoLine';
 import { get, isEqual }     from 'lodash';
 
 export default class MachineInfo extends React.Component {
@@ -48,18 +48,18 @@ export default class MachineInfo extends React.Component {
             visible
                 ? <Frame frameType="frame-d" className="machine" title={ title }>
                     { gpuCoin !== false && <div className="miners gpu">
-                        { (gpuCoin !== false)     && <div className="coin"><span className="label">Coin</span><span className="value">{ gpuCoin }</span></div>             }
-                        { (gpuPool !== false)     && <div className="pool"><span className="label">Pool</span><span className="value">{ gpuPool }</span></div>             }
-                        { (gpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span><span className="value">{ gpuHashrate }</span></div>     }
-                        { (gpuShares !== false)   && <div className="shares"><span className="label">Shares</span><span className="value">{ gpuShares }</span></div>       }
-                        { (gpuDiff !== false)     && <div className="diff"><span className="label">Diff</span><span className="value">{ gpuDiff }</span></div>             }
+                        { (gpuCoin !== false)     && <InfoLine className="coin" label="Coin" value={ gpuCoin }/>             }
+                        { (gpuPool !== false)     && <InfoLine className="pool" label="Pool" value={ gpuPool }/>             }
+                        { (gpuHashrate !== false) && <InfoLine className="hashrate" label="Hash" value={ gpuHashrate }/>     }
+                        { (gpuShares !== false)   && <InfoLine className="shares" label="Shares" value={ gpuShares }/>       }
+                        { (gpuDiff !== false)     && <InfoLine className="diff" label="Diff" value={ gpuDiff }/>             }
                     </div> }
                     { cpuCoin !== false && <div className="miners cpu">
-                        { (cpuCoin !== false)     && <div className="coin"><span className="label">Coin</span><span className="value">{ cpuCoin }</span></div>             }
-                        { (cpuPool !== false)     && <div className="pool"><span className="label">Pool</span><span className="value">{ cpuPool }</span></div>             }
-                        { (cpuHashrate !== false) && <div className="hashrate"><span className="label">Hash</span><span className="value">{ cpuHashrate }</span></div>     }
-                        { (cpuShares !== false)   && <div className="shares"><span className="label">Shares</span><span className="value">{ cpuShares }</span></div>       }
-                        { (cpuDiff !== false)     && <div className="diff"><span className="label">Diff</span><span className="value">{ cpuDiff }</span></div>             }
+                        { (cpuCoin !== false)     && <InfoLine className="coin" label="Coin" value={ cpuCoin }/>             }
+                        { (cpuPool !== false)     && <InfoLine className="pool" label="Pool" value={ cpuPool }/>             }
+                        { (cpuHashrate !== false) && <InfoLine className="hashrate" label="Hash" value={ cpuHashrate }/>     }
+                        { (cpuShares !== false)   && <InfoLine className="shares" label="Shares" value={ cpuShares }/>       }
+                        { (cpuDiff !== false)     && <InfoLine className="diff" label="Diff" value={ cpuDiff }/>             }
                     </div> }
                 </Frame>
 

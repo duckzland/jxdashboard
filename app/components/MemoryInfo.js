@@ -1,8 +1,10 @@
 import React                from 'react';
 import Component            from '../base/Component';
 import Frame                from './Frame';
+import InfoLine             from './InfoLine';
 import { get, isEqual }     from 'lodash';
 import prettyBytes          from 'pretty-byte';
+
 
 export default class MemoryInfo extends Component {
     state = {};
@@ -43,9 +45,9 @@ export default class MemoryInfo extends Component {
             visible
                 ? <Frame frameType="frame-a" className="memory" title="Memory">
                     <div className="memory-info">
-                        { total     !== false && <div className="total"><span className="label">Total</span><span className="value">{ total }</span></div>             }
-                        { available !== false && <div className="available"><span className="label">Available</span><span className="value">{ available }</span></div> }
-                        { used      !== false && <div className="used"><span className="label">Used</span><span className="value">{ used }</span></div>                }
+                        { total     !== false && <InfoLine className="total" label="Total" value={ total }/>              }
+                        { available !== false && <InfoLine className="available" label="Available" value={ available }/>  }
+                        { used      !== false && <InfoLine className="used" label="Used" value={ used }/>                 }
                     </div>
                 </Frame>
                 : null

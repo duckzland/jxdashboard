@@ -1,4 +1,5 @@
 import React                from 'react';
+import Typist               from 'react-typist';
 import Component            from '../base/Component';
 import Config               from '../modules/Config';
 import Logs                 from './Logs';
@@ -69,13 +70,22 @@ export default class TabLogs extends Component {
         const serverLog = get(this.state.payload, 'serverlog', false);
         const visible   = cpuMiner || gpuMiner || serverLog;
 
+        const typistProps = {
+            avgTypingDelay: 0,
+            stdTypingDelay: 1,
+            startDelay: Frame.svgCount * 100,
+            cursor: {
+                show: false
+            }
+        };
+
         return (
             visible
                 ? <Frame frameType="frame-c" className="tabbed-content">
                     <div className={ 'tab-headers tab-active-' + this.state.activeTab }>
-                        { serverLog && <div className="tab server" onClick={ () => changeTab('server') }>Server Logs</div> }
-                        { gpuMiner  && <div className="tab gpu"    onClick={ () => changeTab('gpu')    }>GPU Miner</div> }
-                        { cpuMiner  && <div className="tab cpu"    onClick={ () => changeTab('cpu')    }>CPU Miner</div> }
+                        { serverLog && <div className="tab server" onClick={ () => changeTab('server') }><Typist { ...typistProps }>Server Logs</Typist></div> }
+                        { gpuMiner  && <div className="tab gpu"    onClick={ () => changeTab('gpu')    }><Typist { ...typistProps }>GPU Miner</Typist></div>   }
+                        { cpuMiner  && <div className="tab cpu"    onClick={ () => changeTab('cpu')    }><Typist { ...typistProps }>CPU Miner</Typist></div>   }
                     </div>
                     <div className="tab-content">
                         { serverLog && isActive('server') && <div className="content active"><Logs logs={ serverLog.split("\n") } /></div> }

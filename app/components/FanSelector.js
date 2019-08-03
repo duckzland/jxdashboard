@@ -11,12 +11,6 @@ export default class FanSelector extends Component {
         data             : Config.storage
     };
 
-    constructor(props) {
-        super(props);
-        this.locked = false;
-        this.parseProps(props);
-    }
-
     parseProps = (props) => {
         this.generate();
     };

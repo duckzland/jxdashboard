@@ -1,6 +1,7 @@
 import React                from 'react';
 import Component            from '../base/Component';
 import Frame                from './Frame';
+import InfoLine             from './InfoLine';
 import { get, isEqual }     from 'lodash';
 import prettyBytes          from 'pretty-byte';
 
@@ -42,8 +43,8 @@ export default class NetworkInfo extends Component {
             visible
                 ? <Frame frameType="frame-d" className="network" title="Network">
                     <div className="network-info">
-                        { sent    !== false && <div className="sent"><span className="label">Sent</span><span className="value">{ sent }</span></div>           }
-                        { receive !== false && <div className="receive"><span className="label">Received</span><span className="value">{ receive }</span></div> }
+                        { sent    !== false && <InfoLine className="sent" label="Sent" value={ sent }/>           }
+                        { receive !== false && <InfoLine className="receive" label="Received" value={ receive }/> }
                     </div>
                 </Frame>
                 : null

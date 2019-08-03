@@ -28,7 +28,7 @@ export default class PoolSelector extends Component {
 
     update = (e) => {
         this.locked = false;
-        this.setState({ newPool: e.target.value });
+        e && e.target && this.setState({ newPool: e.target.value });
     };
 
     create = () => {

@@ -6,6 +6,7 @@ import PageConfiguration from './pages/Configuration';
 import PageDashboard     from './pages/Dashboard';
 import PagePools         from './pages/Pools';
 import Frame             from './components/Frame';
+import Logo              from './components/Logo';
 
 var monitorTimer = null;
 
@@ -122,14 +123,15 @@ export default class Layout extends React.Component {
         }
 
         return (
-            (!serverState || serverState !== 'connected')
-                ? <div key="main-layout" id="not-connected">
+            ( serverState !== 'connected')
+                ? <div key="main-layout-disconnected" id="not-connected">
                     <Frame frameType="frame-d">
+                        <Logo />
                         { message }
                     </Frame>
                     { svg }
                 </div>
-                : <div key="main-layout" id="main-layout">
+                : <div key="main-layout-connected" id="main-layout">
                     <Frame frameType="frame-f">
                         <div id="main-menu" className={ 'menu-active-' + activePage }>
                             <div className="items dashboard" onClick={ () => changePage('dashboard') }>

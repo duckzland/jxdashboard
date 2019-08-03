@@ -71,72 +71,12 @@
     display: none
 }
 
-@-webkit-keyframes zoom {
-    0% {
-        opacity: 0;
-        -webkit-transform: scale(0);
-        transform: scale(0)
-    }
-}
 
 @keyframes zoom {
     0% {
         opacity: 0;
         -webkit-transform: scale(0);
         transform: scale(0)
-    }
-}
-
-@-webkit-keyframes tada {
-    0% {
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-        opacity: 0;
-        -webkit-transform: scale(7);
-        transform: scale(7)
-    }
-    38% {
-        -webkit-animation-timing-function: ease-out;
-        animation-timing-function: ease-out;
-        opacity: 1;
-        -webkit-transform: scale(1);
-        transform: scale(1)
-    }
-    55% {
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-        -webkit-transform: scale(1.5);
-        transform: scale(1.5)
-    }
-    72% {
-        -webkit-animation-timing-function: ease-out;
-        animation-timing-function: ease-out;
-        -webkit-transform: scale(1);
-        transform: scale(1)
-    }
-    81% {
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-        -webkit-transform: scale(1.24);
-        transform: scale(1.24)
-    }
-    89% {
-        -webkit-animation-timing-function: ease-out;
-        animation-timing-function: ease-out;
-        -webkit-transform: scale(1);
-        transform: scale(1)
-    }
-    95% {
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-        -webkit-transform: scale(1.04);
-        transform: scale(1.04)
-    }
-    100% {
-        -webkit-animation-timing-function: ease-out;
-        animation-timing-function: ease-out;
-        -webkit-transform: scale(1);
-        transform: scale(1)
     }
 }
 
@@ -193,36 +133,6 @@
     }
 }
 
-@-webkit-keyframes jelly {
-    0% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1)
-    }
-    30% {
-        -webkit-transform: scale3d(.75, 1.25, 1);
-        transform: scale3d(.75, 1.25, 1)
-    }
-    40% {
-        -webkit-transform: scale3d(1.25, .75, 1);
-        transform: scale3d(1.25, .75, 1)
-    }
-    50% {
-        -webkit-transform: scale3d(.85, 1.15, 1);
-        transform: scale3d(.85, 1.15, 1)
-    }
-    65% {
-        -webkit-transform: scale3d(1.05, .95, 1);
-        transform: scale3d(1.05, .95, 1)
-    }
-    75% {
-        -webkit-transform: scale3d(.95, 1.05, 1);
-        transform: scale3d(.95, 1.05, 1)
-    }
-    100% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1)
-    }
-}
 
 @keyframes jelly {
     0% {
@@ -255,18 +165,6 @@
     }
 }
 
-@-webkit-keyframes rotate {
-    0% {
-        opacity: 0;
-        -webkit-transform: translateZ(-200px) rotate(-45deg);
-        transform: translateZ(-200px) rotate(-45deg)
-    }
-    100% {
-        opacity: 1;
-        -webkit-transform: translateZ(0) rotate(0);
-        transform: translateZ(0) rotate(0)
-    }
-}
 
 @keyframes rotate {
     0% {
@@ -281,14 +179,6 @@
     }
 }
 
-@-webkit-keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 #bdc3c7
-    }
-    100% {
-        box-shadow: 0 0 0 1.5em rgba(189, 195, 199, 0)
-    }
-}
 
 @keyframes pulse {
     0% {
@@ -858,12 +748,4 @@
 
 .pretty.p-bigger label {
     text-indent: 1.7em
-}
-
-@media print {
-    .pretty .state .icon, .pretty .state label:after, .pretty .state label:before, .pretty .state:before {
-        color-adjust: exact;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact
-    }
 }

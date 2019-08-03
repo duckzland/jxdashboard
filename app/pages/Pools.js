@@ -6,6 +6,7 @@ import PoolNavigator from '../components/PoolNavigator';
 import PoolCoins     from '../components/PoolCoins';
 import Frame         from '../components/Frame';
 import FormGroup     from '../components/FormGroup';
+import Donation      from '../components/Donation';
 
 import { get, unset, isEmpty, forEach, merge, omit } from 'lodash';
 import { Text, Form } from 'informed';
@@ -315,6 +316,7 @@ export default class PagePools extends ConfigPanel {
                               </div>
                         }
                     </Form>
+                    <Donation/>
                 </ScrollArea>
             </div>
         )

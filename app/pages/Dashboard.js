@@ -13,6 +13,7 @@ import DiskInfo     from '../components/DiskInfo';
 import FanInfo      from '../components/FanInfo';
 import CpuInfo      from '../components/CpuInfo';
 import GpuInfo      from '../components/GpuInfo';
+import Donation     from '../components/Donation';
 import Config       from '../modules/Config';
 
 export default class PageDashboard extends React.Component {
@@ -126,8 +127,10 @@ export default class PageDashboard extends React.Component {
 
         return (
             <div {...panelProps}>
-                { connected && <ScrollArea { ...sidebarProps }>
+                { connected &&
+                <ScrollArea { ...sidebarProps }>
                     <MachineInfo { ...this.state } />
+                    <Donation/>
                     <MemoryInfo  { ...this.state } />
                     <DiskInfo    { ...this.state } />
                     <NetworkInfo { ...this.state } />
@@ -137,17 +140,20 @@ export default class PageDashboard extends React.Component {
                 </ScrollArea> }
                 <ScrollArea { ...contentProps }>
                     <div className="inner-content wrappedbar">
-                        { <StatusInfo handleClick={ connection } connected={ connected }/> }
                         { connected && <SummaryInfo { ...this.state } /> }
+                        { <StatusInfo handleClick={ connection } connected={ connected }/> }
+                        { !connected && <Donation/> }
                     </div>
-                    { connected && hasGraph && <div className="inner-content graph">
+                    { connected && hasGraph &&
+                    <div className="inner-content graph">
                         { hashRate  !== false && <Graph title="Hash Rate"   labelX="" labelY="" payload={ String(hashRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
                         { debug     !== false && <Graph title="Hash Rate"   labelX="" labelY="" payload={ String(hashRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
                         { debug     !== false && <Graph title="Hash Rate"   labelX="" labelY="" payload={ String(hashRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
                         { tempRate  !== false && <Graph title="Temperature" labelX="" labelY="" payload={ String(tempRate ).replace(/[^0-9.]/g, "") } connected={ connected }/> }
                         { powerRate !== false && <Graph title="Power Usage" labelX="" labelY="" payload={ String(powerRate).replace(/[^0-9.]/g, "") } connected={ connected }/> }
                     </div> }
-                    { connected && <div className="inner-content tabs">
+                    { connected &&
+                    <div className="inner-content tabs">
                         <TabLogs { ...this.state }/>
                     </div> }
                 </ScrollArea>

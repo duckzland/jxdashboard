@@ -13,12 +13,6 @@ export default class GpuSelector extends Component {
         onlyHasAmd       : false
     };
 
-    constructor(props) {
-        super(props);
-        this.locked = false;
-        this.parseProps(props);
-    }
-
     parseProps = (props) => {
         if ('onlyHasNvidia' in props) {
             this.state.onlyHasNvidia = props.onlyHasNvidia;
@@ -55,7 +49,7 @@ export default class GpuSelector extends Component {
 
         this.state.gpu = sortBy(this.state.gpu, 'index');
 
-    };
+    }
 
     render() {
 

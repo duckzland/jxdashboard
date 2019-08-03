@@ -14,7 +14,7 @@ export default class PanelSettings extends ConfigPanel {
         data: Config.storage
     };
 
-    handleSave = () => {
+    handleSave() {
         const config = new Config();
         config.blacklist.push('config.notification');
         config.blacklist.push('config.coins');

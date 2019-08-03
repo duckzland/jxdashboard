@@ -1,10 +1,14 @@
-  
+/**
+ * Webpack 3 configuration file
+ *
+ * @todo Upgrade this to latest webpack whenever possible
+ */
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var UglifyJSPlugin = require('uglifyjs-3-webpack-plugin');
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = (process.env.NODE_ENV === 'production') || (process.env.JX_DEV === "production");
 
 module.exports = {
     entry: './app/index.js',
@@ -81,20 +85,6 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
-        new UglifyJSPlugin({
-            uglifyOptions: {
-                warnings: false,
-                parse: {},
-                compress: {},
-                mangle: true, // Note `mangle.properties` is `false` by default.
-                output: null,
-                toplevel: false,
-                nameCache: null,
-                ie8: false,
-                keep_fnames: false
-            },
-            sourceMap: true
-        }),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.optimize.OccurrenceOrderPlugin(),
@@ -104,6 +94,28 @@ module.exports = {
             allChunks: true
         })
     ],
-    devtool: isProd ? '' : 'source-map'
+    devtool: 'source-map'
 };
+
+// When in production mode
+if (isProd) {
+    module.exports.plugins.push(
+        new UglifyJSPlugin({
+            uglifyOptions: {
+                warnings: false,
+                parse: {},
+                compress: {},
+                mangle: true,
+                output: null,
+                toplevel: false,
+                nameCache: null,
+                ie8: false,
+                keep_fnames: false
+            },
+            sourceMap: true
+        })
+    );
+
+    module.exports.devtool = '';
+}
 

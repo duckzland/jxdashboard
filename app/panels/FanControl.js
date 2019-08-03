@@ -16,13 +16,13 @@ export default class PanelFanControl extends ConfigPanel {
         fansName: 'config.fans.casing'
     };
 
-    handleChange = () => {
+    handleChange() {
         this.state.data = merge(this.state.data, this.formApi.getState().values);
         this.generateName();
         this.setState(this.state);
     };
 
-    handleSave = () => {
+    handleSave() {
         const config = new Config();
         config.blacklist.push('config.notification');
         config.blacklist.push('config.coins');

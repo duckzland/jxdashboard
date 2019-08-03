@@ -9,7 +9,7 @@ export default class GpuInfo extends Component {
     };
 
     locked      = false;
-    debug       = false;
+    debug       = true;
 
     constructor(props) {
         super(props);

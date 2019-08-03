@@ -1,6 +1,7 @@
 import React                from 'react';
 import Component            from '../base/Component';
 import Frame                from './Frame';
+import InfoLine             from './InfoLine';
 import { get, isEqual }     from 'lodash';
 
 export default class SummaryInfo extends Component {
@@ -40,10 +41,10 @@ export default class SummaryInfo extends Component {
             visible
                 ? <Frame frameType="frame-d" className="infobar-info" title="Statistics">
                     <div className="infobar">
-                        { (temp !== false)   && <div className="temp"><span className="label">Temperature</span><span className="value">{ parseInt(temp, 0)   }C</span></div> }
-                        { (disk !== false)   && <div className="disk"><span className="label">Disk       </span><span className="value">{ parseInt(disk, 0)   }%</span></div> }
-                        { (memory !== false) && <div className="memory"><span className="label">Memory   </span><span className="value">{ parseInt(memory, 0) }%</span></div> }
-                        { (watt !== false)   && <div className="watt"><span className="label">Watt       </span><span className="value">{ parseInt(watt, 0)   }W</span></div> }
+                        { (temp !== false)   && <InfoLine className="temp"   label="Temperature" value={ parseInt(temp, 0) + 'C'   }/> }
+                        { (disk !== false)   && <InfoLine className="disk"   label="Disk"        value={ parseInt(disk, 0) + '%'   }/> }
+                        { (memory !== false) && <InfoLine className="memory" label="Memory"      value={ parseInt(memory, 0) + '%' }/> }
+                        { (watt !== false)   && <InfoLine className="watt"   label="Watt"        value={ parseInt(watt, 0) + 'W'   }/> }
                     </div>
                 </Frame>
                 : null

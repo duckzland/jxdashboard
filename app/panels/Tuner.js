@@ -24,13 +24,13 @@ export default class PanelTuner extends ConfigPanel {
         this.generateName();
     }
 
-    handleChange = () => {
+    handleChange() {
         this.state.data = merge(this.state.data, this.formApi.getState().values);
         this.generateName();
         this.setState(this.state);
     };
 
-    handleSave = () => {
+    handleSave() {
         const config = new Config();
         config.blacklist.push('config.notification');
         config.blacklist.push('config.coins');

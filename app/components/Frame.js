@@ -1,12 +1,70 @@
 import React                from 'react';
 import Component            from '../base/Component';
+import { getPathLength }    from '../modules/Tools';
 import ReactTable           from 'react-table';
+import anime                from 'animejs';
+import Typist               from 'react-typist';
+import { forEach }          from 'lodash';
 
 export default class Frame extends Component {
 
-    svgElement = false;
+    static svgCount = 1;
+    svgElement = [];
 
-    getSVG = (type) => {
+    constructor(props) {
+        super(props);
+        this.mainRef = React.createRef();
+        this.fader.push(this.mainRef);
+        this.getSVG = this.getSVG.bind(this);
+    }
+
+    enter() {
+
+        super.enter();
+
+        Frame.svgCount++;
+
+        this.svgElement.map((svg, i) => {
+            let paths = svg ? svg.querySelectorAll('path') : null;
+            svg && anime.set(paths, {
+                strokeDasharray: getPathLength
+            });
+            svg && anime({
+                targets: paths,
+                strokeDashoffset: [getPathLength, 0],
+                easing: 'easeInOutSine',
+                delay: (path, index) => {
+                    return Math.max(200 + (index * 100) + (i * 200) + Frame.svgCount * 150, 0);
+                },
+                duration: (path) => {
+                    return Math.max(path.getTotalLength() * 15, 800);
+                }
+            });
+        });
+    }
+
+    exit() {
+
+        super.exit();
+
+        Frame.svgCount--;
+
+        forEach(this.svgElement, (svg, i) => {
+            let paths = svg ? svg.querySelectorAll('path') : null;
+            anime.remove(paths);
+            /** Exit not working yet
+            svg && anime({
+                targets: paths,
+                strokeDashoffset: [0, getPathLength],
+                easing: 'easeOutCubic',
+                delay: (path, index) => 100 + (index * 100) + (i * 200),
+                duration: (path) => path.getTotalLength()
+            });
+            **/
+        });
+    }
+
+    getSVG(type) {
         let svg = [];
         switch (type) {
 
@@ -14,7 +72,7 @@ export default class Frame extends Component {
             case 'frame-a':
                 svg.push(
                     <svg className="svg-frame svg-left"
-                     ref={ref => (this.svgElement = ref)}
+                     ref={ref => (this.svgElement.push(ref))}
                      viewBox="0 0 4.638 22.934"
                      xmlns="http://www.w3.org/2000/svg"
                      vector-effect="non-scaling-stroke"
@@ -25,7 +83,7 @@ export default class Frame extends Component {
                 );
                 svg.push(
                     <svg className="svg-frame svg-right"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 4.557 22.918"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -41,7 +99,7 @@ export default class Frame extends Component {
 
                 svg.push(
                     <svg className="svg-frame svg-left"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 4.557 22.918"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -53,7 +111,7 @@ export default class Frame extends Component {
 
                 svg.push(
                     <svg className="svg-frame svg-right"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 4.638 22.934"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -69,7 +127,7 @@ export default class Frame extends Component {
             case 'frame-c':
                 svg.push(
                     <svg className="svg-frame svg-top"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 69.321 5.078"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -80,7 +138,7 @@ export default class Frame extends Component {
                 );
                 svg.push(
                     <svg className="svg-frame svg-bottom"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 69.393 5.424"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -95,7 +153,7 @@ export default class Frame extends Component {
             case 'frame-d':
                 svg.push(
                     <svg className="svg-frame svg-top"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 41.54 5.078"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -107,7 +165,7 @@ export default class Frame extends Component {
 
                 svg.push(
                     <svg className="svg-frame svg-bottom"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 41.612 5.424"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -123,7 +181,7 @@ export default class Frame extends Component {
             case 'frame-e':
                 svg.push(
                     <svg className="svg-frame svg-left"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 3.969 54.504"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -135,7 +193,7 @@ export default class Frame extends Component {
 
                 svg.push(
                     <svg className="svg-frame svg-right"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 3.894 54.504"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -149,7 +207,7 @@ export default class Frame extends Component {
             case 'frame-f':
                 svg.push(
                     <svg className="svg-frame svg-bottom"
-                         ref={ref => (this.svgElement = ref)}
+                         ref={ref => (this.svgElement.push(ref))}
                          viewBox="0 0 305.594 2.91"
                          xmlns="http://www.w3.org/2000/svg"
                          vector-effect="non-scaling-stroke"
@@ -161,7 +219,7 @@ export default class Frame extends Component {
         }
 
         return svg;
-    };
+    }
 
     render() {
         const { children, frameType, title, className, table } = this.props;
@@ -173,9 +231,11 @@ export default class Frame extends Component {
         return (
             <div { ...elProps }>
                 { frameType && getSVG(frameType) }
-                { title && <h3 className="title">{ title }</h3> }
-                { table && <ReactTable { ...table } /> }
-                { children }
+                <div ref={ this.mainRef } className="inner">
+                    { title && <h3 className="title"><Typist avgTypingDelay="1" stdTypingDelay="1" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>{ title }</Typist></h3> }
+                    { table && <ReactTable { ...table } /> }
+                    { children }
+                </div>
             </div>
         )
     }

@@ -2,6 +2,8 @@ import React                from 'react';
 import Component            from '../base/Component';
 import Frame                from './Frame';
 import { get, isEqual }     from 'lodash';
+import Typist               from 'react-typist';
+
 
 export default class StatusInfo extends Component {
     state = {
@@ -11,7 +13,9 @@ export default class StatusInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state.connected = 'connected' in props ? props.connected : false ;
+        this.state.connected = 'connected' in props ? props.connected : false;
+        this.buttonRef = React.createRef();
+        this.fader.push(this.buttonRef);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -30,15 +34,18 @@ export default class StatusInfo extends Component {
         const visible = true;
         return (
             visible
-                ? <Frame frameType="frame-d" className="statusbar-info" title="Status">
+                ? <Frame frameType="frame-d" className="statusbar-info fader" title="Status">
                     <div className="statusbar">
                         <div className="status">
-                            { connected ? 'Connected' : 'Disconnected' }
+                            { connected
+                                ? <Typist key="statusbar-connected" avgTypingDelay="1" stdTypingDelay="1" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>Connected</Typist>
+                                : <Typist key="statusbar-disconnected" avgTypingDelay="1" stdTypingDelay="1" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>Disconnected</Typist>
+                            }
                         </div>
                         <div className="action">
                             { connected
-                                ? <button type="button" className="form-button" onClick={ () => { handleClick('stop')    } }>Stop</button>
-                                : <button type="button" className="form-button" onClick={ () => { handleClick('connect') } }>Start</button>
+                                ? <button ref={ this.buttonRef } type="button" className="form-button fader" onClick={ () => { handleClick('stop')    } }>Stop</button>
+                                : <button ref={ this.buttonRef } type="button" className="form-button fader" onClick={ () => { handleClick('connect') } }>Start</button>
                             }
                         </div>
                     </div>
