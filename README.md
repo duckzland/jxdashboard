@@ -3,7 +3,7 @@
 
 Electron base apps for monitoring  [ JXMiner ](https://github.com/duckzland/jxminer) instance via GUI
 
-[![JXDashboard Screenshot](docs/jxdashboard-screenshot.png?raw=true "JXDashboard Screenshot"](https://youtu.be/KmLtw80XKjE "JXDashboard Screenshot")
+[![JXDashboard Screenshot](docs/jxdashboard-screenshot.png?raw=true "JXDashboard Screenshot")](https://youtu.be/KmLtw80XKjE "JXDashboard Screenshot")
 
 ### Install Dependencies:
 Node js and NPM packages is needed to build this package, in addition, Electron js packages is also needed.
