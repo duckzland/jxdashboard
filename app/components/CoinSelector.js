@@ -118,6 +118,9 @@ export default class CoinSelector extends Component {
         const coins  = get(this.state, 'data.config.coins', {});
         this.state.coins = [];
         forEach(coins, (coin, ticker) => {
+            if (!coin) {
+                return;
+            }
             coin.ticker = ticker;
             if (!this.validate(coin)) {
                 return;

@@ -1,7 +1,7 @@
 import React             from 'react';
 import Config            from './modules/Config';
 import Network           from './modules/Network';
-import PageCoins         from './pages/Coins';
+import PageWallet        from './pages/Wallet';
 import PageConfiguration from './pages/Configuration';
 import PageDashboard     from './pages/Dashboard';
 import PagePools         from './pages/Pools';
@@ -13,7 +13,7 @@ var monitorTimer = null;
 
 export default class Layout extends React.Component {
     state = {
-        activePage: 'dashboard',
+        activePage: 'wallet',
         serverState: 'initializing'
     };
 
@@ -137,25 +137,17 @@ export default class Layout extends React.Component {
                     <Background/>
                     <Frame frameType="frame-f">
                         <div id="main-menu" className={ 'menu-active-' + activePage }>
-                            <div className="items dashboard" onClick={ () => changePage('dashboard') }>
-                                Dashboard
-                            </div>
-                            <div className="items configuration" onClick={ () => changePage('configuration') }>
-                                Configuration
-                            </div>
-                            <div className="items coins" onClick={ () => changePage('coins') }>
-                                Wallets
-                            </div>
-                            <div className="items pools" onClick={ () => changePage('pools') }>
-                                Mining Pools
-                            </div>
+                            <div className="items dashboard"     onClick={ () => changePage('dashboard') }    >Dashboard    </div>
+                            <div className="items configuration" onClick={ () => changePage('configuration') }>Configuration</div>
+                            <div className="items wallets"       onClick={ () => changePage('wallet') }       >Wallets      </div>
+                            <div className="items pools"         onClick={ () => changePage('pools') }        >Mining Pools </div>
                         </div>
                     </Frame>
                     <div id="main-content">
                         { (activePage === 'dashboard')     && <PageDashboard     /> }
                         { (activePage === 'configuration') && <PageConfiguration /> }
                         { (activePage === 'pools')         && <PagePools         /> }
-                        { (activePage === 'coins')         && <PageCoins         /> }
+                        { (activePage === 'wallet')        && <PageWallet        /> }
                     </div>
                     { svg }
                 </div>
