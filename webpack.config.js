@@ -1,40 +1,45 @@
 /**
- * Webpack 3 configuration file
+ * Webpack 4 configuration file
  *
- * @todo Upgrade this to latest webpack whenever possible
+ * @todo improve the bundle size and modify the scripts for building
  */
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var UglifyJSPlugin = require('uglifyjs-3-webpack-plugin');
-
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
 const isProd = (process.env.NODE_ENV === 'production') || (process.env.JX_DEV === "production");
 
 module.exports = {
     entry: './app/index.js',
+    mode: isProd ? 'production' : 'development',
     output: {
         path: __dirname + '/dist',
         filename: 'build.js'
     },
     module: {
-        loaders: [
+        rules: [
+            {
+                test: /\.s?css$/,
+                use: [
+                    'css-loader'
+                ]
+            },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract(['css-loader', 'less-loader'])
+                use: [
+                    {
+                        loader: 'css-loader'
+                    },
+                    {
+                        loader: 'less-loader'
+                    }
+                ]
             },
             {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract(['css-loader'])
-            },
-            {
-                test: /\.(png|jpg|webp|jpeg|gif|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.(png|jpe?g|gif)$/,
                 use: [
                     {
                         loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'images/'
-                        }
+                        options: {}
                     }
                 ]
             },
@@ -51,26 +56,25 @@ module.exports = {
                 ]
             },
             {
-                test: /.js?$/,
-                loader: 'babel-loader',
+                test: /\.js?$/,
                 exclude: [
-					path.resolve(__dirname, 'scripts'),
-				    path.resolve(__dirname, 'docs'),
+                    path.resolve(__dirname, 'scripts'),
+                    path.resolve(__dirname, 'docs'),
                     path.resolve(__dirname, 'build'),
                     path.resolve(__dirname, 'node_modules')
                 ],
-                query: {
-                    plugins: [
-                        'lodash',
-                        'transform-runtime',
-                        'transform-class-properties',
-                        'syntax-class-properties'
-                    ],
-                    presets: ['es2015', 'react']
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [ '@babel/preset-env']
+                    }
                 }
             }
         ]
     },
+    plugins: [
+        new LodashModuleReplacementPlugin,
+    ],
     watchOptions: {
         ignored: [
 		    path.resolve(__dirname, 'scripts'),
@@ -79,43 +83,5 @@ module.exports = {
             path.resolve(__dirname, 'node_modules')
         ]
     },
-    plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
-        }),
-        new webpack.optimize.ModuleConcatenationPlugin(),
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.AggressiveMergingPlugin(),
-        new ExtractTextPlugin({
-            filename: 'style.css',
-            allChunks: true
-        })
-    ],
     devtool: 'source-map'
 };
-
-// When in production mode
-if (isProd) {
-    module.exports.plugins.push(
-        new UglifyJSPlugin({
-            uglifyOptions: {
-                warnings: false,
-                parse: {},
-                compress: {},
-                mangle: true,
-                output: null,
-                toplevel: false,
-                nameCache: null,
-                ie8: false,
-                keep_fnames: false
-            },
-            sourceMap: true
-        })
-    );
-
-    module.exports.devtool = '';
-}
-
