@@ -21,19 +21,10 @@ export default class Logo extends Component {
 
     exit() {
         const paths = this.svgElement.querySelectorAll('path');
-        anime({
-            targets: paths,
-            fillOpacity: '0',
-            easing: 'linear',
-            duration: (path) => path.getTotalLength(),
-            complete: () => {
-                anime.set(this.svgElement, {fillOpacity: '0'});
-            }
-        });
+        anime.remove(paths);
     }
 
     render() {
-        const { classes } = this.props;
         return (
             <svg className="svg-logo"
                  ref={ref => (this.svgElement = ref)}

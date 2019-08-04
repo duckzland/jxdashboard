@@ -10,7 +10,7 @@ export default class CpuInfo extends Component {
     };
 
     locked      = false;
-    debug       = true;
+    debug       = false;
 
     constructor(props) {
         super(props);

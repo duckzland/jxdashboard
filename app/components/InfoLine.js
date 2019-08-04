@@ -1,24 +1,16 @@
 import React                from 'react';
-import Typist               from 'react-typist';
+import Component            from '../base/Component';
 import Frame                from './Frame';
 
 
-export default class InfoLine extends React.PureComponent {
+export default class InfoLine extends Component {
     render() {
         const { label, value, className } = this.props;
 
         return (
             <div className={ className }>
-                <span className="label">
-                    <Typist avgTypingDelay="1" stdTypingDelay="2" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>
-                        { label }
-                    </Typist>
-                </span>
-                <span className="value">
-                    <Typist avgTypingDelay="1" stdTypingDelay="2" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>
-                        { value }
-                    </Typist>
-                </span>
+                <span className="label">{ label }</span>
+                <span className="value">{ value }</span>
             </div>
         )
     }

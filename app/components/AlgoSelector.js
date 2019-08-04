@@ -16,6 +16,12 @@ export default class AlgoSelector extends Component {
         onlyHasSecondary : false
     };
 
+    constructor(props) {
+        super(props);
+        this.locked = false;
+        this.parseProps(props);
+    }
+
     componentWillReceiveProps(nextProps) {
         forEach(['onlyHasCpu', 'onlyHasAmd', 'onlyHasNvidia', 'onlyHasDual', 'onlyHasSecondary'], (key) => {
             if (key in nextProps && !isEqual(nextProps[key], this.state[key])) {
@@ -89,6 +95,7 @@ export default class AlgoSelector extends Component {
             }
             this.state.algos.push( algo );
         });
+
         this.state.algos.sort();
     };
 
@@ -104,7 +111,7 @@ export default class AlgoSelector extends Component {
                 {
                     algos.map((algo, index) => {
                         const optionProps = {
-                            key  : 'algo-selector-option-' + index,
+                            key  : 'algo-selector-option-' + algo,
                             value: algo
                         };
                         return (

@@ -19,6 +19,12 @@ export default class CoinSelector extends Component {
         onlyHasSecondary : false
     };
 
+    constructor(props) {
+        super(props);
+        this.locked = false;
+        this.parseProps(props);
+    }
+
     parseProps = (props) => {
         if ('onlyHasMiner' in props) {
             this.state.onlyHasMiner = props.onlyHasMiner;

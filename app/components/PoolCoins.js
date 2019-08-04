@@ -12,6 +12,9 @@ export default class PoolCoins extends Component {
         active: ''
     };
 
+    duration = 600;
+    delay = 5;
+
     constructor(props) {
         super(props);
         this.locked = false;
@@ -51,19 +54,19 @@ export default class PoolCoins extends Component {
             return (
                 <div key={ 'pool-coins-row-' + active + '-' + index } className="form-row">
                     <Scope scope={ active + '[' + index + ']' }>
-                        <FormGroup title={ showLabel && 'Coin Code' } elementType="coinselector" elementClass="items"
+                        <FormGroup title={ showLabel && 'Coin Code' } elementType="coinselector" elementClass="items" elementStopAnimate="true"
                                    field={ 'coin' } onlyHasMiner={ true } hasEmpty={ true } initialValue={ coin.coin }/>
 
-                        <FormGroup title={ showLabel && 'Protocol' } elementType="text" elementClass="items"
+                        <FormGroup title={ showLabel && 'Protocol' } elementType="text" elementClass="items" elementStopAnimate="true"
                                    key={ active + '-' + index + '-protocol' } type="text" field={ 'protocol' } initialValue={ coin.protocol }/>
 
-                        <FormGroup title={ showLabel && 'Url' } elementType="text" elementClass="items"
+                        <FormGroup title={ showLabel && 'Url' } elementType="text" elementClass="items" elementStopAnimate="true"
                                    key={ active + '-' + index + '-url' } type="text" field={ 'url' } initialValue={ coin.url }/>
 
-                        <FormGroup title={ showLabel && 'Port' } elementType="text" elementClass="items"
+                        <FormGroup title={ showLabel && 'Port' } elementType="text" elementClass="items" elementStopAnimate="true"
                                    key={ active + '-' + index + '-port' } type="text" field={ 'port' } initialValue={ coin.port }/>
 
-                        <FormGroup title={ showLabel && 'Password' } elementType="text" elementClass="items"
+                        <FormGroup title={ showLabel && 'Password' } elementType="text" elementClass="items" elementStopAnimate="true"
                                    key={ active + '-' + index + '-password' } type="text" field={ 'password' } initialValue={ coin.password }/>
 
                         <div className="items">

@@ -1,0 +1,45 @@
+/**
+  Styling for the svg background
+  **/
+.c013 {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+.c014 {
+  z-index: 0;
+  position: fixed;
+  background-color: #050608;
+}
+
+.c015 {
+  z-index: 0;
+}
+
+.c016 {
+  z-index: 0;
+  background-image: radial-gradient(rgba(251,139,51,0.08) 15%, transparent);
+}
+
+.c0116 {
+  fill: none;
+  stroke: #3a1f00;
+  stroke-width: 1;
+}
+.c0117 {
+  fill: none;
+  stroke: #fb8b33;
+  opacity: 0;
+  stroke-width: 1;
+}
+
+.c0118 {
+  fill: #532d00;
+}
+
+.c0126 {
+  opacity: 1;
+}

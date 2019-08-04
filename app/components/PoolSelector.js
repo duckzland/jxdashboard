@@ -12,6 +12,12 @@ export default class PoolSelector extends Component {
         onlyHasCoin      : false
     };
 
+    constructor(props) {
+        super(props);
+        this.locked = false;
+        this.parseProps(props);
+    }
+
     parseProps = (props) => {
         if ('onlyHasCoin' in props) {
             this.state.onlyHasCoin = props.onlyHasCoin;

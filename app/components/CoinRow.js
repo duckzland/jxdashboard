@@ -14,16 +14,16 @@ export default class CoinRow extends Component {
             <div key={ 'coin-rows-' + index } className="coin-rows">
                 <Scope scope={ 'local[' + index + ']'}>
                     <div className="form-row">
-                        <FormGroup title={ showLabel && 'Code' } elementType="text" elementClass="items" elementStopAnimate="false"
+                        <FormGroup title={ showLabel && 'Code' } elementType="text" elementClass="items" elementStopAnimate="true"
                                    type="text" key={ 'local-' + index + '-ticker' } field={ 'ticker' }/>
 
-                        <FormGroup title={ showLabel && 'Name' } elementType="text" elementClass="items" elementStopAnimate="false"
+                        <FormGroup title={ showLabel && 'Name' } elementType="text" elementClass="items" elementStopAnimate="true"
                                    type="text" key={ 'local-' + index + '-name' }   field={ 'name'   }/>
 
-                        <FormGroup title={ showLabel && 'Address' } elementType="text" elementClass="items" elementStopAnimate="false"
+                        <FormGroup title={ showLabel && 'Address' } elementType="text" elementClass="items" elementStopAnimate="true"
                                    type="text" key={ 'local-' + index + '-wallet' } field={ 'wallet' }/>
 
-                        <FormGroup title={ showLabel && 'Algorithm' } elementType="algoselector" elementClass="items" elementStopAnimate="false"
+                        <FormGroup title={ showLabel && 'Algorithm' } elementType="algoselector" elementClass="items" elementStopAnimate="true"
                                    key={ 'local-' + index + '-algo' } field={ 'algo' } hasEmpty={ true }/>
 
                         <div className="items">
