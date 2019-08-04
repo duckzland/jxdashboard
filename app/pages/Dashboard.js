@@ -18,7 +18,7 @@ import Config       from '../modules/Config';
 
 export default class PageDashboard extends React.Component {
 
-    state   = { payload: '', connected: false };
+    state   = { payload: '', connected: false, animating: false };
     port    = window.jxdashboard.port;
     host    = window.jxdashboard.host;
     monitor = false;
@@ -26,7 +26,20 @@ export default class PageDashboard extends React.Component {
 
     constructor(props) {
         super(props);
-        this.monitor = new Network(this.host, this.port, 'monitor:server', this.update, this.disconnected, this.disconnected);
+        this.monitor = new Network(
+            this.host,
+            this.port,
+            'monitor:server',
+            (socket, buffers, data) => {
+                this.update(socket, buffers, data)
+            },
+            () => {
+                this.disconnected()
+            },
+            () => {
+                this.disconnected()
+            }
+        );
         this.monitor.send();
     }
 
@@ -34,23 +47,29 @@ export default class PageDashboard extends React.Component {
         this.monitor.close();
     }
 
-    update = (network, buffers) => {
-        let payload = false;
-        try {
-            payload = JSON.parse(buffers.slice(-1).pop());
-        }
-        catch(err) {
-            this.setState({
-                payload     : '',
-                connected   : false
-            });
-        }
+    update = (network, buffers, data) => {
+        if (network
+            && buffers
+            && data
+            && !this.state.animating) {
 
-        if (payload) {
-            this.setState({
-                payload     : payload,
-                connected   : true
-            });
+            let payload = false;
+            try {
+                payload = JSON.parse(buffers.slice(-1).pop());
+            }
+            catch (err) {
+                this.setState({
+                    payload: '',
+                    connected: false
+                });
+            }
+
+            if (payload) {
+                this.setState({
+                    payload: payload,
+                    connected: true
+                });
+            }
         }
     };
 
@@ -71,8 +90,13 @@ export default class PageDashboard extends React.Component {
     disconnected = () => {
         this.setState({
             payload     : '',
-            connected   : false
+            connected   : false,
+            animating   : true
         });
+
+        setTimeout(() => {
+            this.state.animating = false;
+        }, 300);
     };
 
     extractHashRate = () => {

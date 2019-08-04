@@ -10,6 +10,7 @@ export default class Frame extends Component {
 
     static svgCount = 1;
     svgElement = [];
+    svgDelay = 50;
 
     constructor(props) {
         super(props);
@@ -34,7 +35,7 @@ export default class Frame extends Component {
                 strokeDashoffset: [getPathLength, 0],
                 easing: 'easeInOutSine',
                 delay: (path, index) => {
-                    return Math.max(200 + (index * 100) + (i * 200) + Frame.svgCount * 150, 0);
+                    return Math.max(this.delay + (index * 20) + (i * 20) + Frame.svgCount * this.svgDelay, 0);
                 },
                 duration: (path) => {
                     return Math.max(path.getTotalLength() * 15, 800);

@@ -13,14 +13,16 @@ var monitorTimer = null;
 
 export default class Layout extends React.Component {
     state = {
-        activePage: 'wallet',
-        serverState: 'initializing'
+        activePage: 'dashboard',
+        serverState: 'initializing',
+        animating: false
     };
 
     locked = true;
     config = false;
     port   = window.jxdashboard.port;
     host   = window.jxdashboard.host;
+    count  = 0;
 
     constructor(props) {
         super(props);
@@ -42,8 +44,8 @@ export default class Layout extends React.Component {
             this.host,
             this.port,
             'server:status:live',
-            () => {
-                this.serverCompleted();
+            (socket, buffers, data) => {
+                this.serverCompleted(socket, buffers, data);
             },
             () => {
                 this.serverError();
@@ -65,8 +67,13 @@ export default class Layout extends React.Component {
         });
     };
 
-    serverCompleted = () => {
-        if ((new Config()).isReady()) {
+    serverCompleted = (socket, buffers, data) => {
+        // Got to check for the socket and data to avoid flickering due to false positive
+        if (socket
+            && buffers
+            && data
+            && (new Config()).isReady()
+            && !this.state.animating) {
             this.setState({
                 serverState: 'connected'
             });
@@ -74,9 +81,19 @@ export default class Layout extends React.Component {
     };
 
     serverError = () => {
-        this.setState({
-            serverState: 'error'
-        });
+        this.count++;
+        if (this.count > 3) {
+            this.setState({
+                serverState: 'error',
+                animating: true
+            });
+
+            setTimeout(() => {
+                this.state.animating = false;
+            }, 300);
+
+            this.count = 0;
+        }
     };
 
     changePage = (page) => {

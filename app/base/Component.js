@@ -5,8 +5,8 @@ import anime                from 'animejs';
 export default class Component extends React.Component {
 
     static faderCount = 1;
-    duration = 600;
-    delay = 200;
+    duration = 300;
+    delay = 100;
     fader = [];
 
     constructor(props) {

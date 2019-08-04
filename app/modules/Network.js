@@ -115,7 +115,7 @@ export default class Network {
 
             this.socket.on('data', (data) => {
                 this.receive(data);
-                this.onData(this, this.buffers);
+                this.onData(this, this.buffers, data);
                 clearTimeout(networkTimer);
             });
 
