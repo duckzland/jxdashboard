@@ -27,7 +27,9 @@ function createWindow() {
         titleBarStyle: "hidden",
         //type: "desktop",
         width: 1024,
-        height: 768
+        height: 768,
+        backgroundColor: '#000000',
+        show: false
     };
 
     if (development) {
@@ -55,6 +57,11 @@ function createWindow() {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null;
+    });
+
+    // Prevent screen white flickering on startup
+    mainWindow.once('ready-to-show', function() {
+        mainWindow.show();
     });
 }
 
