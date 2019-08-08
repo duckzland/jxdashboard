@@ -22,9 +22,6 @@ export default class Graph extends React.Component {
         this.state.payload = 'payload' in props ? props.payload : 0;
         this.state.size = 'size' in props ? props.size : 1;
         this.highest = this.state.payload;
-
-        'connected' in props && props.connected && this.update() && this.ticker();
-
         this.element = React.createRef();
         this.state.windowWidth = false;
     }
@@ -105,14 +102,15 @@ export default class Graph extends React.Component {
                 { !(title && width)
                     ? <div className="graph-not-ready">Loading data...</div>
                     : <AreaChart
+                        className="graph-area"
                         datePattern={ '%d-%b-%y %H:%M:%S' }
-                        width={ width }
-                        height={ width / 2 }
+                        width={ width + 60 }
+                        height={ Math.max(260, width / 2) }
                         xType={'time'}
                         axisLabels={ {x: labelX, y: labelY} }
                         areaColors={['#ff7700', '#000000']}
                         yDomainRange={ [0, this.highest * 1.5] }
-                        interpolate={ false }
+                        interpolate="false"
                         xTicks={ this.buffers.length }
                         yTicks={ 5 }
                         axes

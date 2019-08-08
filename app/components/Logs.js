@@ -4,6 +4,8 @@ import Typist                      from 'react-typist';
 
 export default class Logs extends React.PureComponent {
 
+    state = {};
+
     getKey(text) {
         return text.replace(/\033\[[0-9;]*m/,"").replace('-', '').replace(' ', '');
     }
@@ -14,7 +16,7 @@ export default class Logs extends React.PureComponent {
                 { this.props.logs.map((text, index) => {
                     return (
                         <div key={ this.getKey(text) } className="entry">
-                            <Typist avgTypingDelay="0" stdTypingDelay="0" startDelay={ index * 500 } cursor={{ show: false }}>
+                            <Typist avgTypingDelay={0} stdTypingDelay={0} startDelay={ index * 500 } cursor={{ show: false }}>
                                 <Ansi>{ text }</Ansi>
                             </Typist>
                         </div>

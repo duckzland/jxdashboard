@@ -29,7 +29,7 @@ export default class GpuInfo extends Component {
         let data = [], x = 0;
         if (this.debug) {
             for (x=0;x < 21;x++) {
-                data.push({label: 'AMD', temperature: '56 C', fan: '45%', memory: '50%', power: '90%', watt: '124W'});
+                data.push({label: 'NVIDIA', temperature: '100 C', fan: '100 %', memory: '100 %', power: '100 %', watt: '123.23 W'});
             }
         }
         else {

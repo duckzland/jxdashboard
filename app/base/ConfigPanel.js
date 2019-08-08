@@ -5,6 +5,7 @@ import Config       from '../modules/Config';
 export default class ConfigPanel extends React.Component {
 
     isSaving = false;
+    state = {};
 
     constructor(props) {
         super(props);

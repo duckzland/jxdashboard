@@ -27,6 +27,9 @@ export default class Layout extends React.Component {
     constructor(props) {
         super(props);
         this.config = new Config();
+    }
+
+    componentDidMount() {
         this.loadConfig();
         this.serverMonitor();
     }

@@ -12,7 +12,8 @@ import { Text, Checkbox, Select } from 'informed';
 
 export default class FormGroup extends Component {
 
-    delay = 10;
+    state    = {};
+    delay    = 10;
     duration = 200;
 
     constructor(props) {
@@ -38,7 +39,7 @@ export default class FormGroup extends Component {
                         <Checkbox { ...elProps } />
                         <div className="state p-success-o">
                             <label className="form-checkbox">
-                                <Typist avgTypingDelay="1" stdTypingDelay="2" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>
+                                <Typist avgTypingDelay={1} stdTypingDelay={2} startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>
                                     { this.props.title }
                                 </Typist>
                             </label>

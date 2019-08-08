@@ -8,6 +8,7 @@ export default class Component extends React.Component {
     duration = 300;
     delay = 100;
     fader = [];
+    state = {};
 
     constructor(props) {
         super(props);

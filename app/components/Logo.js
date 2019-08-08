@@ -5,6 +5,7 @@ import anime                from 'animejs';
 export default class Logo extends Component {
     
     svgElement = false;
+    state = {};
 
     enter() {
         const paths = this.svgElement.querySelectorAll('path');

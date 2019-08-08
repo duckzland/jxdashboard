@@ -1,12 +1,12 @@
 /**
  * Webpack 4 configuration file
- *
- * @todo improve the bundle size and modify the scripts for building
  */
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const isProd = (process.env.NODE_ENV === 'production') || (process.env.JX_DEV === "production");
+
 
 module.exports = {
     entry: './app/index.js',
@@ -18,20 +18,18 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.s?css$/,
+                test: /\.less$/,
                 use: [
-                    'css-loader'
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'less-loader'
                 ]
             },
             {
-                test: /\.less$/,
+                test: /\.css$/,
                 use: [
-                    {
-                        loader: 'css-loader'
-                    },
-                    {
-                        loader: 'less-loader'
-                    }
+                    MiniCssExtractPlugin.loader,
+                    'css-loader'
                 ]
             },
             {
@@ -74,6 +72,9 @@ module.exports = {
     },
     plugins: [
         new LodashModuleReplacementPlugin,
+        new MiniCssExtractPlugin({
+            filename: 'style.css'
+        }),
     ],
     watchOptions: {
         ignored: [

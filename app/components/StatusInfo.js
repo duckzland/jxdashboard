@@ -38,8 +38,8 @@ export default class StatusInfo extends Component {
                     <div className="statusbar">
                         <div className="status">
                             { connected
-                                ? <Typist key="statusbar-connected" avgTypingDelay="1" stdTypingDelay="1" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>Connected</Typist>
-                                : <Typist key="statusbar-disconnected" avgTypingDelay="1" stdTypingDelay="1" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>Disconnected</Typist>
+                                ? <Typist key="statusbar-connected" avgTypingDelay={1} stdTypingDelay={1} startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>Connected</Typist>
+                                : <Typist key="statusbar-disconnected" avgTypingDelay={1} stdTypingDelay={1} startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>Disconnected</Typist>
                             }
                         </div>
                         <div className="action">

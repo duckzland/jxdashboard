@@ -487,13 +487,13 @@ export default class Donation extends React.PureComponent {
                     </svg>
                     <div className="donation-info">
                         <h3 className="title">
-                            <Typist avgTypingDelay="0" stdTypingDelay="0" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>
+                            <Typist avgTypingDelay={0} stdTypingDelay={0} startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>
                                 ETH Donation Address
                             </Typist>
                         </h3>
-                        <p><Typist avgTypingDelay="0" stdTypingDelay="0" startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>
+                        <div><Typist avgTypingDelay={0} stdTypingDelay={0} startDelay={ Frame.svgCount * 100 } cursor={{ show: false }}>
                             0x147bcfcf7e7048e1d1e9b410f14223206a62cfe2
-                        </Typist></p>
+                        </Typist></div>
                     </div>
                 </div>
             </Frame>
