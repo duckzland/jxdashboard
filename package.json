@@ -23,7 +23,7 @@
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "ajv": "^6.10.2",
+    "ajv": "^6.12.3",
     "animejs": "^3.1.0",
     "ansi-to-html": "^0.6.11",
     "ansi-to-react": "^3.3.5",
